@@ -1,37 +1,32 @@
-<div class="hero">
-  <h1>Welcome to <span class="highlight">ShopShakti</span></h1>
-  <p>Your one-stop shop for everything!</p>
-  <button>Start Shopping</button>
-</div>
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>Welcome to <span class="highlight">ShopShakti</span></h1>
+    <p>India's trusted shopping destination for quality and savings!</p>
+    <button class="primary-btn">Shop Now</button>
+  </div>
+</section>
 
-<section class="categories">
+<!-- FEATURED CATEGORIES -->
+<section class="section categories">
   <h2>Featured Categories</h2>
   <div class="grid">
-    <div class="category" *ngFor="let cat of featuredCategories">
+    <div class="card" *ngFor="let cat of featuredCategories">
       <img [src]="cat.image" [alt]="cat.name" />
       <p>{{ cat.name }}</p>
     </div>
   </div>
 </section>
 
-<section class="products">
-  <h2>Top Products</h2>
-  <div class="grid">
-    <div class="product" *ngFor="let prod of topProducts">
-      <img [src]="prod.image" [alt]="prod.name" />
-      <h4>{{ prod.name }}</h4>
-      <p class="price">{{ prod.price }}</p>
-      <button>Add to Cart</button>
-    </div>
+<!-- TOP DEALS -->
+
+
+<!-- NEWSLETTER SUBSCRIPTION -->
+<section class="section newsletter">
+  <h2>Subscribe for Offers</h2>
+  <p>Get exclusive deals and early access to new products</p>
+  <div class="subscribe-box">
+    <input type="email" placeholder="Enter your email" />
+    <button class="primary-btn">Subscribe</button>
   </div>
 </section>
-
-<section class="newsletter">
-  <h2>Subscribe to our Newsletter</h2>
-  <input type="email" placeholder="Enter your email" />
-  <button>Subscribe</button>
-</section>
-
-<footer>
-  <p>&copy; 2025 ShopShakti. All rights reserved.</p>
-</footer>
