@@ -1,1 +1,16 @@
-<p>product-detail works!</p>
+<div class="product-detail" *ngIf="!isLoading && product">
+  <div class="image-section">
+    <img [src]="product.imageUrl" [alt]="product.name" />
+  </div>
+  <div class="info-section">
+    <h1>{{ product.name }}</h1>
+    <p class="price">₹{{ product.price }}</p>
+    <p class="category">{{ product.category }}</p>
+    <p class="description">{{ product.description }}</p>
+
+    <button class="btn-buy">Add to Cart</button>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="loading">Loading product details...</div>
+<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
