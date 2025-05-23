@@ -1,1 +1,16 @@
-<p>banner-carousel works!</p>
+<div class="carousel-container">
+  <div
+    class="carousel-slide"
+    *ngFor="let banner of banners; let i = index"
+    [class.active]="i === activeIndex"
+  >
+    <img [src]="banner.image" [alt]="banner.title" />
+    <div class="banner-caption">
+      <h2>{{ banner.title }}</h2>
+      <p>{{ banner.subtitle }}</p>
+    </div>
+  </div>
+
+  <button class="carousel-btn prev" (click)="prevSlide()">&#10094;</button>
+  <button class="carousel-btn next" (click)="nextSlide()">&#10095;</button>
+</div>
