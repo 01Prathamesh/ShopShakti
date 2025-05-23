@@ -1,1 +1,13 @@
-<p>category-sidebar works!</p>
+<div class="category-sidebar" role="navigation" aria-label="Category Sidebar">
+  <h3>Categories</h3>
+  <ul>
+    <li *ngFor="let category of categories"
+        (click)="onCategorySelect(category)"
+        tabindex="0"
+        (keyup.enter)="onCategorySelect(category)"
+        [class.active]="selectedCategory === category"
+        [attr.aria-pressed]="selectedCategory === category">
+      {{ category }}
+    </li>
+  </ul>
+</div>
