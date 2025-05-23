@@ -1,1 +1,15 @@
-<p>toast works!</p>
+<!-- Toast container that holds all the active toast notifications -->
+<div class="toast-container">
+  
+  <!-- Loop through each toast in the signal and render it -->
+  <div 
+    *ngFor="let toast of toasts()" 
+    [ngClass]="['toast', toast.type]"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <!-- Toast message -->
+    {{ toast.message }}
+  </div>
+</div>
