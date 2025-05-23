@@ -1,1 +1,4 @@
-<p>searchbar works!</p>
+<div class="searchbar">
+  <input [(ngModel)]="query" (keyup.enter)="search()" placeholder="Search for products..." />
+  <button (click)="search()"><i class="fa fa-search"></i>Search</button>
+</div>
