@@ -1,1 +1,22 @@
-<p>admin-dashboard works!</p>
+<div class="admin-dashboard">
+  <h1>Admin Dashboard</h1>
+
+  <div class="stats">
+    <div class="card">
+      <h2>Users</h2>
+      <p>{{ metrics.users }}</p>
+    </div>
+    <div class="card">
+      <h2>Orders</h2>
+      <p>{{ metrics.orders }}</p>
+    </div>
+    <div class="card">
+      <h2>Revenue</h2>
+      <p>${{ metrics.revenue }}</p>
+    </div>
+    <div class="card">
+      <h2>Products</h2>
+      <p>{{ metrics.activeProducts }}</p>
+    </div>
+  </div>
+</div>
