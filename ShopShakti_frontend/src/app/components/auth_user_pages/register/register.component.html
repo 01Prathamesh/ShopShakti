@@ -1,1 +1,59 @@
-<p>register works!</p>
+<div class="register-container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-card">
+    <h2>Create Account</h2>
+
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input id="name" formControlName="name" />
+      <div class="error" *ngIf="isSubmitted && f['name'].errors">
+        <small *ngIf="f['name'].errors['required']">Name is required.</small>
+        <small *ngIf="f['name'].errors['minlength']">Name must be at least 3 characters.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input id="email" type="email" formControlName="email" />
+      <div class="error" *ngIf="isSubmitted && f['email'].errors">
+        <small *ngIf="f['email'].errors['required']">Email is required.</small>
+        <small *ngIf="f['email'].errors['email']">Enter a valid email.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone</label>
+      <input id="phone" formControlName="phone" maxlength="10" />
+      <div class="error" *ngIf="isSubmitted && f['phone'].errors">
+        <small *ngIf="f['phone'].errors['required']">Phone number is required.</small>
+        <small *ngIf="f['phone'].errors['pattern']">Enter a valid 10-digit phone number.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      <div class="error" *ngIf="isSubmitted && f['password'].errors">
+        <small *ngIf="f['password'].errors['required']">Password is required.</small>
+        <small *ngIf="f['password'].errors['minlength']">Minimum 6 characters required.</small>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      <div class="error" *ngIf="isSubmitted && (f['confirmPassword'].errors || registerForm.errors?.['mismatch'])">
+        <small *ngIf="f['confirmPassword'].errors?.['required']">Confirm Password is required.</small>
+        <small *ngIf="registerForm.errors?.['mismatch']">Passwords do not match.</small>
+      </div>
+    </div>
+
+    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+    <button class="primary-btn" type="submit">Register</button>
+
+    <div class="login-link">
+      Already have an account? <a routerLink="/login">Login</a>
+    </div>
+  </form>
+</div>
