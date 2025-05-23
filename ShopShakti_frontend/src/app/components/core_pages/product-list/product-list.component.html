@@ -1,1 +1,15 @@
-<p>product-list works!</p>
+<div class="product-list">
+  <h2>Explore Products</h2>
+
+  <div *ngIf="isLoading" class="loading">Loading products...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div class="grid">
+    <div class="product-card" *ngFor="let product of products" (click)="viewDetails(product.id)">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" />
+      <h3>{{ product.name }}</h3>
+      <p class="price">₹{{ product.price }}</p>
+      <p class="category">{{ product.category }}</p>
+    </div>
+  </div>
+</div>
