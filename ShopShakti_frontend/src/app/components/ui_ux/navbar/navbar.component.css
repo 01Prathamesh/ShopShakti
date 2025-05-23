@@ -1,0 +1,261 @@
+/* ------------------ NAVBAR BASE STYLING ------------------ */
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 15px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+/* Container for navbar content */
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* ------------------ LOGO ------------------ */
+.logo {
+  font-size: 2rem;
+  color: #e91e63;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* ------------------ NAV LINKS ------------------ */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  transition: all 0.3s ease;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  font-weight: 500;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  background-color: #e91e63;
+  color: white;
+}
+
+/* Active link indicator */
+.active-link {
+  font-weight: bold;
+  border-bottom: 2px solid #ff6600;
+  color: #ff6600;
+}
+
+/* ------------------ MOBILE TOGGLE BUTTON ------------------ */
+.mobile-toggle {
+  display: none;
+  background: none;
+  font-size: 28px;
+  border: none;
+  color: #333;
+  cursor: pointer;
+}
+
+/* ------------------ CART ICON ------------------ */
+.cart-icon {
+  position: relative;
+  font-size: 24px;
+  color: #e91e63;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #ff6600;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+/* ------------------ MEGA MENU DROPDOWN ------------------ */
+.dropdown .mega-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  gap: 40px;
+  z-index: 998;
+}
+
+/* Show mega menu on hover */
+.dropdown:hover .mega-menu {
+  display: flex;
+}
+
+.mega-column {
+  display: flex;
+  flex-direction: column;
+  min-width: 150px;
+}
+
+.mega-column h4 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #e91e63;
+}
+
+.mega-column a {
+  color: #333;
+  margin: 4px 0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+/* ------------------ AUTH MENU DROPDOWN ------------------ */
+.auth-dropdown .auth-menu {
+  position: absolute;
+  background: white;
+  top: 100%;
+  right: 0;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  flex-direction: column;
+  min-width: 140px;
+  z-index: 999;
+}
+
+/* Show auth menu on hover */
+.auth-dropdown:hover .auth-menu {
+  display: flex;
+}
+
+.auth-menu a {
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.auth-menu a:hover {
+  background-color: #f2f2f2;
+}
+
+/* ------------------ PROFILE ICON ------------------ */
+.profile-icon {
+  font-size: 24px;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  padding: 8px 12px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+}
+
+.profile-icon:hover {
+  background-color: #f4f4f4;
+}
+
+/* ------------------ CART WRAPPER ------------------ */
+.cart-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cart-icon {
+  font-size: 24px;
+  color: #333;
+  position: relative;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: #ff5722;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
+/* ------------------ RESPONSIVE STYLES ------------------ */
+@media screen and (max-width: 768px) {
+  .mobile-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0;
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  .nav-links li a {
+    display: block;
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  /* Mega Menu becomes vertical */
+  .mega-menu {
+    position: static;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 10px 0;
+  }
+
+  .mega-column {
+    padding-left: 10px;
+  }
+
+  /* Auth menu dropdown adapts for mobile */
+  .auth-dropdown .auth-menu {
+    position: static;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .auth-menu a {
+    background-color: white;
+    border-top: 1px solid #eee;
+    padding: 12px 20px;
+  }
+}

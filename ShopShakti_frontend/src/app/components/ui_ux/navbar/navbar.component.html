@@ -1,1 +1,64 @@
-<p>navbar works!</p>
+<nav class="navbar">
+  <div class="navbar-container">
+    <a routerLink="/" class="logo">ShopShakti</a>
+
+    <button class="mobile-toggle" (click)="toggleMobileMenu()">☰</button>
+
+    <ul class="nav-links" [class.active]="isMobileMenuOpen">
+      <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
+
+      <!-- Category Mega Dropdown -->
+      <li class="dropdown">
+        <a class="dropdown-toggle">Shop by Category ▾</a>
+        <div class="mega-menu">
+          <div class="mega-column">
+            <h4>Electronics</h4>
+            <a>Mobiles</a>
+            <a>Laptops</a>
+            <a>Tablets</a>
+          </div>
+          <div class="mega-column">
+            <h4>Fashion</h4>
+            <a>Men</a>
+            <a>Women</a>
+            <a>Kids</a>
+          </div>
+        </div>
+      </li>
+
+      <li *ngIf="isLoggedIn"><a routerLink="/cart" class="cart-icon" routerLinkActive="active-link"><i class="fas fa-shopping-cart"></i><span class="cart-badge">2</span></a></li>
+      <!-- AUTH Section -->
+      <li class="auth-dropdown" *ngIf="isLoggedIn; else loginBlock">
+        <a class="profile-icon">
+          <i class="fas fa-user-circle"></i>
+        </a>
+        <ul class="auth-menu">
+          <a routerLink="/profile">My Profile</a>
+          <a routerLink="/orders">My Orders</a>
+          <a (click)="logout()">Logout</a>
+        </ul>
+      </li>
+
+      <!-- SHOW LOGIN / REGISTER if NOT LOGGED IN -->
+      <ng-template #loginBlock>
+        <li class="auth-dropdown">
+          <a class="profile-icon"><i class="fas fa-user"></i></a>
+          <ul class="auth-menu">
+            <a routerLink="/login">Login</a>
+            <a routerLink="/register">Register</a>
+          </ul>
+        </li>
+      </ng-template>
+
+      <!-- Login/Register Dropdown -->
+      <li class="dropdown auth-dropdown" (click)="toggleAuthDropdown()">
+        <a class="dropdown-toggle">Account ▾</a>
+        <div class="auth-menu" *ngIf="isAuthDropdownOpen">
+          <a (click)="login()">Login</a>
+          <a routerLink="/register">Register</a>
+          <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
