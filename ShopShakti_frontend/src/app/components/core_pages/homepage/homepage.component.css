@@ -10,24 +10,95 @@
   margin-top: 30px;
 }
 
+.main-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 20px 40px;
+  margin-top: 30px;
+}
+
+.main-content {
+  flex: 3;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.searchbar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+
 /* HERO SECTION */
-.hero {
+.hero-with-carousel {
   background: linear-gradient(to right, #ff7e5f, #feb47b);
   color: white;
-  padding: 80px 20px;
+  padding: 60px 20px;
+  text-align: left;
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.hero-text {
+  max-width: 800px;
   text-align: center;
 }
-.hero-content h1 {
-  font-size: 3rem;
+
+.hero-text h1 {
+  font-size: 3.2rem;
   margin-bottom: 10px;
 }
-.hero-content p {
+
+.tagline {
   font-size: 1.2rem;
   margin-bottom: 20px;
 }
-.highlight {
-  color: #fff200;
+
+.hero-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  font-size: 0.95rem;
 }
+
+.hero-features li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hero-carousel {
+  width: 100%;
+  max-width: 2000px;
+}
+
+.primary-btn {
+  background-color: #2874f0;
+  color: white;
+  padding: 12px 24px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background-color: #0b5ed7;
+}
+
 
 /* Cards */
 .card {
@@ -87,4 +158,84 @@
   width: 250px;
   border: 1px solid #ccc;
   border-radius: 6px;
+}
+
+/* Benefits */
+.benefits .benefit-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 30px;
+}
+.benefit {
+  max-width: 250px;
+}
+.benefit i {
+  font-size: 36px;
+  color: #e91e63;
+  margin-bottom: 10px;
+}
+.benefit h4 {
+  margin: 10px 0 5px;
+}
+
+/* Customer Reviews */
+.reviews .review-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px 0;
+}
+.review {
+  background: #f8f8f8;
+  padding: 20px;
+  border-radius: 10px;
+  min-width: 250px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+.review p {
+  font-style: italic;
+}
+.review h5 {
+  margin-top: 10px;
+  font-weight: 600;
+  color: #444;
+}
+
+@media(min-width: 768px) {
+  .hero-content {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
+
+  .hero-text {
+    text-align: left;
+    flex: 1;
+  }
+
+  .hero-carousel {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-text h1 {
+    font-size: 2rem;
+  }
+
+  .hero-features {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .benefits .benefit-row {
+    flex-direction: column;
+  }
+
+  .review-carousel {
+    flex-direction: column;
+  }
 }

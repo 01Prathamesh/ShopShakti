@@ -1,11 +1,53 @@
-<!-- HERO SECTION -->
-<section class="hero">
+<!-- HERO SECTION with BANNER -->
+<section class="hero-with-carousel">
   <div class="hero-content">
-    <h1>Welcome to <span class="highlight">ShopShakti</span></h1>
-    <p>India's trusted shopping destination for quality and savings!</p>
-    <button class="primary-btn">Shop Now</button>
+    <div class="hero-text">
+      <h1>Welcome to <span class="highlight">ShopShakti</span></h1>
+      <p class="tagline">Your ultimate destination for deals, diversity, and doorstep delivery.</p>
+      <ul class="hero-features">
+        <li><i class="fa fa-check-circle"></i> Trusted by 10K+ shoppers</li>
+        <li><i class="fa fa-shipping-fast"></i> Free & Fast Delivery</li>
+        <li><i class="fa fa-undo-alt"></i> Easy 7-Day Returns</li>
+        <li><i class="fa fa-lock"></i> 100% Secure Payments</li>
+      </ul>
+      <button class="primary-btn" (click)="router.navigate(['/products'])">Start Shopping</button>
+    </div>
+
+    <div class="hero-carousel">
+      <app-banner-carousel></app-banner-carousel>
+    </div>
   </div>
 </section>
+
+
+<!-- MAIN LAYOUT -->
+<main class="main-layout">
+  <!-- MAIN CONTENT -->
+  <section class="main-content">
+    <!-- SEARCH BAR -->
+    <app-searchbar></app-searchbar>
+    <!-- Under the search bar -->
+    <section class="section product-grid">
+      <h2>Trending Now</h2>
+      <div class="grid">
+        <div class="card product" *ngFor="let product of trendingProducts">
+          <img [src]="product.image" [alt]="product.name" />
+          <h4>{{ product.name }}</h4>
+          <p class="price">₹{{ product.price }}</p>
+          <button class="secondary-btn">Buy Now</button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- You can place featured products or banners here -->
+  </section>
+
+  <!-- CATEGORY SIDEBAR -->
+  <aside class="sidebar">
+    <app-category-sidebar (categorySelected)="onCategoryChange($event)"></app-category-sidebar>
+  </aside>
+</main>
 
 <!-- FEATURED CATEGORIES -->
 <section class="section categories">
@@ -18,8 +60,51 @@
   </div>
 </section>
 
-<!-- TOP DEALS -->
+<!-- WHY SHOPSHAKTI -->
+<section class="section benefits">
+  <h2>Why ShopShakti?</h2>
+  <div class="benefit-row">
+    <div class="benefit">
+      <i class="fa fa-truck"></i>
+      <h4>Free & Fast Delivery</h4>
+      <p>We deliver your products at lightning speed across India.</p>
+    </div>
+    <div class="benefit">
+      <i class="fa fa-rupee-sign"></i>
+      <h4>Best Price Guarantee</h4>
+      <p>We offer competitive pricing and exclusive deals.</p>
+    </div>
+    <div class="benefit">
+      <i class="fa fa-shield-alt"></i>
+      <h4>Secure Payment</h4>
+      <p>100% safe payments with trusted gateways.</p>
+    </div>
+  </div>
+</section>
 
+<!-- TOP DEALS -->
+<section class="section deals">
+  <h2>Top Deals Today</h2>
+  <div class="grid">
+    <div class="card product" *ngFor="let deal of topDeals">
+      <img [src]="deal.image" [alt]="deal.name" />
+      <h4>{{ deal.name }}</h4>
+      <p class="price">₹{{ deal.price }}</p>
+      <button class="secondary-btn">Buy Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- CUSTOMER REVIEWS -->
+<section class="section reviews">
+  <h2>What Our Customers Say</h2>
+  <div class="review-carousel">
+    <div class="review" *ngFor="let review of reviews">
+      <p>“{{ review.message }}”</p>
+      <h5>- {{ review.name }}</h5>
+    </div>
+  </div>
+</section>
 
 <!-- NEWSLETTER SUBSCRIPTION -->
 <section class="section newsletter">
