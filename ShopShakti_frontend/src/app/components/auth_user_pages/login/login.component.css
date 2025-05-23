@@ -1,0 +1,81 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  background-color: #f5f7fa;
+  min-height: 100vh;
+}
+
+.login-card {
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+input:focus {
+  border-color: #e91e63;
+  outline: none;
+}
+
+.error small {
+  color: #e53935;
+  font-size: 0.85rem;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-bottom: 15px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: #e91e63;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.primary-btn:hover {
+  background-color: #d81b60;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.95rem;
+}
