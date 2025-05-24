@@ -1,4 +1,4 @@
-# 🛍️ ShopShakti
+# 🛍️ ShopShakti {Work In Progress}
 
 Welcome to the **ShopShakti** project — a modern, responsive e-commerce web application built using Angular. This project showcases a clean, scalable, and modular frontend architecture tailored for optimal performance and UX.
 
