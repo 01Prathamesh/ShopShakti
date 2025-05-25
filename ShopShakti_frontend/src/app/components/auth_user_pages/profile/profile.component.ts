@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProfileService } from './profile.service';
 import { User } from './user.model';
 
 @Component({
@@ -7,17 +8,28 @@ import { User } from './user.model';
   selector: 'app-profile',
   imports: [CommonModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent {
-  user: User = {
-    name: 'Ravi Kumar',
-    email: 'ravi.kumar@example.com',
-    phone: '+91 9876543210',
-    address: '123, MG Road, Bengaluru, India',
-    joinedDate: '2023-02-15',
-    profileImage: 'assets/images/logo.png' // Make sure this image exists
-  };
+export class ProfileComponent implements OnInit {
+  user: User | null = null;
+  loading = true;
+  error: string | null = null;
+
+  constructor(private profileService: ProfileService) {}
+
+  ngOnInit() {
+    this.profileService.getUserProfile().subscribe({
+      next: (data) => {
+        this.user = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading profile:', err);
+        this.error = 'Failed to load user profile';
+        this.loading = false;
+      }
+    });
+  }
 
   editProfile() {
     alert('Edit profile functionality coming soon!');
