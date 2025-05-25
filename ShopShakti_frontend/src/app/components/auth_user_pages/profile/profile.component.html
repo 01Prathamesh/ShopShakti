@@ -1,25 +1,25 @@
 <section class="profile-container">
   <div class="profile-card">
     <div class="profile-header">
-      <img [src]="user.profileImage" alt="{{ user.name }}" class="profile-image" />
+      <img [src]="user!.profileImage" alt="{{ user!.name }}" class="profile-image" />
       <div>
-        <h2>{{ user.name }}</h2>
-        <p class="joined">Joined on {{ user.joinedDate }}</p>
+        <h2>{{ user!.name }}</h2>
+        <p class="joined">Joined on {{ user!.joinedDate }}</p>
       </div>
     </div>
 
     <div class="profile-details">
       <div class="detail">
         <label>Email</label>
-        <p>{{ user.email }}</p>
+        <p>{{ user!.email }}</p>
       </div>
       <div class="detail">
         <label>Phone</label>
-        <p>{{ user.phone }}</p>
+        <p>{{ user!.phone }}</p>
       </div>
       <div class="detail">
         <label>Address</label>
-        <p>{{ user.address }}</p>
+        <p>{{ user!.address }}</p>
       </div>
     </div>
 
