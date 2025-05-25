@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartItem } from './cart-item.model';
+import { CartService } from './cart.service';
 
 @Component({
   standalone: true,
@@ -10,11 +11,18 @@ import { CartItem } from './cart-item.model';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
-export class CartComponent {
-  cartItems: CartItem[] = [
-    { id: 1, name: 'Product A', price: 29.99, quantity: 2, imageUrl: 'https://via.placeholder.com/100' },
-    { id: 2, name: 'Product B', price: 49.99, quantity: 1, imageUrl: 'https://via.placeholder.com/100' }
-  ];
+export class CartComponent implements OnInit {
+  cartItems: CartItem[] = [];
+
+  constructor(private cartService: CartService) {}
+
+  ngOnInit() {
+    this.loadCartItems();
+  }
+
+  loadCartItems() {
+    this.cartService.getCartItems().subscribe(items => this.cartItems = items);
+  }
 
   getTotal(): number {
     return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -24,10 +32,20 @@ export class CartComponent {
     item.quantity += change;
     if (item.quantity <= 0) {
       this.removeItem(item.id);
+    } else {
+      // Update item quantity in backend
+      this.cartService.updateCartItem(item).subscribe({
+        next: () => this.loadCartItems(),
+        error: err => console.error('Error updating item:', err)
+      });
     }
   }
 
   removeItem(id: number): void {
-    this.cartItems = this.cartItems.filter(item => item.id !== id);
+    // Remove item in backend
+    this.cartService.removeCartItem(id).subscribe({
+      next: () => this.loadCartItems(),
+      error: err => console.error('Error removing item:', err)
+    });
   }
 }
