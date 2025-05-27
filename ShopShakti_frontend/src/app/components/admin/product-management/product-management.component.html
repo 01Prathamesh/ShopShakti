@@ -1,1 +1,66 @@
-<p>product-management works!</p>
+<div class="product-management">
+  <h2>Manage Products</h2>
+
+  <button (click)="addProduct()">Add New Product</button>
+
+  <div *ngIf="isLoading">Loading products...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <table *ngIf="products.length > 0 && !isLoading" border="1" cellpadding="8" cellspacing="0" width="100%">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price (₹)</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>
+          <img [src]="product.imageUrl" alt="{{ product.name }}" width="60" height="60" />
+        </td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.description }}</td>
+        <td>
+          <button (click)="editProduct(product)">Edit</button>
+          <button (click)="deleteProduct(product.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!isLoading && products.length === 0">No products found.</div>
+
+  <div *ngIf="editingProduct !== null || (formModel && !editingProduct)" class="product-form">
+    <h3>{{ editingProduct ? 'Edit Product' : 'Add Product' }}</h3>
+    <form (ngSubmit)="saveProduct()">
+      <label>
+        Name:
+        <input type="text" [(ngModel)]="formModel.name" name="name" required />
+      </label><br />
+      <label>
+        Price:
+        <input type="number" [(ngModel)]="formModel.price" name="price" min="0" required />
+      </label><br />
+      <label>
+        Category:
+        <input type="text" [(ngModel)]="formModel.category" name="category" required />
+      </label><br />
+      <label>
+        Description:
+        <textarea [(ngModel)]="formModel.description" name="description"></textarea>
+      </label><br />
+      <label>
+        Image URL:
+        <input type="url" [(ngModel)]="formModel.imageUrl" name="imageUrl" />
+      </label><br />
+      <button type="submit">{{ editingProduct ? 'Update' : 'Add' }}</button>
+      <button type="button" (click)="cancelEdit()">Cancel</button>
+    </form>
+  </div>
+</div>

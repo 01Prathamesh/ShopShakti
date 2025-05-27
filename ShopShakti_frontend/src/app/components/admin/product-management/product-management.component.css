@@ -1,0 +1,176 @@
+.product-management {
+  margin: 2rem auto;
+  max-width: 1200px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+h2 {
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+  background-color: #007bff;
+  color: #fff;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Error Message */
+.error {
+  color: #d9534f;
+  background-color: #fcebea;
+  border: 1px solid #f5c6cb;
+  padding: 10px 16px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  max-width: 600px;
+}
+
+/* Product Form */
+.product-form {
+  background: #fff;
+  padding: 24px;
+  border-radius: 10px;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  margin-top: 2rem;
+}
+
+.product-form label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.product-form input,
+.product-form textarea {
+  width: 95%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  transition: border 0.3s;
+}
+
+.product-form input:focus,
+.product-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.product-form button {
+  margin-right: 8px;
+  padding: 10px 18px;
+}
+
+.product-form button[type='submit'] {
+  background-color: #28a745;
+}
+
+.product-form button[type='submit']:hover {
+  background-color: #218838;
+}
+
+.product-form button[type='button'] {
+  background-color: #6c757d;
+}
+
+.product-form button[type='button']:hover {
+  background-color: #5a6268;
+}
+
+/* Product Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+}
+
+thead {
+  background-color: #f7f7f7;
+}
+
+th,
+td {
+  padding: 14px 16px;
+  text-align: left;
+  border: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+th {
+  font-weight: 600;
+  color: #333;
+}
+
+td img {
+  max-width: 60px;
+  max-height: 60px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+/* Action Buttons in Table */
+td button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+}
+
+td button:nth-child(1) {
+  background-color: #ffc107;
+}
+
+td button:nth-child(1):hover {
+  background-color: #e0a800;
+}
+
+td button:nth-child(2) {
+  background-color: #dc3545;
+}
+
+td button:nth-child(2):hover {
+  background-color: #bd2130;
+}
+
+/* Hover Row */
+tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .product-management {
+    padding: 1rem;
+  }
+
+  table,
+  .product-form {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  th,
+  td {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+}

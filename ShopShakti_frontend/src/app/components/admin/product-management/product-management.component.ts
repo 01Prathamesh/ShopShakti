@@ -1,13 +1,95 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ProductService } from '../../../services/product.service';
+import { Product } from '../../../models/product.model';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-product-management',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './product-management.component.html',
-  styleUrl: './product-management.component.css'
+  styleUrls: ['./product-management.component.css']
 })
-export class ProductManagementComponent {
+export class ProductManagementComponent implements OnInit {
+  products: Product[] = [];
+  isLoading = false;
+  errorMessage = '';
 
+  // For add/edit form
+  editingProduct: Product | null = null;
+  formModel: Product = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+
+  constructor(private productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  loadProducts() {
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.productService.getAllProducts().subscribe({
+      next: (data) => {
+        this.products = data;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to load products.';
+        this.isLoading = false;
+      }
+    });
+  }
+
+  addProduct() {
+    this.editingProduct = null;
+    this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+  }
+
+  editProduct(product: Product) {
+    this.editingProduct = product;
+    this.formModel = { ...product };
+  }
+
+  saveProduct() {
+    if (this.editingProduct) {
+      // Update product
+      this.productService.updateProduct(this.editingProduct.id, this.formModel).subscribe({
+        next: () => {
+          this.loadProducts();
+          this.editingProduct = null;
+        },
+        error: () => {
+          this.errorMessage = 'Failed to update product.';
+        }
+      });
+    } else {
+      // Add new product
+      this.productService.addProduct(this.formModel).subscribe({
+        next: () => {
+          this.loadProducts();
+          this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+        },
+        error: () => {
+          this.errorMessage = 'Failed to add product.';
+        }
+      });
+    }
+  }
+
+  cancelEdit() {
+    this.editingProduct = null;
+    this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+  }
+
+  deleteProduct(id: number) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(id).subscribe({
+        next: () => this.loadProducts(),
+        error: () => {
+          this.errorMessage = 'Failed to delete product.';
+        }
+      });
+    }
+  }
 }
