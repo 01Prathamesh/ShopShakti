@@ -9,6 +9,7 @@
   <table *ngIf="products.length > 0 && !isLoading" border="1" cellpadding="8" cellspacing="0" width="100%">
     <thead>
       <tr>
+        <th>Product ID</th>
         <th>Image</th>
         <th>Name</th>
         <th>Price (₹)</th>
@@ -19,6 +20,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let product of products">
+        <td>{{ product.id}}</td>
         <td>
           <img [src]="product.imageUrl" alt="{{ product.name }}" width="60" height="60" />
         </td>
@@ -36,7 +38,7 @@
 
   <div *ngIf="!isLoading && products.length === 0">No products found.</div>
 
-  <div *ngIf="editingProduct !== null || (formModel && !editingProduct)" class="product-form">
+  <div *ngIf="showForm" class="product-form">
     <h3>{{ editingProduct ? 'Edit Product' : 'Add Product' }}</h3>
     <form (ngSubmit)="saveProduct()">
       <label>

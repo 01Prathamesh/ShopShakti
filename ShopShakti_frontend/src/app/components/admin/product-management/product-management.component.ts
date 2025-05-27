@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
 export class ProductManagementComponent implements OnInit {
   products: Product[] = [];
   isLoading = false;
+  showForm: boolean = false;
   errorMessage = '';
 
   // For add/edit form
@@ -44,11 +45,13 @@ export class ProductManagementComponent implements OnInit {
   addProduct() {
     this.editingProduct = null;
     this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+    this.showForm = true;
   }
 
   editProduct(product: Product) {
     this.editingProduct = product;
     this.formModel = { ...product };
+    this.showForm = true;
   }
 
   saveProduct() {
@@ -80,6 +83,7 @@ export class ProductManagementComponent implements OnInit {
   cancelEdit() {
     this.editingProduct = null;
     this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+    this.showForm = false;
   }
 
   deleteProduct(id: number) {
