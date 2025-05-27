@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartItem } from '../../../models/cart-item.model';
-import { CartService } from './cart.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   standalone: true,

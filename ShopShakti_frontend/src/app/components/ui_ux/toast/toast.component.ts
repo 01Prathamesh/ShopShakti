@@ -1,6 +1,6 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService } from './toast.service';
+import { ToastService } from '../../../services/toast.service';
 
 interface Toast {
   id: number;

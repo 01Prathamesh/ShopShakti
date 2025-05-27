@@ -3,7 +3,7 @@ import { HomepageComponent } from './components/core_pages/homepage/homepage.com
 import { NavbarComponent } from './components/ui_ux/navbar/navbar.component';
 import { FooterComponent } from './components/ui_ux/footer/footer.component';
 import { ToastComponent } from './components/ui_ux/toast/toast.component';
-import { ToastService } from './components/ui_ux/toast/toast.service';
+import { ToastService } from './services/toast.service';
 import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
