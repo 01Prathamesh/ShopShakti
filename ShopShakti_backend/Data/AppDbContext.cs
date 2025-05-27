@@ -19,7 +19,5 @@ namespace ShopShakti_backend.Data
         // DbSet for Orders
         public DbSet<Order> Orders { get; set; }
 
-        // DbSet for OrderItems (to manage line items within an order)
-        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
