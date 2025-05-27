@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CartItem } from './cart-item.model';
+import { CartItem } from '../../../models/cart-item.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from './profile.service';
-import { User } from './user.model';
+import { User } from '../../../models/user.model';
 
 @Component({
   standalone: true,
