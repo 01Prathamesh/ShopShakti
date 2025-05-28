@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
   selector: 'app-register',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -16,7 +17,7 @@ export class RegisterComponent {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -42,10 +43,27 @@ export class RegisterComponent {
 
     if (this.registerForm.invalid) return;
 
-    // Simulate backend registration success
-    console.log('Registered user:', this.registerForm.value);
-    this.successMessage = 'Registration successful!';
-    this.registerForm.reset();
-    this.isSubmitted = false;
+    const formValues = this.registerForm.value;
+
+    const newUser = {
+      name: formValues.name,
+      email: formValues.email,
+      phone: formValues.phone,
+      address: '',
+      joinedDate: new Date().toISOString(),
+      profileImage: '' // Default or user-uploaded image (implement later)
+    };
+
+    this.http.post('https://localhost:7171/api/users', newUser).subscribe({
+      next: (response) => {
+        this.successMessage = 'Registration successful!';
+        this.registerForm.reset();
+        this.isSubmitted = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Registration failed. Please try again.';
+        console.error('Registration error:', error);
+      }
+    });
   }
 }
