@@ -1,19 +1,28 @@
+/* Main container for profile */
 .profile-container {
   display: flex;
   justify-content: center;
   padding: 40px 20px;
   background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
+/* Profile card styling */
 .profile-card {
   background-color: #fff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
+  transition: transform 0.3s ease-in-out;
 }
 
+.profile-card:hover {
+  transform: scale(1.02);
+}
+
+/* Header section (image + user info) */
 .profile-header {
   display: flex;
   align-items: center;
@@ -22,64 +31,121 @@
 }
 
 .profile-image {
-  width: 90px;
-  height: 90px;
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid #e91e63;
+  transition: border 0.3s;
 }
 
+.profile-image:hover {
+  border-color: #d81b60;
+}
+
+/* User name and joined date styling */
 .profile-header h2 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 3rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .joined {
-  color: gray;
-  font-size: 0.9rem;
+  color: #777;
+  font-size: 0.95rem;
 }
 
+/* Profile details section */
 .profile-details {
   margin-bottom: 30px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
 }
 
 .detail {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .detail label {
   font-weight: 600;
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   color: #555;
+  font-size: 1.5rem;
 }
 
 .detail p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 1.3rem;
   color: #333;
+  padding: 5px 0;
 }
 
+/* Input styling for edit mode */
+.profile-details input {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 5px;
+  box-sizing: border-box;
+  transition: border 0.3s ease;
+}
+
+.profile-details input:focus {
+  border-color: #e91e63;
+  outline: none;
+}
+
+/* Button section (edit/save, cancel) */
 .actions {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.primary-btn, .secondary-btn {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s ease;
 }
 
 .primary-btn {
   background-color: #e91e63;
   color: white;
   border: none;
-  padding: 10px 25px;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 .primary-btn:hover {
   background-color: #d81b60;
+  transform: translateY(-2px);
 }
 
-@media (max-width: 600px) {
+.secondary-btn {
+  background-color: #f0f0f0;
+  color: #555;
+  border: 1px solid #ddd;
+}
+
+.secondary-btn:hover {
+  background-color: #e0e0e0;
+  transform: translateY(-2px);
+}
+
+/* Loading and error messages */
+.loading-indicator, .error-message {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #e91e63;
+  margin-top: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
   .profile-card {
     padding: 20px;
   }
@@ -88,5 +154,42 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+
+  .profile-header h2 {
+    font-size: 1.7rem;
+  }
+
+  .profile-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-details input {
+    padding: 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 15px;
+  }
+
+  .profile-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .profile-details input {
+    font-size: 0.9rem;
+  }
+
+  .primary-btn, .secondary-btn {
+    width: 100%;
+    padding: 12px;
   }
 }

@@ -8,6 +8,15 @@
         class="profile-image" 
         [attr.aria-label]="'Profile image of ' + user.name"
       />
+      <!-- Add Profile Image Upload -->
+      <div *ngIf="isEditing">
+        <label for="profileImage">Change Profile Image:</label>
+        <input type="file" id="profileImage" (change)="onImageSelected($event)" />
+        <div *ngIf="previewImage">
+          <p>Image Preview:</p>
+          <img [src]="previewImage" alt="Profile image preview" width="100" height="100" />
+        </div>
+      </div>
       <div>
         <h2>{{ user.name }}</h2>
         <p class="joined">Joined on {{ user.joinedDate | date: 'mediumDate' }}</p>
@@ -16,23 +25,54 @@
 
     <section class="profile-details" aria-labelledby="profile-details-heading">
       <h3 id="profile-details-heading" class="visually-hidden">User Details</h3>
-      <div class="detail">
-        <label>Email:</label>
-        <p>{{ user.email }}</p>
+      
+      <div *ngIf="!isEditing">
+        <div class="detail">
+          <label>Name:</label>
+          <p>{{ user.name }}</p>
+        </div>
+        <div class="detail">
+          <label>Email:</label>
+          <p>{{ user.email }}</p>
+        </div>
+        <div class="detail">
+          <label>Phone:</label>
+          <p>{{ user.phone || 'Not provided' }}</p>
+        </div>
+        <div class="detail">
+          <label>Address:</label>
+          <p>{{ user.address || 'Not provided' }}</p>
+        </div>
       </div>
-      <div class="detail">
-        <label>Phone:</label>
-        <p>{{ user.phone || 'Not provided' }}</p>
-      </div>
-      <div class="detail">
-        <label>Address:</label>
-        <p>{{ user.address || 'Not provided' }}</p>
+
+      <!-- Edit Profile Form -->
+      <div *ngIf="isEditing">
+        <div class="detail">
+          <label for="editEmail">Name:</label>
+          <input id="editName" [(ngModel)]="user.name" type="name">
+        </div>
+        <div class="detail">
+          <label for="editEmail">Email:</label>
+          <input id="editEmail" [(ngModel)]="user.email" type="email">
+        </div>
+        <div class="detail">
+          <label for="editPhone">Phone:</label>
+          <input id="editPhone" [(ngModel)]="user.phone" type="text">
+        </div>
+        <div class="detail">
+          <label for="editAddress">Address:</label>
+          <input id="editAddress" [(ngModel)]="user.address" type="text">
+        </div>
       </div>
     </section>
 
     <div class="actions">
-      <button class="primary-btn" (click)="editProfile()" aria-label="Edit Profile">
-        Edit Profile
+      <button class="primary-btn" (click)="toggleEdit()" aria-label="Save or Edit Profile">
+        {{ isEditing ? 'Save Changes' : 'Edit Profile' }}
+      </button>
+      <!-- Cancel Button (only visible when editing) -->
+      <button *ngIf="isEditing" class="secondary-btn" (click)="cancelEdit()" aria-label="Cancel Edit">
+        Cancel
       </button>
     </div>
 
