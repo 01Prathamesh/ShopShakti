@@ -12,7 +12,7 @@ using ShopShakti_backend.Data;
 namespace ShopShakti_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250527062906_InitialDb")]
+    [Migration("20250528075958_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -131,6 +131,10 @@ namespace ShopShakti_backend.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

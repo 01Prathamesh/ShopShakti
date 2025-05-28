@@ -9,5 +9,6 @@ namespace ShopShakti_backend.Models
         public string Address { get; set; }
         public DateTime JoinedDate { get; set; }
         public string ProfileImage { get; set; }
+        public string Password { get; set; }
     }
 }

@@ -51,7 +51,8 @@ export class RegisterComponent {
       phone: formValues.phone,
       address: '',
       joinedDate: new Date().toISOString(),
-      profileImage: '' // Default or user-uploaded image (implement later)
+      profileImage: '',
+      password: formValues.password  // <-- Add this field
     };
 
     this.http.post('https://localhost:7171/api/users', newUser).subscribe({
@@ -61,8 +62,18 @@ export class RegisterComponent {
         this.isSubmitted = false;
       },
       error: (error) => {
-        this.errorMessage = 'Registration failed. Please try again.';
         console.error('Registration error:', error);
+        // Display detailed validation errors if available
+        if (error.error && error.error.errors) {
+          this.errorMessage = '';
+          for (const key in error.error.errors) {
+            if (error.error.errors.hasOwnProperty(key)) {
+              this.errorMessage += `${key}: ${error.error.errors[key].join(', ')}\n`;
+            }
+          }
+        } else {
+          this.errorMessage = 'Registration failed. Please try again.';
+        }
       }
     });
   }

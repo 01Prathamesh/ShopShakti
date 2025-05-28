@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @Component({
   standalone: true,
   selector: 'app-login',
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, HttpClientModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -15,7 +16,7 @@ export class LoginComponent {
   isSubmitted = false;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -34,11 +35,22 @@ export class LoginComponent {
 
     const { email, password } = this.loginForm.value;
 
-    // Simulate login - Replace with actual auth API
-    if (email === 'demo@example.com' && password === 'password123') {
-      alert('Login successful!');
-    } else {
-      this.errorMessage = 'Invalid email or password.';
-    }
+    this.http.post<any>('https://localhost:7171/api/users/login', { email, password }).subscribe({
+      next: (response) => {
+        // You might store a JWT token or user ID
+        localStorage.setItem('user', JSON.stringify(response));
+
+        // Navigate to homepage or dashboard
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        if (error.status === 401) {
+          this.errorMessage = 'Invalid email or password.';
+        } else {
+          this.errorMessage = 'Login failed. Please try again later.';
+        }
+        console.error('Login error:', error);
+      }
+    });
   }
 }

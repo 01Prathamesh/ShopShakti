@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
@@ -71,5 +72,22 @@ namespace ShopShakti_backend.Controllers
 
             return NoContent();
         }
+
+        // POST: api/users/login
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
+                return BadRequest(new { message = "Email and password are required." });
+
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == loginRequest.Email && u.Password == loginRequest.Password);
+
+            if (user == null)
+                return Unauthorized(new { message = "Invalid email or password." });
+
+            return Ok(user); // Return user details; later you can return JWT token instead
+        }
+
     }
 }
