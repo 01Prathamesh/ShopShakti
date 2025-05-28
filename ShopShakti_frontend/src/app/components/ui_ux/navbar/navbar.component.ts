@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -14,6 +14,14 @@ export class NavbarComponent implements OnInit {
   isMobileMenuOpen = false;
   cartCount = 0;
   isAuthDropdownOpen: boolean = false;
+  userName: string = '';
+
+  constructor(private router: Router) {
+    // Update login status when navigating
+    this.router.events.subscribe(() => {
+      this.checkLoginStatus();
+    });
+  }
 
   ngOnInit(): void {
     this.checkLoginStatus();
@@ -21,7 +29,9 @@ export class NavbarComponent implements OnInit {
   }
 
   toggleAuthDropdown() {
-    this.isAuthDropdownOpen = !this.isAuthDropdownOpen;
+    setTimeout(() => {
+      this.isAuthDropdownOpen = !this.isAuthDropdownOpen;
+    }, 50);
   }
 
   // Toggle mobile menu for small screens
@@ -36,15 +46,25 @@ export class NavbarComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('token'); // if you're simulating token-based auth
     this.isLoggedIn = false;
+    this.userName = '';
     this.cartCount = 0;
-    // Optional: redirect to home
+    this.router.navigate(['/']);
   }
 
   // Helper methods
   private checkLoginStatus(): void {
-    this.isLoggedIn = !!localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    try {
+      const user = userData ? JSON.parse(userData) : null;
+      this.isLoggedIn = !!user;
+      this.userName = user?.name || '';
+    } catch {
+      this.isLoggedIn = false;
+      this.userName = '';
+    }
   }
 
   private loadCartCount(): void {

@@ -1,15 +1,23 @@
 <nav class="navbar">
   <div class="navbar-container">
+
+    <!-- LOGO -->
     <a routerLink="/" class="logo">
       <img src="assets/images/company/shop_logo_name.png" alt="ShopShakti Logo" />
     </a>
 
+    <!-- MOBILE TOGGLE -->
     <button class="mobile-toggle" (click)="toggleMobileMenu()">☰</button>
 
+    <!-- NAV LINKS -->
     <ul class="nav-links" [class.active]="isMobileMenuOpen">
-      <li><a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
 
-      <!-- Category Mega Dropdown -->
+      <!-- HOME -->
+      <li>
+        <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+
+      <!-- SHOP BY CATEGORY -->
       <li class="dropdown">
         <a class="dropdown-toggle">Shop by Category ▾</a>
         <div class="mega-menu">
@@ -28,38 +36,31 @@
         </div>
       </li>
 
-      <li *ngIf="isLoggedIn"><a routerLink="/cart" class="cart-icon" routerLinkActive="active-link"><i class="fas fa-shopping-cart"></i><span class="cart-badge">2</span></a></li>
-      <!-- AUTH Section -->
-      <li class="auth-dropdown" *ngIf="isLoggedIn; else loginBlock">
-        <a class="profile-icon">
-          <i class="fas fa-user-circle"></i>
+      <!-- CART -->
+      <li *ngIf="isLoggedIn">
+        <a routerLink="/cart" class="cart-icon" routerLinkActive="active-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-badge">{{ cartCount }}</span>
         </a>
-        <ul class="auth-menu">
-          <a routerLink="/profile">My Profile</a>
-          <a routerLink="/orders">My Orders</a>
-          <a (click)="logout()">Logout</a>
-        </ul>
       </li>
 
-      <!-- SHOW LOGIN / REGISTER if NOT LOGGED IN -->
-      <ng-template #loginBlock>
-        <li class="auth-dropdown">
-          <a class="profile-icon"><i class="fas fa-user"></i></a>
-          <ul class="auth-menu">
+      <!-- USER AUTH MENU -->
+      <li class="auth-dropdown">
+        <a class="profile-icon dropdown-toggle" (click)="toggleAuthDropdown()">
+          <i class="fas fa-user-circle"></i>
+          {{ isLoggedIn ? (userName || 'Account') : 'Account' }} ▾
+        </a>
+        <ul class="auth-menu" *ngIf="isAuthDropdownOpen">
+          <ng-container *ngIf="isLoggedIn; else guestLinks">
+            <a routerLink="/profile">My Profile</a>
+            <a routerLink="/orders">My Orders</a>
+            <a (click)="logout()">Logout</a>
+          </ng-container>
+          <ng-template #guestLinks>
             <a routerLink="/login">Login</a>
             <a routerLink="/register">Register</a>
-          </ul>
-        </li>
-      </ng-template>
-
-      <!-- Login/Register Dropdown -->
-      <li class="dropdown auth-dropdown" (click)="toggleAuthDropdown()">
-        <a class="dropdown-toggle">Account ▾</a>
-        <div class="auth-menu" *ngIf="isAuthDropdownOpen">
-          <a (click)="login()">Login</a>
-          <a routerLink="/register">Register</a>
-          <a *ngIf="isLoggedIn" (click)="logout()">Logout</a>
-        </div>
+          </ng-template>
+        </ul>
       </li>
     </ul>
   </div>
