@@ -1,30 +1,54 @@
-<section class="profile-container">
-  <div class="profile-card">
-    <div class="profile-header">
-      <img [src]="user!.profileImage" alt="{{ user!.name }}" class="profile-image" />
+<section class="profile-container" *ngIf="!loading; else loadingTemplate">
+  <div class="profile-card" *ngIf="user; else errorTemplate">
+    
+    <header class="profile-header" role="banner">
+      <img 
+        [src]="user.profileImage || 'assets/images/default-profile.png'" 
+        alt="{{ user.name }}" 
+        class="profile-image" 
+        [attr.aria-label]="'Profile image of ' + user.name"
+      />
       <div>
-        <h2>{{ user!.name }}</h2>
-        <p class="joined">Joined on {{ user!.joinedDate }}</p>
+        <h2>{{ user.name }}</h2>
+        <p class="joined">Joined on {{ user.joinedDate | date: 'mediumDate' }}</p>
       </div>
-    </div>
+    </header>
 
-    <div class="profile-details">
+    <section class="profile-details" aria-labelledby="profile-details-heading">
+      <h3 id="profile-details-heading" class="visually-hidden">User Details</h3>
       <div class="detail">
-        <label>Email</label>
-        <p>{{ user!.email }}</p>
+        <label>Email:</label>
+        <p>{{ user.email }}</p>
       </div>
       <div class="detail">
-        <label>Phone</label>
-        <p>{{ user!.phone }}</p>
+        <label>Phone:</label>
+        <p>{{ user.phone || 'Not provided' }}</p>
       </div>
       <div class="detail">
-        <label>Address</label>
-        <p>{{ user!.address }}</p>
+        <label>Address:</label>
+        <p>{{ user.address || 'Not provided' }}</p>
       </div>
-    </div>
+    </section>
 
     <div class="actions">
-      <button class="primary-btn" (click)="editProfile()">Edit Profile</button>
+      <button class="primary-btn" (click)="editProfile()" aria-label="Edit Profile">
+        Edit Profile
+      </button>
     </div>
+
   </div>
 </section>
+
+<!-- Loading State -->
+<ng-template #loadingTemplate>
+  <div class="loading-indicator" role="status" aria-live="polite">
+    Loading user profile...
+  </div>
+</ng-template>
+
+<!-- Error State -->
+<ng-template #errorTemplate>
+  <div class="error-message" role="alert">
+    {{ error || 'Unable to load profile. Please try again later.' }}
+  </div>
+</ng-template>
