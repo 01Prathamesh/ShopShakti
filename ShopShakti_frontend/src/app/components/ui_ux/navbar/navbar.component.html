@@ -52,7 +52,7 @@
         </a>
         <ul class="auth-menu" *ngIf="isAuthDropdownOpen">
           <ng-container *ngIf="isLoggedIn; else guestLinks">
-            <a routerLink="/profile">My Profile</a>
+            <a *ngIf="user?.id" [routerLink]="['/profile', user.id]">My Profile</a>
             <a routerLink="/orders">My Orders</a>
             <a (click)="logout()">Logout</a>
           </ng-container>

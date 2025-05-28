@@ -15,6 +15,7 @@ export class NavbarComponent implements OnInit {
   cartCount = 0;
   isAuthDropdownOpen: boolean = false;
   userName: string = '';
+  user: any = null;
 
   constructor(private router: Router) {
     // Update login status when navigating
@@ -58,12 +59,13 @@ export class NavbarComponent implements OnInit {
   private checkLoginStatus(): void {
     const userData = localStorage.getItem('user');
     try {
-      const user = userData ? JSON.parse(userData) : null;
-      this.isLoggedIn = !!user;
-      this.userName = user?.name || '';
+      this.user = userData ? JSON.parse(userData) : null;
+      this.isLoggedIn = !!this.user;
+      this.userName = this.user?.name || '';
     } catch {
       this.isLoggedIn = false;
       this.userName = '';
+      this.user = null;
     }
   }
 
