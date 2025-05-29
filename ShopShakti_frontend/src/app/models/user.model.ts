@@ -6,4 +6,5 @@ export interface User {
   address: string;
   joinedDate: string;
   profileImage: string;
+  isBlocked: boolean; 
 }

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../../../services/profile.service';
 import { User } from '../../../models/user.model';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -70,5 +70,25 @@ export class UserManagementComponent implements OnInit {
           this.errorMessage = 'Failed to delete user.';
         });
     }
+  }
+
+  toggleBlockUser(user: User): void {
+    const updatedUser = { ...user, isBlocked: !user.isBlocked };
+
+    fetch(`https://localhost:7171/api/Users/${user.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedUser),
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to update block status');
+        }
+        this.loadUsers();
+      })
+      .catch(err => {
+        console.error(err);
+        this.errorMessage = 'Failed to update user status.';
+      });
   }
 }

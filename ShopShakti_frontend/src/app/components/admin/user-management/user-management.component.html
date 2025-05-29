@@ -35,6 +35,13 @@
       <div>
         <button class="btn edit">Edit</button>
         <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
+        <!-- Toggle based on user.isBlocked -->
+        <button
+          class="btn block"
+          [ngClass]="{ 'blocked': user.isBlocked }"
+          (click)="toggleBlockUser(user)">
+          {{ user.isBlocked ? 'Unblock' : 'Block' }}
+        </button>
       </div>
     </div>
   </div>

@@ -72,11 +72,12 @@
   cursor: pointer;
   font-size: 0.9rem;
   font-weight: 600;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
   color: #fff;
   margin-right: 6px;
 }
 
+/* Edit Button */
 .btn.edit {
   background-color: #17a2b8;
 }
@@ -85,12 +86,33 @@
   background-color: #138496;
 }
 
+/* Delete Button */
 .btn.delete {
   background-color: #dc3545;
 }
 
 .btn.delete:hover {
   background-color: #bd2130;
+}
+
+/* Block / Unblock Button */
+.btn.block {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.btn.block:hover {
+  background-color: #e0a800;
+}
+
+/* If already blocked, show a different tone */
+.btn.block.blocked {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn.block.blocked:hover {
+  background-color: #5a6268;
 }
 
 .error {

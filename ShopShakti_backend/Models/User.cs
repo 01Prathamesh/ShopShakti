@@ -10,5 +10,6 @@ namespace ShopShakti_backend.Models
         public DateTime JoinedDate { get; set; }
         public string ProfileImage { get; set; }
         public string Password { get; set; }
+        public bool IsBlocked { get; set; } = false;
     }
 }
