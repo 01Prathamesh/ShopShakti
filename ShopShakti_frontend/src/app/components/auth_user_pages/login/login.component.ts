@@ -37,15 +37,14 @@ export class LoginComponent {
 
     this.http.post<any>('https://localhost:7171/api/users/login', { email, password }).subscribe({
       next: (response) => {
-        // You might store a JWT token or user ID
         localStorage.setItem('user', JSON.stringify(response));
-
-        // Navigate to homepage or dashboard
         this.router.navigate(['/']);
       },
       error: (error) => {
         if (error.status === 401) {
           this.errorMessage = 'Invalid email or password.';
+        } else if (error.status === 403) {
+          this.errorMessage = error.error.message || 'You are blocked by admin.';
         } else {
           this.errorMessage = 'Login failed. Please try again later.';
         }

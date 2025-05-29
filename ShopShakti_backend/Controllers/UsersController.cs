@@ -94,8 +94,14 @@ namespace ShopShakti_backend.Controllers
             if (user == null)
                 return Unauthorized(new { message = "Invalid email or password." });
 
-            return Ok(user); // Return user details; later you can return JWT token instead
+            if (user.IsBlocked)
+            {
+                return StatusCode(403, new { message = "User is blocked by admin." });
+            }
+
+            return Ok(user);
         }
+
 
     }
 }
