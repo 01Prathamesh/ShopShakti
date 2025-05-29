@@ -102,6 +102,21 @@ namespace ShopShakti_backend.Controllers
             return Ok(user);
         }
 
+        // DELETE: api/users/1
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound(new { message = "User not found" });
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
     }
 }

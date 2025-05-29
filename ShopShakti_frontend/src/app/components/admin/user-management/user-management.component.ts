@@ -18,11 +18,43 @@ export class UserManagementComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   expandedUserId: string | null = null;
+  editingUserId: string | null = null;
+  editForm: Partial<User> = {};
 
 
   toggleDropdown(userId: string) {
-    this.expandedUserId = this.expandedUserId === userId ? null : userId;
+    if (this.expandedUserId === userId) {
+      this.expandedUserId = null;
+      this.editingUserId = null;
+    } else {
+      this.expandedUserId = userId;
+      this.editingUserId = null;
+    }
   }
+  startEditing(user: User): void {
+    this.editingUserId = user.id;
+    this.editForm = { ...user }; // clone user data into form
+  }
+  saveUser(): void {
+    if (!this.editingUserId) return;
+
+    fetch(`https://localhost:7171/api/Users/${this.editingUserId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.editForm),
+    })
+      .then(res => {
+        if (!res.ok) throw new Error('Update failed');
+        this.loadUsers(); // reload user list
+        this.editingUserId = null;
+      })
+      .catch(err => {
+        console.error('Edit error:', err);
+        this.errorMessage = 'Failed to update user.';
+      });
+  }
+
+
 
 
   constructor(private profileService: ProfileService) {}
@@ -60,6 +92,12 @@ export class UserManagementComponent implements OnInit {
       user.name.toLowerCase().includes(query) ||
       user.email.toLowerCase().includes(query)
     );
+  }
+
+  editUser(user: User): void {
+    console.log('Editing user:', user);
+    // In a real app, you'd open a modal or navigate to an edit page
+    alert(`Edit user: ${user.name}`);
   }
 
   deleteUser(id: string): void {

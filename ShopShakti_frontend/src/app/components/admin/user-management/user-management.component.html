@@ -47,7 +47,7 @@
         *ngIf="expandedUserId === user.id"
       >
         <div class="dropdown-content">
-          <button class="btn edit">Edit</button>
+          <button class="btn edit" (click)="startEditing(user)">Edit</button>
           <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
           <button
             class="btn block"
@@ -58,6 +58,19 @@
           </button>
         </div>
       </div>
+      <!-- Edit Form Row -->
+      <div *ngIf="editingUserId === user.id" class="edit-form-row">
+        <div class="edit-form">
+          <input [(ngModel)]="editForm.name" placeholder="Name" />
+          <input [(ngModel)]="editForm.email" placeholder="Email" />
+          <input [(ngModel)]="editForm.phone" placeholder="Phone" />
+          <input [(ngModel)]="editForm.address" placeholder="Address" />
+
+          <button class="btn save" (click)="saveUser()">Save</button>
+          <button class="btn cancel" (click)="editingUserId = null">Cancel</button>
+        </div>
+      </div>
+
     </div>
 
   </div>
