@@ -15,6 +15,8 @@ export class UserManagementComponent implements OnInit {
   users: User[] = [];
   filteredUsers: User[] = [];
   searchQuery = '';
+  isLoading = false;
+  errorMessage = '';
 
   constructor(private profileService: ProfileService) {}
 
@@ -23,30 +25,50 @@ export class UserManagementComponent implements OnInit {
   }
 
   loadUsers(): void {
-    // Simulate fetching all users (needs a backend GET /api/Users)
+    this.isLoading = true;
+    this.errorMessage = '';
+
     fetch('https://localhost:7171/api/Users')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        return res.json();
+      })
       .then((data: User[]) => {
         this.users = data;
         this.filteredUsers = data;
+        this.isLoading = false;
+      })
+      .catch(err => {
+        console.error(err);
+        this.errorMessage = 'Failed to load users.';
+        this.isLoading = false;
       });
   }
 
   onSearch(): void {
     const query = this.searchQuery.toLowerCase();
     this.filteredUsers = this.users.filter(user =>
-      user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query)
+      user.name.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query)
     );
   }
 
   deleteUser(id: string): void {
     if (confirm('Are you sure you want to delete this user?')) {
       fetch(`https://localhost:7171/api/Users/${id}`, { method: 'DELETE' })
-        .then(() => {
+        .then(res => {
+          if (!res.ok) {
+            throw new Error('Delete failed');
+          }
           this.users = this.users.filter(u => u.id !== id);
           this.filteredUsers = this.filteredUsers.filter(u => u.id !== id);
         })
-        .catch(err => console.error('Delete failed', err));
+        .catch(err => {
+          console.error(err);
+          this.errorMessage = 'Failed to delete user.';
+        });
     }
   }
 }

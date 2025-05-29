@@ -8,9 +8,13 @@
     class="search-input"
   />
 
-  <div class="user-table">
+  <!-- Loading and Error Messages -->
+  <div *ngIf="isLoading">Loading users...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div class="user-table" *ngIf="!isLoading && filteredUsers.length > 0">
     <div class="table-header">
-        <span>ID</span>
+      <span>ID</span>
       <span>Profile</span>
       <span>Name</span>
       <span>Email</span>
@@ -21,7 +25,7 @@
     </div>
 
     <div class="table-row" *ngFor="let user of filteredUsers">
-        <span>{{ user.id }}</span>
+      <span>{{ user.id }}</span>
       <img [src]="user.profileImage" alt="Profile" class="avatar" />
       <span>{{ user.name }}</span>
       <span>{{ user.email }}</span>
@@ -33,5 +37,10 @@
         <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
       </div>
     </div>
+  </div>
+
+  <!-- No users message -->
+  <div *ngIf="!isLoading && filteredUsers.length === 0 && !errorMessage">
+    No users found.
   </div>
 </div>
