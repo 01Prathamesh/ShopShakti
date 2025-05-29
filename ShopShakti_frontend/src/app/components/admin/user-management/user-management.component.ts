@@ -17,6 +17,13 @@ export class UserManagementComponent implements OnInit {
   searchQuery = '';
   isLoading = false;
   errorMessage = '';
+  expandedUserId: string | null = null;
+
+
+  toggleDropdown(userId: string) {
+    this.expandedUserId = this.expandedUserId === userId ? null : userId;
+  }
+
 
   constructor(private profileService: ProfileService) {}
 

@@ -24,26 +24,42 @@
       <span>Actions</span>
     </div>
 
-    <div class="table-row" *ngFor="let user of filteredUsers">
-      <span>{{ user.id }}</span>
-      <img [src]="user.profileImage" alt="Profile" class="avatar" />
-      <span>{{ user.name }}</span>
-      <span>{{ user.email }}</span>
-      <span>{{ user.phone }}</span>
-      <span>{{ user.address }}</span>
-      <span>{{ user.joinedDate | date }}</span>
-      <div>
-        <button class="btn edit">Edit</button>
-        <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
-        <!-- Toggle based on user.isBlocked -->
-        <button
-          class="btn block"
-          [ngClass]="{ 'blocked': user.isBlocked }"
-          (click)="toggleBlockUser(user)">
-          {{ user.isBlocked ? 'Unblock' : 'Block' }}
-        </button>
+    <div *ngFor="let user of filteredUsers">
+      <!-- Main user row -->
+      <div class="table-row">
+        <span>{{ user.id }}</span>
+        <img [src]="user.profileImage" alt="Profile" class="avatar" />
+        <span>{{ user.name }}</span>
+        <span>{{ user.email }}</span>
+        <span>{{ user.phone }}</span>
+        <span>{{ user.address }}</span>
+        <span>{{ user.joinedDate | date }}</span>
+        <div>
+          <button class="btn edit" (click)="toggleDropdown(user.id)">
+            {{ expandedUserId === user.id ? 'Undo' : 'Modify' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Dropdown actions row -->
+      <div
+        class="dropdown-row"
+        *ngIf="expandedUserId === user.id"
+      >
+        <div class="dropdown-content">
+          <button class="btn edit">Edit</button>
+          <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
+          <button
+            class="btn block"
+            [ngClass]="{ blocked: user.isBlocked }"
+            (click)="toggleBlockUser(user)"
+          >
+            {{ user.isBlocked ? 'Unblock' : 'Block' }}
+          </button>
+        </div>
       </div>
     </div>
+
   </div>
 
   <!-- No users message -->
