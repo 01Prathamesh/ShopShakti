@@ -28,6 +28,14 @@ namespace ShopShakti_backend.Controllers
             return Ok(user);
         }
 
+        // GET: api/users
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+        {
+            var users = await _context.Users.ToListAsync();
+            return Ok(users);
+        }
+
         // POST: api/users
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)

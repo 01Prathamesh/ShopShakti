@@ -1,1 +1,37 @@
-<p>user-management works!</p>
+<div class="user-management">
+  <h1>User Management</h1>
+
+  <input
+    [(ngModel)]="searchQuery"
+    (input)="onSearch()"
+    placeholder="Search by name or email..."
+    class="search-input"
+  />
+
+  <div class="user-table">
+    <div class="table-header">
+        <span>ID</span>
+      <span>Profile</span>
+      <span>Name</span>
+      <span>Email</span>
+      <span>Phone</span>
+      <span>Address</span>
+      <span>Joined</span>
+      <span>Actions</span>
+    </div>
+
+    <div class="table-row" *ngFor="let user of filteredUsers">
+        <span>{{ user.id }}</span>
+      <img [src]="user.profileImage" alt="Profile" class="avatar" />
+      <span>{{ user.name }}</span>
+      <span>{{ user.email }}</span>
+      <span>{{ user.phone }}</span>
+      <span>{{ user.address }}</span>
+      <span>{{ user.joinedDate | date }}</span>
+      <div>
+        <button class="btn edit">Edit</button>
+        <button class="btn delete" (click)="deleteUser(user.id)">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

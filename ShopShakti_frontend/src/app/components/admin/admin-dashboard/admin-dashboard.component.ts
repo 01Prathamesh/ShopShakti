@@ -4,11 +4,12 @@ import { AdminMetricsDto } from '../../../models/admin-matrics.dto';
 import { RouterModule } from '@angular/router';
 import { AdminService } from '../../../services/admin.service';
 import { ProductManagementComponent } from '../product-management/product-management.component';
+import { UserManagementComponent } from '../user-management/user-management.component';
 
 @Component({
   standalone: true,
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, RouterModule, ProductManagementComponent],
+  imports: [CommonModule, RouterModule, ProductManagementComponent, UserManagementComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
