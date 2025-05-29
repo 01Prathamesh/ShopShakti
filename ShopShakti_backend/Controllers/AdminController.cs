@@ -24,13 +24,15 @@ namespace ShopShakti_backend.Controllers
             var ordersCount = await _context.Orders.CountAsync();
             var revenue = await _context.Orders.SumAsync(o => o.TotalAmount);
             var activeProducts = await _context.Products.CountAsync(); // add IsActive if you want
+            var productsValue = await _context.Products.SumAsync(p => p.Price);
 
             var metrics = new AdminMetricsDto
             {
                 Users = usersCount,
                 Orders = ordersCount,
                 Revenue = revenue,
-                ActiveProducts = activeProducts
+                ActiveProducts = activeProducts,
+                ProductsValue = productsValue,
             };
 
             return Ok(metrics);

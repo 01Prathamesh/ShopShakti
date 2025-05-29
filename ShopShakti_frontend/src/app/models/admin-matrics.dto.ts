@@ -3,4 +3,5 @@ export interface AdminMetricsDto {
   orders: number;
   revenue: number;
   activeProducts: number;
+  productsValue: number;
 }

@@ -6,5 +6,6 @@ namespace ShopShakti_backend.Models
         public int Orders { get; set; }
         public decimal Revenue { get; set; }
         public int ActiveProducts { get; set; }
+        public decimal ProductsValue { get; set; }
     }
 }
