@@ -1,0 +1,53 @@
+/* Trending Products Section */
+.section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.product-grid .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Product Cards */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 15px;
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card img {
+  width: 100%;
+  border-radius: 8px;
+}
+.card h4 {
+  margin: 10px 0 5px;
+}
+.card p {
+  font-weight: 500;
+}
+
+/* Price styling */
+.price {
+  color: #e91e63;
+  font-weight: bold;
+}
+
+/* Button styling */
+.secondary-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  background-color: #2196f3;
+  color: white;
+  cursor: pointer;
+}
+.secondary-btn:hover {
+  background-color: #1976d2;
+}

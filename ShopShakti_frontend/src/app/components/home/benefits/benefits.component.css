@@ -1,0 +1,42 @@
+/* Benefits Section */
+.section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.benefits .benefit-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.benefit {
+  max-width: 250px;
+  text-align: center;
+}
+
+.benefit i {
+  font-size: 36px;
+  color: #e91e63;
+  margin-bottom: 10px;
+}
+
+.benefit h4 {
+  margin: 10px 0 5px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.benefit p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+@media (max-width: 600px) {
+  .benefits .benefit-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}

@@ -1,0 +1,9 @@
+<section class="section categories">
+  <h2>Featured Categories</h2>
+  <div class="grid">
+    <div class="card" *ngFor="let cat of featuredCategories">
+      <img [src]="cat.image" [alt]="cat.name" />
+      <p>{{ cat.name }}</p>
+    </div>
+  </div>
+</section>

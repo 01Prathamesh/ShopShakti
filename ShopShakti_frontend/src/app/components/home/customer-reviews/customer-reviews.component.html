@@ -1,0 +1,9 @@
+<section class="section reviews">
+  <h2>What Our Customers Say</h2>
+  <div class="review-carousel">
+    <div class="review" *ngFor="let review of reviews">
+      <p>“{{ review.message }}”</p>
+      <h5>- {{ review.name }}</h5>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,35 @@
+/* Section Layout */
+.section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+/* Newsletter Subscription Styles */
+.newsletter .subscribe-box {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.newsletter input {
+  padding: 10px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Button Styling */
+.primary-btn {
+  background-color: #e91e63;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background-color: #c2185b;
+}

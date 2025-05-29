@@ -1,0 +1,33 @@
+/* Featured Categories Section */
+.section {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+/* Grid layout for category cards */
+.categories .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Category Card */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 15px;
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-5px);
+}
+.card img {
+  width: 100%;
+  border-radius: 8px;
+}
+.card p {
+  margin-top: 10px;
+  font-weight: 500;
+}
