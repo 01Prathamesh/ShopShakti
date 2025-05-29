@@ -1,7 +1,14 @@
 <div class="product-management">
   <h2>Manage Products</h2>
 
-  <button (click)="addProduct()">Add New Product</button>
+  <input
+    [(ngModel)]="searchQuery"
+    (input)="onSearch()"
+    placeholder="Search by product name or category..."
+    class="search-input"
+  />
+
+  <button style="float: right;" (click)="addProduct()">Add New Product</button>
 
   <div *ngIf="isLoading">Loading products...</div>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
@@ -19,7 +26,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
+      <tr *ngFor="let product of filteredProducts">
         <td>{{ product.id}}</td>
         <td>
           <img [src]="product.imageUrl" alt="{{ product.name }}" width="60" height="60" />
@@ -36,7 +43,7 @@
     </tbody>
   </table>
 
-  <div *ngIf="!isLoading && products.length === 0">No products found.</div>
+  <div *ngIf="!isLoading && filteredProducts.length === 0">No products found.</div>
 
   <div *ngIf="showForm" class="product-form">
     <h3>{{ editingProduct ? 'Edit Product' : 'Add Product' }}</h3>

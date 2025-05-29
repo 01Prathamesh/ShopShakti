@@ -16,6 +16,8 @@ export class ProductManagementComponent implements OnInit {
   isLoading = false;
   showForm: boolean = false;
   errorMessage = '';
+  searchQuery = '';
+  filteredProducts: Product[] = [];
 
   // For add/edit form
   editingProduct: Product | null = null;
@@ -27,12 +29,22 @@ export class ProductManagementComponent implements OnInit {
     this.loadProducts();
   }
 
+  onSearch(): void {
+    const query = this.searchQuery.toLowerCase();
+    this.filteredProducts = this.products.filter(product =>
+      product.name.toLowerCase().includes(query) ||
+      product.category.toLowerCase().includes(query)
+    );
+  }
+
+
   loadProducts() {
     this.isLoading = true;
     this.errorMessage = '';
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         this.products = data;
+        this.filteredProducts = data;
         this.isLoading = false;
       },
       error: () => {
