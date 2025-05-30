@@ -43,7 +43,7 @@ namespace ShopShakti_backend.Controllers
         {
             if (value >= 10000000)
                 return $"{value / 10000000:#.#####} Crore";
-            else if (value >= 100000)
+            else if (value >= 100000) 
                 return $"{value / 100000:#.#####} Lakh";
             else if (value >= 1000)
                 return $"{value / 1000:#.#####} Thousand";

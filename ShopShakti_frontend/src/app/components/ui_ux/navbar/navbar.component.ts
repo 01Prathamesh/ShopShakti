@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class NavbarComponent implements OnInit {
   userName: string = '';
   user: any = null;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private cartService: CartService) {
     // Update login status when navigating
     this.router.events.subscribe(() => {
       this.checkLoginStatus();
@@ -70,7 +71,15 @@ export class NavbarComponent implements OnInit {
   }
 
   private loadCartCount(): void {
-    const count = localStorage.getItem('cartCount');
-    this.cartCount = count ? +count : 0;
+    this.cartService.getCartItems().subscribe({
+      next: (items) => {
+        this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
+      },
+      error: (err) => {
+        console.error('Failed to load cart count', err);
+        this.cartCount = 0;
+      }
+    });
   }
+
 }
