@@ -1,1 +1,18 @@
-<p>order-summary works!</p>
+<div class="order-summary-container" *ngIf="order; else loading">
+  <h2>Order Summary</h2>
+  <p><strong>Order ID:</strong> {{ order.id }}</p>
+  <p><strong>Date:</strong> {{ order.date | date }}</p>
+
+  <h3>Items:</h3>
+  <ul>
+    <li *ngFor="let item of order.items">
+      {{ item.name }} - ₹{{ item.price }} x {{ item.quantity }}
+    </li>
+  </ul>
+
+  <h3>Total: ₹{{ order.total.toFixed(2) }}</h3>
+</div>
+
+<ng-template #loading>
+  <p>Loading order summary...</p>
+</ng-template>
