@@ -1,1 +1,8 @@
-<p>checkout works!</p>
+<h2>Checkout</h2>
+<ul>
+  <li *ngFor="let item of cartItems">
+    {{ item.name }} - ₹{{ item.price }} x {{ item.quantity }}
+  </li>
+</ul>
+<h3>Total: ₹{{ total.toFixed(2) }}</h3>
+<button (click)="checkout()">Place Order</button>
