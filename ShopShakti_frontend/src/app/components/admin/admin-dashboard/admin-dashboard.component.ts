@@ -20,6 +20,7 @@ export class AdminDashboardComponent implements OnInit {
     revenue: 0,
     activeProducts: 0,
     productsValue: 0,
+    productsValueFormatted: '0'
   };
 
   isLoading = true;
