@@ -2,6 +2,15 @@
 
 Welcome to the **ShopShakti** project — a modern, full-stack, responsive e-commerce web application built using **Angular (frontend)** and **ASP.NET Core Web API (backend)**. It features a clean, scalable architecture and is designed for performance, maintainability, and an excellent user experience.
 
+📽️ **Project Demo**
+
+Check out the live walkthrough of **ShopShakti** on YouTube:  
+[![ShopShakti Demo](https://img.youtube.com/vi/cAOLf5x-35U/0.jpg)](https://youtu.be/cAOLf5x-35U?si=OABPxqo2lJCLcdgb)
+
+🔗 Watch here: [https://youtu.be/cAOLf5x-35U?si=OABPxqo2lJCLcdgb](https://youtu.be/cAOLf5x-35U?si=OABPxqo2lJCLcdgb)
+
+> 🚧 *Note: This project is a work in progress, but it’s stable enough to demonstrate core features and user flows.*
+
 ## 🚀 Frontend Features (Angular)
 
 - 🏠 **Homepage** with hero banners, trending, deals, and featured categories
