@@ -1,44 +1,75 @@
-# 🛍️ ShopShakti {Work In Progress}
+# 🛍️ ShopShakti (Full-Stack E-Commerce) — *Work In Progress*
 
-Welcome to the **ShopShakti** project — a modern, responsive e-commerce web application built using Angular. This project showcases a clean, scalable, and modular frontend architecture tailored for optimal performance and UX.
+Welcome to the **ShopShakti** project — a modern, full-stack, responsive e-commerce web application built using **Angular (frontend)** and **ASP.NET Core Web API (backend)**. It features a clean, scalable architecture and is designed for performance, maintainability, and an excellent user experience.
 
-## 🚀 Features
+## 🚀 Frontend Features (Angular)
 
-- 🏠 **Homepage** with promotional banners and featured categories
-- 🛒 **Product Listing & Detail Pages** with filtering and dynamic routing
+- 🏠 **Homepage** with hero banners, trending, deals, and featured categories
+- 🛒 **Product Listing & Detail Pages** with filtering, dynamic routing
 - 👤 **Authentication**: Register, Login, Profile management
-- 🧺 **Cart** with real-time updates
+- 🧺 **Cart System** with quantity control and persistence
 - 💳 **Checkout** flow with order summary and confirmation
-- 📦 **Order Management**: User order history and admin management
-- 🧑‍💼 **Admin Dashboard** with metrics and protected routes
-- 🍞 **Toast Notifications** for user feedback
-- 🧭 **Responsive Layout** with a sidebar, navbar, and footer
+- 📦 **Order Management** for both users and admin
+- 🧑‍💼 **Admin Dashboard** with analytics and protected routes
+- 🍞 **Toast Notifications** for seamless feedback
+- 📱 **Fully Responsive**: Optimized for desktop, tablet, and mobile
 
-## 🧱 Project Structure
+## 🧱 Frontend Structure
 ```
 ShopShakti_frontend/
 ├── src/
 │ ├── app/
 │ │ ├── components/
-│ │ │ ├── admin/             # Admin-related views & guards
-│ │ │ ├── auth_user_pages/   # Login, Register, Profile
-│ │ │ ├── core_pages/        # Homepage, Products, Orders, Cart
-│ │ │ ├── orders/            # Order history, success, summary
-│ │ │ └── ui_ux/             # Navbar, Footer, Toast, etc.
-│ │ ├── app.routes.ts        # Routing configuration
-│ │ └── app.component.ts/html # Root component setup
+│ │ │ ├── admin/
+│ │ │ │ ├── admin-dashboard/
+│ │ │ │ ├── order-management/
+│ │ │ │ ├── product-management/
+│ │ │ │ └── user-management/
+│ │ │ ├── auth_user_pages/
+│ │ │ │ ├── login/
+│ │ │ │ ├── register/
+│ │ │ │ └── profile/
+│ │ │ ├── core_pages/
+│ │ │ │ ├── homepage/
+│ │ │ │ ├── product-list/
+│ │ │ │ ├── product-detail/
+│ │ │ │ └── cart/
+│ │ │ ├── orders/
+│ │ │ │ ├── order-list/
+│ │ │ │ ├── order-summary/
+│ │ │ │ └── order-success/
+│ │ │ ├── home/
+│ │ │ │ ├── tranding-products/
+│ │ │ │ ├── featured-categories/
+│ │ │ │ ├── top-deals/
+│ │ │ │ ├── benefits/
+│ │ │ │ ├── customer-reviews/
+│ │ │ │ └── newsletter-subscription/
+│ │ │ └── ui_ux/
+│ │ │   ├── navbar/
+│ │ │   ├── footer/
+│ │ │   ├── searchbar/
+│ │ │   ├── category-sidebar/
+│ │ │   ├── banner-carousel/
+│ │ │   └── toast/
+| | ├── models/
+| | └── services/
 │ ├── assets/
-│ │ └── images/              # Static assets (products, banners, etc.)
-│ └── index.html             # Entry HTML with external icon libraries
+│ │ └── images/
+│ │   ├── banners/
+| |   ├── company/
+│ │   ├── categories/
+│ │   ├── deals/
+│ │   └── products/
+│ └── index.html
 ```
 
-## 🛠️ Tech Stack
+## 🛠️ Tech Stack (Frontend)
 
-- **Angular 17+** with standalone components
-- **TypeScript** for component logic and models
-- **SCSS/CSS** for styling
-- **Angular Router** for navigation and guards
-- **Material Icons & FontAwesome** for UI enhancement
+- **Angular 17+** with standalone component architecture
+- **TypeScript**, **RxJS**, **SCSS**
+- **Angular Router** for route management and guards
+- **Material Icons**, **FontAwesome** for UI elements
 
 ## 🔒 Admin Access
 
@@ -50,36 +81,157 @@ if (auth.isLoggedIn() && auth.isAdmin()) {
 }
 ```
 
-## 📸 Assets
-
-All required static assets (banners, categories, deals, products) are organized in the following directory structure:
-```
-assets/
-  ├──images/
-        ├── banners/
-        ├── categories/
-        ├── deals/
-        └── products/
-```
-
-## 📦 Installation & Run
+## 📦 Run Frontend Locally
 ```
 # Install dependencies
 npm install
 
-# Run the app locally
+# Run dev server
 ng serve
 ```
 Access the app at: http://localhost:4200
 
+## 🔧 Backend Overview (ASP.NET Core)
+
+The backend is a RESTful API built with **ASP.NET Core Web API**, using **Entity Framework Core** for data persistence and **SQL Server** as the database.
+
+## 🧱 Backend Structure
+```
+ShopShakti_backend/
+├── Properties/
+|    └── launchSettings.cs/
+├── Controllers/
+│   ├── AdminController.cs
+│   ├── CartItemsController.cs
+│   ├── OrdersController.cs
+│   ├── ProductsController.cs
+│   └── UsersController.cs
+├── Data/
+│   ├── AppContextDb.cs
+│   └── AppDbContextFactory.cs
+├── Models/
+│   ├── CartItem.cs
+│   ├── Order.cs
+│   ├── Product.cs
+│   ├── User.cs
+│   ├── AdminMetricsDto.cs
+│   └── LoginDto.cs
+├── Migrations/
+├── Program.cs
+├── appsettings.json
+└── ShopShakti_backend.csproj
+
+```
+
+## 🧰 Tech Stack (Backend)
+
+- **ASP.NET Core 7 Web API**
+
+- **Entity Framework Core**
+
+- **SQL Server / SQLite**
+
+- **CORS Configuration for frontend integration**
+
+- **Swagger (OpenAPI 3.0) for documentation**
+
+## 📘 API Endpoints
+
+**🛒 CartItems**
+
+`GET /api/CartItems`
+
+`GET /api/CartItems/{id}`
+
+`POST /api/CartItems`
+
+`PUT /api/CartItems/{id}`
+
+`DELETE /api/CartItems/{id}`
+
+**📦 Orders**
+
+`GET /api/Orders`
+
+`GET /api/Orders/{id}`
+
+`POST /api/Orders`
+
+`PUT /api/Orders/{id}`
+
+`DELETE /api/Orders/{id}`
+
+**🛍️ Products**
+
+`GET /api/Products`
+
+`GET /api/Products/{id}`
+
+`POST /api/Products`
+
+`PUT /api/Products/{id}`
+
+`DELETE /api/Products/{id}`
+
+**👤 Users**
+
+`GET /api/Users`
+
+`GET /api/Users/{id}`
+
+`POST /api/Users`
+
+`PUT /api/Users/{id}`
+
+`DELETE /api/Users/{id}`
+
+`POST /api/Users/login`
+
+**📊 Admin Metrics**
+
+`GET /api/Admin/metrics`
+
+## 📄 Schemas Used
+- `Product`
+
+- `CartItem`
+
+- `Order`
+
+- `User`
+
+- `LoginRequest`
+
+- `AdminMetricsDto`
+
+## 🧪 Run Backend Locally
+```
+# Navigate to backend folder
+cd ShopShakti_backend
+
+# Restore NuGet packages
+dotnet restore
+
+# Update database (if using migrations)
+dotnet ef database update
+
+# Start the server
+dotnet run
+```
+API Base URL: https://localhost:7171/api
+
+Swagger: https://localhost:7171/swagger
+
 ## ✅ Future Enhancements
-- Integration with backend APIs
+- Full JWT-based auth and role-based access
 
-- JWT-based authentication
+- Wishlist & Payment gateway
 
-- Wishlist & payment gateway
+- Advanced search, filters, and pagination
 
-- Pagination & advanced search filters
+- Product ratings and reviews
+
+- Order tracking & invoice downloads
 
 ## 🤝 Contribution
 
