@@ -4,13 +4,74 @@
   </div>
   <div class="info-section">
     <h1>{{ product.name }}</h1>
-    <p class="price">₹{{ product.price }}</p>
-    <p class="category">{{ product.category }}</p>
+
+    <div class="price-rating">
+      <p class="price">₹{{ product.price }}</p>
+      <div class="rating" aria-label="Product rating">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]; let i = index">
+          <span [class.filled]="i < getRoundedRating()">★</span>
+        </ng-container>
+        <span class="rating-number">({{ rating }}/5)</span>
+      </div>
+    </div>
+
+    <p class="category">Category: <strong>{{ product.category }}</strong></p>
     <p class="description">{{ product.description }}</p>
 
-    <button class="btn-buy" (click)="addToCart()">Add to Cart</button>
+    <div class="quantity-row">
+      <label for="quantity">Quantity:</label>
+      <input
+        type="number"
+        min="1"
+        [(ngModel)]="quantity"
+        id="quantity"
+        class="quantity-input"
+      />
+    </div>
+
+    <p class="availability">
+      Availability:
+      <span [class.out-of-stock]="availability !== 'In Stock'">
+        {{ availability }}
+      </span>
+    </p>
+
+    <div class="actions">
+      <button class="btn-buy" (click)="addToCart()" [disabled]="!product || isLoading">
+        Add to Cart
+      </button>
+      <button class="btn-now" (click)="buyNow()" [disabled]="!product || isLoading">
+        Buy Now
+      </button>
+    </div>
+
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
   </div>
 </div>
 
-<div *ngIf="isLoading" class="loading">Loading product details...</div>
+<!-- Related Products -->
+<div class="related" *ngIf="relatedProducts.length">
+  <h2>Related Products</h2>
+  <div class="related-grid">
+    <div
+      class="related-card"
+      *ngFor="let related of relatedProducts"
+      (click)="viewProduct(related.id)"
+    >
+      <img [src]="related.imageUrl" [alt]="related.name" />
+      <h4>{{ related.name }}</h4>
+      <p>₹{{ related.price }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Reviews Section -->
+<div class="reviews">
+  <h3>Customer Reviews</h3>
+  <p><em>Coming soon...</em></p>
+  <!-- Future enhancement: Add review form + display -->
+</div>
+
+<!-- State Handling -->
+<div *ngIf="isLoading" class="loading shimmer">Loading product details...</div>
 <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
