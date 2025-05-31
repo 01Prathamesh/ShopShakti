@@ -1,15 +1,31 @@
 <div class="product-list">
   <h2>Explore Products</h2>
 
-  <div *ngIf="isLoading" class="loading">Loading products...</div>
+  <div class="controls">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search products..." />
+    <select [(ngModel)]="selectedCategory">
+      <option value="">All Categories</option>
+      <option *ngFor="let cat of uniqueCategories" [value]="cat">{{ cat }}</option>
+    </select>
+    <select [(ngModel)]="sortOption">
+      <option value="">Sort By</option>
+      <option value="low">Price: Low to High</option>
+      <option value="high">Price: High to Low</option>
+    </select>
+  </div>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="shimmer-card" *ngFor="let i of [].constructor(8)"></div>
+  </div>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
   <div class="grid">
-    <div class="product-card" *ngFor="let product of products" (click)="viewDetails(product.id)">
+    <div class="product-card" *ngFor="let product of filteredProducts()" (click)="viewDetails(product.id)">
       <img [src]="product.imageUrl" alt="{{ product.name }}" />
       <h3>{{ product.name }}</h3>
       <p class="price">₹{{ product.price }}</p>
       <p class="category">{{ product.category }}</p>
+      <button class="add-cart" (click)="addToCart(product, $event)">Add to Cart</button>
     </div>
   </div>
 </div>

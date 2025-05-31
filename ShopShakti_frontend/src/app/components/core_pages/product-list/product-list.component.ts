@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
 import { Router, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { CartService } from '../../../services/cart.service';
+import { NewCartItem } from '../../../models/cart-item.model';
 
 @Component({
   standalone: true,
   selector: 'app-product-list',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
@@ -15,8 +18,15 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   isLoading = true;
   errorMessage = '';
+  searchQuery = '';
+  selectedCategory = '';
+  sortOption = '';
 
-  constructor(private productService: ProductService, private router: Router) {}
+  constructor(
+    private productService: ProductService,
+    private cartService: CartService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.productService.getAllProducts().subscribe({
@@ -24,14 +34,50 @@ export class ProductListComponent implements OnInit {
         this.products = data;
         this.isLoading = false;
       },
-      error: (error) => {
+      error: () => {
         this.errorMessage = 'Failed to load products. Please try again.';
         this.isLoading = false;
       },
     });
   }
 
+  get uniqueCategories(): string[] {
+    return [...new Set(this.products.map(p => p.category))];
+  }
+
+  filteredProducts(): Product[] {
+    let filtered = this.products.filter(p =>
+      p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
+      (this.selectedCategory ? p.category === this.selectedCategory : true)
+    );
+
+    if (this.sortOption === 'low') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (this.sortOption === 'high') {
+      filtered.sort((a, b) => b.price - a.price);
+    }
+
+    return filtered;
+  }
+
   viewDetails(productId: number) {
     this.router.navigate(['/product', productId]);
   }
+
+  addToCart(product: Product, event: Event) {
+    event.stopPropagation();
+
+    const cartItem: NewCartItem = {
+      name: product.name,
+      price: product.price,
+      quantity: 1, // default quantity
+      imageUrl: product.imageUrl
+    };
+
+    this.cartService.addCartItem(cartItem).subscribe({
+      next: () => alert(`${product.name} added to cart`),
+      error: () => alert(`Failed to add ${product.name} to cart. Please try again.`)
+    });
+  }
+
 }
