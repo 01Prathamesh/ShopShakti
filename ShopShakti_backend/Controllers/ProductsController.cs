@@ -47,7 +47,7 @@ namespace ShopShakti_backend.Controllers
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
             // Validate product model (simple example)
-            if (product == null || string.IsNullOrEmpty(product.Name) || product.Price <= 0)
+            if (product == null || string.IsNullOrEmpty(product.Name) || product.Price <= 0 || product.Quantity < 0)
             {
                 return BadRequest("Invalid product data.");
             }
@@ -83,6 +83,7 @@ namespace ShopShakti_backend.Controllers
             existingProduct.Price = product.Price;
             existingProduct.Category = product.Category;
             existingProduct.ImageUrl = product.ImageUrl;
+            existingProduct.Quantity = product.Quantity;
 
             // Mark entity as modified and save changes
             _context.Entry(existingProduct).State = EntityState.Modified;

@@ -21,7 +21,7 @@ export class ProductManagementComponent implements OnInit {
 
   // For add/edit form
   editingProduct: Product | null = null;
-  formModel: Product = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+  formModel: Product = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '', quantity: 0 };
 
   constructor(private productService: ProductService) {}
 
@@ -56,7 +56,7 @@ export class ProductManagementComponent implements OnInit {
 
   addProduct() {
     this.editingProduct = null;
-    this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+    this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '', quantity: 0 };
     this.showForm = true;
   }
 
@@ -83,7 +83,7 @@ export class ProductManagementComponent implements OnInit {
       this.productService.addProduct(this.formModel).subscribe({
         next: () => {
           this.loadProducts();
-          this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+          this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '', quantity: 0 };
         },
         error: () => {
           this.errorMessage = 'Failed to add product.';
@@ -94,7 +94,7 @@ export class ProductManagementComponent implements OnInit {
 
   cancelEdit() {
     this.editingProduct = null;
-    this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '' };
+    this.formModel = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '', quantity: 0 };
     this.showForm = false;
   }
 

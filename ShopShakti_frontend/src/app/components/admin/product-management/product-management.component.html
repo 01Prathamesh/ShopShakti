@@ -22,6 +22,7 @@
         <th>Price (₹)</th>
         <th>Category</th>
         <th>Description</th>
+        <th>Quantity</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -35,6 +36,7 @@
         <td>{{ product.price }}</td>
         <td>{{ product.category }}</td>
         <td>{{ product.description }}</td>
+        <td>{{ product.quantity }}</td>
         <td>
           <button (click)="editProduct(product)">Edit</button>
           <button (click)="deleteProduct(product.id)">Delete</button>
@@ -67,6 +69,10 @@
       <label>
         Image URL:
         <input type="url" [(ngModel)]="formModel.imageUrl" name="imageUrl" />
+      </label><br />
+      <label>
+        Quantity:
+        <input type="number" [(ngModel)]="formModel.quantity" name="quantity" min="0" required />
       </label><br />
       <button type="submit">{{ editingProduct ? 'Update' : 'Add' }}</button>
       <button type="button" (click)="cancelEdit()">Cancel</button>
