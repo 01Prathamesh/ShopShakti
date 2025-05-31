@@ -12,7 +12,7 @@ using ShopShakti_backend.Data;
 namespace ShopShakti_backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250528075958_InitialDb")]
+    [Migration("20250531060234_InitialDb")]
     partial class InitialDb
     {
         /// <inheritdoc />
@@ -126,6 +126,9 @@ namespace ShopShakti_backend.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsBlocked")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("JoinedDate")
                         .HasColumnType("datetime2");
