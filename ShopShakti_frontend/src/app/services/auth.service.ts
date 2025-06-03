@@ -11,18 +11,22 @@ export class AuthService {
       const parsedUser = JSON.parse(storedUser);
       this.user = {
         id: parsedUser.id,
+        email: parsedUser.email, 
         isAuthenticated: true,
         role: parsedUser.role
       };
     }
   }
 
-  login(userData: { id: number; role: string }) {
+  login(userData: { id: number; name: string; email: string; role: string }) {
     this.user = {
       id: userData.id,
+      name: userData.name,
+      email: userData.email,
       isAuthenticated: true,
       role: userData.role
     };
+    localStorage.setItem('user', JSON.stringify(this.user));
   }
 
   isLoggedIn(): boolean {
@@ -30,7 +34,7 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.user?.role === 'admin';
+    return this.user?.email === 'admin@shopshakti.com';
   }
 
   getCurrentUserId(): number {

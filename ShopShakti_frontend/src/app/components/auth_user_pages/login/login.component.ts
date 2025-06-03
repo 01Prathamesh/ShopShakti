@@ -43,7 +43,9 @@ export class LoginComponent {
         // Inform the AuthService
         this.authService.login({
           id: response.id,
-          role: response.role
+          name: response.name,
+          email: response.email,
+          role: response.role || 'user'
         });
 
         this.router.navigate(['/']);
