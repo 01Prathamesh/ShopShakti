@@ -16,6 +16,9 @@ namespace ShopShakti_backend.Data
         // DbSet for Users
         public DbSet<User> Users { get; set; }
 
+        //DbSet for OrderItem
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         // DbSet for Orders
         public DbSet<Order> Orders { get; set; }
 

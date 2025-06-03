@@ -42,7 +42,9 @@ namespace ShopShakti_backend.Controllers
         [HttpPost]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
-            order.OrderDate = DateTime.UtcNow;  // set order date to now
+            order.OrderDate = DateTime.UtcNow;
+            order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity);
+            order.Status = "Pending";
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
 
