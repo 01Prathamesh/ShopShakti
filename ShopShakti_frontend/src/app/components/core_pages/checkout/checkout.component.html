@@ -1,8 +1,53 @@
-<h2>Checkout</h2>
-<ul>
-  <li *ngFor="let item of cartItems">
-    {{ item.name }} - ₹{{ item.price }} x {{ item.quantity }}
-  </li>
-</ul>
-<h3>Total: ₹{{ total.toFixed(2) }}</h3>
-<button (click)="checkout()">Place Order</button>
+<div class="checkout">
+  <h2>Checkout</h2>
+
+  <!-- User Info -->
+  <div *ngIf="user" class="user-info">
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+  </div>
+  
+  <!-- Order Summary -->
+  <div *ngIf="cartItems.length > 0; else emptyCart" class="order-summary">
+    <h3>Order Summary</h3>
+    <ul class="cart-list">
+      <li *ngFor="let item of cartItems" class="cart-item">
+        <span>{{ item.name }} × {{ item.quantity }}</span>
+        <span>₹{{ item.price * item.quantity }}</span>
+      </li>
+    </ul>
+
+    <h4 class="total">Total: ₹{{ total }}</h4>
+
+    <!-- Address -->
+    <div class="address-section">
+      <label class="address-label">
+        <strong>Saved Address:</strong>
+        <p class="readonly-address">{{ user?.address }}</p>
+      </label>
+
+      <label class="custom-address-toggle">
+        <input type="checkbox" [(ngModel)]="useDifferentAddress" />
+        Use a different address
+      </label>
+
+      <input
+        *ngIf="useDifferentAddress"
+        [(ngModel)]="selectedAddress"
+        class="custom-address-input"
+        placeholder="Enter new delivery address"
+      />
+    </div>
+
+    <!-- Confirm Button -->
+    <button (click)="confirmOrder()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Confirm Order</span>
+      <span *ngIf="isLoading">Placing Order...</span>
+    </button>
+  </div>
+
+  <!-- Empty Cart -->
+  <ng-template #emptyCart>
+    <p class="empty-msg">Your cart is empty.</p>
+  </ng-template>
+</div>
