@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -16,7 +17,7 @@ export class LoginComponent {
   isSubmitted = false;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private authService: AuthService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -38,6 +39,13 @@ export class LoginComponent {
     this.http.post<any>('https://localhost:7171/api/users/login', { email, password }).subscribe({
       next: (response) => {
         localStorage.setItem('user', JSON.stringify(response));
+
+        // Inform the AuthService
+        this.authService.login({
+          id: response.id,
+          role: response.role
+        });
+
         this.router.navigate(['/']);
       },
       error: (error) => {
