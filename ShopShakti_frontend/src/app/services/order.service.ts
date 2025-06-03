@@ -8,13 +8,16 @@ export interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+  orderId?: number;
 }
 
 export interface Order {
   id?: number;
   date?: string;
+  userId: number;
+  status: string;
   items: OrderItem[];
-  total: number;
+  totalAmount: number;
 }
 
 @Injectable({
@@ -26,8 +29,8 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   // Place a new order
-  placeOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.baseUrl, order);
+  placeOrder(order: any): Observable<any> {
+    return this.http.post(this.baseUrl, order);
   }
 
   // Get all orders (for a specific user, if applicable)

@@ -5,7 +5,8 @@ import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
 import { CartService } from '../../../services/cart.service';
 import { FormsModule } from '@angular/forms';
-import { NewCartItem } from '../../../models/cart-item.model';
+import { CartItem, NewCartItem } from '../../../models/cart-item.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -30,6 +31,7 @@ export class ProductDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private cartService: CartService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -93,17 +95,16 @@ export class ProductDetailComponent implements OnInit {
 
   buyNow(): void {
     if (this.product) {
-      const item: NewCartItem = {
+      const item: CartItem = {
+        id: this.product.id,
         name: this.product.name,
         price: this.product.price,
         quantity: this.quantity,
         imageUrl: this.product.imageUrl
       };
 
-      this.cartService.addCartItem(item).subscribe({
-        next: () => this.router.navigate(['/checkout']),
-        error: (err) => console.error('Buy now failed', err)
-      });
+      this.authService.setBuyNowItem(item);
+      this.router.navigate(['/checkout']);
     }
   }
 
