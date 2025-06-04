@@ -1,22 +1,53 @@
 .order-list-container {
-  max-width: 800px;
-  margin: auto;
+  max-width: 900px;
+  margin: 2rem auto;
   padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.order-list-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
 }
 
 .order-card {
-  background: #fff;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  margin-bottom: 1rem;
-  border-radius: 8px;
+  background: #fafafa;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  margin-bottom: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease-in-out;
+}
+
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 
 .order-card h3 {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.75rem;
+  font-size: 1.4rem;
+  color: #222;
+}
+
+.order-card p {
+  margin: 0.25rem 0;
+  font-size: 1rem;
+  color: #444;
 }
 
 .order-card a {
+  display: inline-block;
+  margin-top: 0.75rem;
   color: #007bff;
   text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.order-card a:hover {
+  color: #0056b3;
 }

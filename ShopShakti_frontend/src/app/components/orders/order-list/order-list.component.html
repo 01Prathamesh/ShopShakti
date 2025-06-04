@@ -4,8 +4,8 @@
   <div *ngIf="isLoading">Loading orders...</div>
   <div *ngIf="!isLoading && orders.length === 0">No orders found.</div>
 
-  <div *ngFor="let order of orders" class="order-card">
-    <h3>Order #{{ order.id }}</h3>
+  <div *ngFor="let order of orders; let i = index" class="order-card">
+    <h3>Order #{{ orders.length - i }}</h3>
     <p>Date: {{ order.orderDate | date }}</p>
     <p>Total: ₹{{ order.totalAmount.toFixed(2) }}</p>
     <a [routerLink]="['/order-summary', order.id]">View Summary</a>
