@@ -31,6 +31,7 @@ namespace ShopShakti_backend.Controllers
                 Users = usersCount,
                 Orders = ordersCount,
                 Revenue = revenue,
+                RevenueFormatted = FormatIndianNumber(revenue),
                 ActiveProducts = activeProducts,
                 ProductsValue = productsValue,
                 ProductsValueFormatted = FormatIndianNumber(productsValue)

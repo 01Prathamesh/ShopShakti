@@ -18,6 +18,7 @@ export class AdminDashboardComponent implements OnInit {
     users: 0,
     orders: 0,
     revenue: 0,
+    revenueFormatted: '0',
     activeProducts: 0,
     productsValue: 0,
     productsValueFormatted: '0'
