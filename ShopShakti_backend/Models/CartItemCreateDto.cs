@@ -1,12 +1,10 @@
-﻿namespace ShopShakti_backend.Models
+﻿namespace ShopShakti_backend.Models.DTOs
 {
-    public class CartItem
+    public class CartItemCreateDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public string? ImageUrl { get; set; }
-        public string UserId { get; set; }
     }
 }
