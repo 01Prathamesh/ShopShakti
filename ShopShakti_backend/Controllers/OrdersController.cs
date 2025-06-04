@@ -86,5 +86,16 @@ namespace ShopShakti_backend.Controllers
 
             return NoContent();
         }
+
+        // GET: api/orders/user/{id}
+        [HttpGet("user/{userId}")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersForUser(int userId)
+        {
+            return await _context.Orders
+                .Include(o => o.Items)
+                .Where(o => o.UserId == userId)
+                .ToListAsync();
+        }
+
     }
 }

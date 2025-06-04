@@ -17,7 +17,16 @@ export class OrderListComponent implements OnInit {
   constructor(private orderService: OrderService) {}
 
   ngOnInit(): void {
-    this.orderService.getOrders().subscribe({
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = user?.id;
+
+    if (!userId) {
+      console.error('User not logged in.');
+      this.isLoading = false;
+      return;
+    }
+
+    this.orderService.getOrdersByUser(userId).subscribe({
       next: (data) => {
         this.orders = data;
         this.isLoading = false;

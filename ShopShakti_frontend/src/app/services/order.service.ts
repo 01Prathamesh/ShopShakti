@@ -42,4 +42,9 @@ export class OrderService {
   getOrderById(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
+
+  getOrdersByUser(userId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.baseUrl}/user/${userId}`);
+  }
+
 }
