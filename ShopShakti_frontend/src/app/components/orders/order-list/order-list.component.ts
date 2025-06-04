@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 export class OrderListComponent implements OnInit {
   orders: any[] = [];
   isLoading = true;
+  
 
   constructor(private orderService: OrderService) {}
 
@@ -29,6 +30,7 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrdersByUser(userId).subscribe({
       next: (data) => {
         this.orders = data;
+        this.orders = this.orders.sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime())
         this.isLoading = false;
       },
       error: (err) => {

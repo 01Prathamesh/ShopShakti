@@ -89,8 +89,11 @@ export class CheckoutComponent implements OnInit {
     const order = {
       userId,
       items: orderItems,
-      totalAmount: this.total,
+      totalAmount: this.total + 40 + 20, // example shipping + tax
+      shippingFee: 40,
+      tax: 20,
       address: deliveryAddress,
+      paymentMethod: 'Cash on Delivery',
       status: 'Pending'
       // do not include placedAt or address unless required in backend
     };
