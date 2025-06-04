@@ -45,10 +45,22 @@ namespace ShopShakti_backend.Controllers
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
             order.OrderDate = DateTime.UtcNow;
-            order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee + order.Tax;
             order.Status = "Pending";
+
+            // Calculate total
+            order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee + order.Tax;
+
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();
+
+            // Clear cart items only if this was a cart checkout
+            if (Request.Headers.TryGetValue("X-Clear-Cart", out var clearCartFlag) && clearCartFlag == "true")
+            {
+                var userId = order.UserId.ToString();
+                var cartItems = _context.CartItems.Where(c => c.UserId == userId);
+                _context.CartItems.RemoveRange(cartItems);
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
         }
