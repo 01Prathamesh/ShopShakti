@@ -22,15 +22,17 @@ namespace ShopShakti_backend.Controllers
         {
             return await _context.Orders
                 .Include(o => o.User)  // eager load user details (optional)
+                .Include(o => o.Items)
                 .ToListAsync();
         }
 
-        // GET: api/orders/5
+        // GET: api/orders/{id}
         [HttpGet("{id}")]
         public async Task<ActionResult<Order>> GetOrder(int id)
         {
             var order = await _context.Orders
                 .Include(o => o.User)
+                .Include(o => o.Items)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null) return NotFound();
@@ -43,7 +45,7 @@ namespace ShopShakti_backend.Controllers
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
             order.OrderDate = DateTime.UtcNow;
-            order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity);
+            order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee + order.Tax;
             order.Status = "Pending";
             _context.Orders.Add(order);
             await _context.SaveChangesAsync();

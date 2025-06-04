@@ -16,9 +16,18 @@ namespace ShopShakti_backend.Models
 
         public decimal TotalAmount { get; set; }
 
+        public decimal ShippingFee { get; set; } = 0;
+
+        public decimal Tax { get; set; } = 0;
+
+        public string PaymentMethod { get; set; } = "COD"; //Cash on Delivery, or any default
+
+        [NotMapped]
+        public decimal Subtotal => TotalAmount - ShippingFee - Tax;
+
         public List<OrderItem> Items { get; set; } = new();
 
-        // ? Make navigation property optional
         public User? User { get; set; }
     }
+
 }
