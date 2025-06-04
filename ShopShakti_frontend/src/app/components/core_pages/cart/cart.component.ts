@@ -21,7 +21,10 @@ export class CartComponent implements OnInit {
   }
 
   loadCartItems() {
-    this.cartService.getCartItems().subscribe(items => this.cartItems = items);
+    this.cartService.getCartItems().subscribe({
+      next: items => this.cartItems = items,
+      error: err => console.error('Error loading cart items:', err)
+    });
   }
 
   getTotal(): number {
