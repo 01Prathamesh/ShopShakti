@@ -65,6 +65,12 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: Product, event: Event) {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = user?.id;
+    if (!userId) {
+      alert('Please log in to add items to the cart.');
+      return;
+    }
     event.stopPropagation();
 
     const cartItem: NewCartItem = {
@@ -76,7 +82,10 @@ export class ProductListComponent implements OnInit {
 
     this.cartService.addCartItem(cartItem).subscribe({
       next: () => alert(`${product.name} added to cart`),
-      error: () => alert(`Failed to add ${product.name} to cart. Please try again.`)
+      error: (err) => {
+        console.error('Add to cart failed:', err);
+        alert(`Failed to add ${product.name} to cart. Please try again.`);
+      }
     });
   }
 
