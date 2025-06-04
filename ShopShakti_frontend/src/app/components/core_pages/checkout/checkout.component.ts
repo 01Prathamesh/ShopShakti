@@ -23,6 +23,7 @@ export class CheckoutComponent implements OnInit {
   isLoading = false;
   user: User | null = null;
   useDifferentAddress = false;
+  isBuyNow: boolean = false;
 
   constructor(
     private cartService: CartService,
@@ -58,6 +59,7 @@ export class CheckoutComponent implements OnInit {
       this.cartItems = [buyNowItem];
       this.total = buyNowItem.price * buyNowItem.quantity;
       this.authService.clearBuyNowItem();
+      this.isBuyNow = true;
       return;
     }
 
@@ -82,7 +84,7 @@ export class CheckoutComponent implements OnInit {
 
     if (!userId) {
       alert('Please log in to place an order.');
-      this.router.navigate(['/login']); // or your login route
+      this.router.navigate(['/login']);
       return;
     }
 
@@ -98,7 +100,7 @@ export class CheckoutComponent implements OnInit {
       // do not include placedAt or address unless required in backend
     };
 
-    this.orderService.placeOrder(order).subscribe({
+    this.orderService.placeOrder(order, !this.isBuyNow).subscribe({
       next: (response) => {
         this.router.navigate(['/order-success'], { queryParams: { orderId: response.id } });
       },

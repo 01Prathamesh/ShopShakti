@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -29,11 +29,19 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
   // Place a new order
-  placeOrder(order: any): Observable<any> {
-    return this.http.post(this.baseUrl, order);
+  placeOrder(order: any, clearCart: boolean = false): Observable<any> {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = user?.id;
+
+    const headers = new HttpHeaders({
+      'X-User-Id': userId,
+      ...(clearCart ? { 'X-Clear-Cart': 'true' } : {})
+    });
+
+    return this.http.post(this.baseUrl, order, { headers });
   }
 
-  // Get all orders (for a specific user, if applicable)
+  // Get all orders
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.baseUrl);
   }
