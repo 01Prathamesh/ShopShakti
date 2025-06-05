@@ -28,7 +28,7 @@
       <!-- Main user row -->
       <div class="table-row">
         <span>{{ user.id }}</span>
-        <img [src]="user.profileImage" alt="Profile" class="avatar" />
+        <img [src]="user.profileImage" alt="Profile" class="avatar" (click)="onAvatarClick(user.profileImage)" />
         <span>{{ user.name }}</span>
         <span>{{ user.email }}</span>
         <span>{{ user.phone }}</span>
@@ -79,4 +79,12 @@
   <div *ngIf="!isLoading && filteredUsers.length === 0 && !errorMessage">
     No users found.
   </div>
+</div>
+<!-- Avatar Modal -->
+<div
+  class="avatar-modal"
+  *ngIf="selectedAvatar"
+  (click)="selectedAvatar = null"
+>
+  <img [src]="selectedAvatar" alt="User Avatar" />
 </div>

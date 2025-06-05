@@ -136,4 +136,10 @@ export class UserManagementComponent implements OnInit {
         this.errorMessage = 'Failed to update user status.';
       });
   }
+  selectedAvatar: string | null = null;
+
+  onAvatarClick(imageUrl: string) {
+    this.selectedAvatar = imageUrl;
+  }
+
 }
