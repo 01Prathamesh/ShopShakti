@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
 using ShopShakti_backend.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopShakti_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CartItemsController : ControllerBase
     {
         private readonly AppDbContext _context;

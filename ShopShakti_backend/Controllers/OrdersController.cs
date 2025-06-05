@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopShakti_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         private readonly AppDbContext _context;

@@ -4,18 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
+using ShopShakti_backend.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ShopShakti_backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly TokenService _tokenService;
 
-        public UsersController(AppDbContext context)
+        public UsersController(AppDbContext context, TokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
 
         // GET: api/users/1
@@ -108,13 +113,19 @@ namespace ShopShakti_backend.Controllers
                 return StatusCode(403, new { message = "User is blocked by admin." });
             }
 
-            return Ok(new LoginResponseDto
+            var token = _tokenService.GenerateToken(user);
+
+            return Ok(new
             {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.Email,
-                IsBlocked = user.IsBlocked,
-                ProfileImage = user.ProfileImage
+                token,
+                user = new LoginResponseDto
+                {
+                    Id = user.Id,
+                    Name = user.Name,
+                    Email = user.Email,
+                    IsBlocked = user.IsBlocked,
+                    ProfileImage = user.ProfileImage
+                }
             });
 
         }
