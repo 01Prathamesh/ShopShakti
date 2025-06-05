@@ -26,24 +26,6 @@ builder.Services.AddCors(options =>
 });
 
 
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseCors("AllowAngularApp");
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
 // Register TokenService
 builder.Services.AddScoped<TokenService>();
 
@@ -71,7 +53,18 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-app.UseAuthentication(); // <== Add this above app.UseAuthorization()
-app.UseAuthorization();
+var app = builder.Build();
 
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors("AllowAngularApp");
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
 app.Run();
