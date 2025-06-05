@@ -1,16 +1,14 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../services/auth.service';
 
-export const canActivateAdmin: CanActivateFn = () => {
+export const canActivateUser: CanActivateFn = () => {
   const auth = inject(AuthService);
   const router = inject(Router);
 
-  if (auth.isLoggedIn() && auth.isAdmin()) {
+  if (auth.isLoggedIn()) {
     return true;
   }
 
-  // Redirect non-admins
   return router.createUrlTree(['/login']);
-  return false;
 };
