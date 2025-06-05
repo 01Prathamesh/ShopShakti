@@ -231,8 +231,41 @@ API Base URL: https://localhost:7171/api
 
 Swagger: https://localhost:7171/swagger
 
+## 🔐 Security Architecture
+
+ShopShakti is designed with a strong focus on secure authentication, data protection, and access control. Below are the key security features implemented:
+
+### ✅ Authentication & Authorization
+- **JWT-based Authentication**  
+  Secure login with JSON Web Tokens (JWT), including issuer, audience, and HMAC SHA256 signing.
+- **Token Expiration & Validation**  
+  Tokens expire based on a configurable time (`ExpiresInMinutes`), enforced using `ValidateLifetime` and `ClockSkew = 0`.
+- **Role-Based Access Control**  
+  Admin and user routes are guarded using Angular route guards (`canActivateAdmin`, `canActivateUser`).
+- **Password Hashing**  
+  User passwords are securely hashed using ASP.NET Core’s `PasswordHasher<T>` before being saved to the database.
+
+### ✅ API & Backend Security
+- **[Authorize] Decorators**  
+  Sensitive API endpoints (e.g. profile, orders, cart) are protected using `[Authorize]`, while public routes like registration and login use `[AllowAnonymous]`.
+- **CORS Policy Enforcement**  
+  Backend is configured to allow only trusted frontend origins (e.g., `http://localhost:4200`).
+- **Blocked User Handling**  
+  Blocked users are denied access during login and receive a `403 Forbidden` response.
+
+### ✅ Frontend Safeguards
+- **JWT Interceptor**  
+  Angular HTTP interceptor automatically attaches `Authorization: Bearer <token>` to every protected API request.
+- **Secure Token Storage**  
+  JWT and user info (excluding password) are stored safely in `localStorage`. Passwords are never exposed to the client.
+- **Route Guards**  
+  Angular guards restrict access to protected routes like `/profile`, `/cart`, `/checkout`, and `/admin`.
+
+> ✅ All critical flows (login, logout, registration, token validation, admin access, and blocked user control) have been implemented securely and verified.  
+This setup follows modern best practices for Angular + ASP.NET Core Web API + SQL Server applications.
+
+
 ## ✅ Future Enhancements
-- Full JWT-based auth and role-based access
 
 - Wishlist & Payment gateway
 
