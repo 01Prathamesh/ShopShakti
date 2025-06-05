@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
+import { CartButtonComponent } from '../cart-button/cart-button.component';
 
 @Component({
   standalone: true,
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CartButtonComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn = false;
   isMobileMenuOpen = false;
-  cartCount = 0;
   isAuthDropdownOpen: boolean = false;
   userName: string = '';
   user: any = null;
@@ -27,7 +27,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkLoginStatus();
-    this.loadCartCount();
   }
 
   toggleAuthDropdown() {
@@ -49,10 +48,9 @@ export class NavbarComponent implements OnInit {
 
   logout(): void {
     localStorage.removeItem('user');
-    localStorage.removeItem('token'); // if you're simulating token-based auth
+    localStorage.removeItem('token');
     this.isLoggedIn = false;
     this.userName = '';
-    this.cartCount = 0;
     this.router.navigate(['/']);
   }
 
@@ -68,18 +66,6 @@ export class NavbarComponent implements OnInit {
       this.userName = '';
       this.user = null;
     }
-  }
-
-  private loadCartCount(): void {
-    this.cartService.getCartItems().subscribe({
-      next: (items) => {
-        this.cartCount = items.reduce((total, item) => total + item.quantity, 0);
-      },
-      error: (err) => {
-        console.error('Failed to load cart count', err);
-        this.cartCount = 0;
-      }
-    });
   }
 
 }

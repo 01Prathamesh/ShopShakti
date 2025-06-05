@@ -1,0 +1,4 @@
+<a routerLink="/cart" class="cart-icon" routerLinkActive="active-link" *ngIf="isLoggedIn">
+  <i class="fas fa-shopping-cart"></i>
+  <span class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</span>
+</a>
