@@ -18,6 +18,9 @@ export interface Order {
   status: string;
   items: OrderItem[];
   totalAmount: number;
+  shippingFee: number;
+  tax: number;
+  paymentMethod: string;
 }
 
 @Injectable({

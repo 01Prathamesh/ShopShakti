@@ -1,1 +1,54 @@
-<p>order-management works!</p>
+<div class="order-management">
+  <h2>Manage Orders</h2>
+
+  <input
+    [(ngModel)]="searchQuery"
+    (input)="onSearch()"
+    placeholder="Search by status or user ID..."
+    class="search-input"
+  />
+
+  <div *ngIf="isLoading">Loading orders...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <table *ngIf="!isLoading && filteredOrders.length > 0">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>User ID</th>
+        <th>Status</th>
+        <th>Payment</th>
+        <th>Subtotal (₹)</th>
+        <th>Shipping (₹)</th>
+        <th>Tax (₹)</th>
+        <th>Total (₹)</th>
+        <th>Date</th>
+        <th>Items</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of filteredOrders">
+        <td>{{ order.id }}</td>
+        <td>{{ order.userId }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.paymentMethod }}</td>
+        <td>{{ calculateSubtotal(order) | number:'1.2-2' }}</td>
+        <td>{{ order.shippingFee }}</td>
+        <td>{{ order.tax }}</td>
+        <td>{{ order.totalAmount }}</td>
+        <td>{{ order.date | date: 'short' }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let item of order.items">
+              {{ item.name }} × {{ item.quantity }} (₹{{ item.price }})
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!isLoading && filteredOrders.length === 0">
+    No orders found.
+  </div>
+</div>
