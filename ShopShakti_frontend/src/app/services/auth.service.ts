@@ -18,6 +18,10 @@ export class AuthService {
     }
   }
 
+  getToken(): string | null {
+    return localStorage.getItem('token');
+  }
+
   login(userData: { id: number; name: string; email: string; role: string }) {
     this.user = {
       id: userData.id,
@@ -27,6 +31,12 @@ export class AuthService {
       role: userData.role
     };
     localStorage.setItem('user', JSON.stringify(this.user));
+  }
+
+  logout(): void {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    this.user = null;
   }
 
   isLoggedIn(): boolean {

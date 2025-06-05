@@ -38,14 +38,15 @@ export class LoginComponent {
 
     this.http.post<any>('https://localhost:7171/api/users/login', { email, password }).subscribe({
       next: (response) => {
-        localStorage.setItem('user', JSON.stringify(response));
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
 
         // Inform the AuthService
         this.authService.login({
-          id: response.id,
-          name: response.name,
-          email: response.email,
-          role: response.role || 'user'
+          id: response.user.id,
+          name: response.user.name,
+          email: response.user.email,
+          role: response.user.role || 'user'
         });
 
         this.router.navigate(['/']);
