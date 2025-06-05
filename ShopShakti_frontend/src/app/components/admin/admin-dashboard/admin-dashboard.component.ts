@@ -5,11 +5,12 @@ import { RouterModule } from '@angular/router';
 import { AdminService } from '../../../services/admin.service';
 import { ProductManagementComponent } from '../product-management/product-management.component';
 import { UserManagementComponent } from '../user-management/user-management.component';
+import { OrderManagementComponent } from '../order-management/order-management.component';
 
 @Component({
   standalone: true,
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, RouterModule, ProductManagementComponent, UserManagementComponent],
+  imports: [CommonModule, RouterModule, ProductManagementComponent, UserManagementComponent, OrderManagementComponent],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
@@ -27,6 +28,11 @@ export class AdminDashboardComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
 
+  // Toggle states
+  showProducts = false;
+  showUsers = false;
+  showOrders = false;
+
   constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
@@ -35,10 +41,16 @@ export class AdminDashboardComponent implements OnInit {
         this.metrics = data;
         this.isLoading = false;
       },
-      error: (error: any) => {
+      error: () => {
         this.errorMessage = 'Failed to load metrics.';
         this.isLoading = false;
       }
     });
+  }
+
+  toggle(section: 'products' | 'users' | 'orders'): void {
+    this.showProducts = section === 'products' ? !this.showProducts : false;
+    this.showUsers = section === 'users' ? !this.showUsers : false;
+    this.showOrders = section === 'orders' ? !this.showOrders : false;
   }
 }
