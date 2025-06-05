@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +46,10 @@ namespace ShopShakti_backend.Controllers
                 return BadRequest(new { message = "Invalid user data" });
             }
 
+            // Hash the password before storing
+            var hasher = new PasswordHasher<User>();
+            user.Password = hasher.HashPassword(user, user.Password);
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
@@ -88,10 +93,14 @@ namespace ShopShakti_backend.Controllers
             if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Email) || string.IsNullOrEmpty(loginRequest.Password))
                 return BadRequest(new { message = "Email and password are required." });
 
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == loginRequest.Email && u.Password == loginRequest.Password);
-
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginRequest.Email);
             if (user == null)
+                return Unauthorized(new { message = "Invalid email or password." });
+
+            var hasher = new PasswordHasher<User>();
+            var result = hasher.VerifyHashedPassword(user, user.Password, loginRequest.Password);
+
+            if (result == PasswordVerificationResult.Failed)
                 return Unauthorized(new { message = "Invalid email or password." });
 
             if (user.IsBlocked)
@@ -99,7 +108,15 @@ namespace ShopShakti_backend.Controllers
                 return StatusCode(403, new { message = "User is blocked by admin." });
             }
 
-            return Ok(user);
+            return Ok(new LoginResponseDto
+            {
+                Id = user.Id,
+                Name = user.Name,
+                Email = user.Email,
+                IsBlocked = user.IsBlocked,
+                ProfileImage = user.ProfileImage
+            });
+
         }
 
         // DELETE: api/users/1
