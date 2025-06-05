@@ -43,6 +43,7 @@ namespace ShopShakti_backend.Controllers
         }
 
         // POST: api/users
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<User>> CreateUser([FromBody] User user)
         {
@@ -92,6 +93,7 @@ namespace ShopShakti_backend.Controllers
         }
 
         // POST: api/users/login
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
