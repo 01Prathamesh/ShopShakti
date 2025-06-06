@@ -1,0 +1,9 @@
+<!-- Show only if user is admin -->
+<button 
+  *ngIf="isAdmin" 
+  class="admin-btn" 
+  (click)="goToAdminDashboard()" 
+  aria-label="Go to Admin Dashboard"
+>
+  🛠 <span class="btn-text">Admin Dashboard</span>
+</button>

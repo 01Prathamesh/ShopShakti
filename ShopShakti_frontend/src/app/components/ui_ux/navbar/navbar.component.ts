@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { CartButtonComponent } from '../cart-button/cart-button.component';
+import { AdminButtonComponent } from '../admin-button/admin-button.component';
 
 @Component({
   standalone: true,
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule, CartButtonComponent],
+  imports: [CommonModule, RouterModule, CartButtonComponent, AdminButtonComponent],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })

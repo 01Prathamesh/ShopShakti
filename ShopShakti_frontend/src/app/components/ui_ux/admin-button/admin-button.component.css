@@ -1,0 +1,44 @@
+.admin-btn {
+  background-color: #e91e63;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.admin-btn:hover {
+  background-color: #1d1f33;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.admin-btn:focus {
+  outline: 2px solid #8d99ae;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(141, 153, 174, 0.5);
+}
+
+.admin-btn:active {
+  background-color: #151627;
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 480px) {
+  .admin-btn {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .btn-text {
+    display: none; /* Show icon-only on small screens */
+  }
+}
