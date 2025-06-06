@@ -1,7 +1,7 @@
 .toast-container {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  bottom: 1rem;
+  left: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
@@ -15,7 +15,10 @@
   font-weight: 500;
   animation: fadeInOut 3s ease-in-out;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  min-width: 220px;
+  min-width: 240px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 .toast.success {
@@ -28,6 +31,16 @@
 
 .toast.info {
   background-color: #007bff;
+}
+
+.toast.warning {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.toast .icon {
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 @keyframes fadeInOut {

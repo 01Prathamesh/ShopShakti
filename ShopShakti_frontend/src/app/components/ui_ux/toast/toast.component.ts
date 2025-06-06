@@ -1,11 +1,10 @@
-import { Component, signal, computed, effect } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastService } from '../../../services/toast.service';
 
 interface Toast {
   id: number;
   message: string;
-  type: 'success' | 'error' | 'info';
+  type: 'success' | 'error' | 'info' | 'warning';
   duration?: number;
 }
 
@@ -26,5 +25,14 @@ export class ToastComponent {
     setTimeout(() => {
       this.toasts.update(t => t.filter(toast => toast.id !== id));
     }, duration);
+  }
+  getIcon(type: 'success' | 'error' | 'info' | 'warning'): string {
+    switch (type) {
+      case 'success': return '✔️';
+      case 'error': return '❌';
+      case 'info': return 'ℹ️';
+      case 'warning': return '⚠️';
+      default: return '';
+    }
   }
 }

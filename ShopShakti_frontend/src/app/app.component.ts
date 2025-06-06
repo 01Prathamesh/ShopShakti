@@ -22,4 +22,9 @@ export class AppComponent {
   ngAfterViewInit(): void {
     this.toastService.register(this.toastComp);
   }
+  
+  @ViewChild(ToastComponent)
+  set toast(toastComponent: ToastComponent) {
+    this.toastService.register(toastComponent);
+  }
 }

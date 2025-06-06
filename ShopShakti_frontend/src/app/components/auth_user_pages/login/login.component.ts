@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../../services/auth.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class LoginComponent {
   isSubmitted = false;
   errorMessage: string | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private router: Router, private authService: AuthService, private toastService: ToastService) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -49,15 +50,19 @@ export class LoginComponent {
           role: response.user.role || 'user'
         });
 
+        this.toastService.show('Login successful!', 'success');
         this.router.navigate(['/']);
       },
       error: (error) => {
         if (error.status === 401) {
           this.errorMessage = 'Invalid email or password.';
+          this.toastService.show('Invalid email or password.', 'error');
         } else if (error.status === 403) {
           this.errorMessage = error.error.message || 'You are blocked by admin.';
+          this.toastService.show(this.errorMessage || 'Something went wrong.', 'error');
         } else {
           this.errorMessage = 'Login failed. Please try again later.';
+          this.toastService.show(this.errorMessage, 'error');
         }
         console.error('Login error:', error);
       }

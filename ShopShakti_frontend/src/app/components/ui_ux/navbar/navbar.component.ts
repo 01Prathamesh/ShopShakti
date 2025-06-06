@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { CartButtonComponent } from '../cart-button/cart-button.component';
 import { AdminButtonComponent } from '../admin-button/admin-button.component';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -19,7 +20,7 @@ export class NavbarComponent implements OnInit {
   userName: string = '';
   user: any = null;
 
-  constructor(private router: Router, private cartService: CartService) {
+  constructor(private router: Router, private cartService: CartService,  private toastService: ToastService) {
     // Update login status when navigating
     this.router.events.subscribe(() => {
       this.checkLoginStatus();
@@ -52,6 +53,7 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('token');
     this.isLoggedIn = false;
     this.userName = '';
+    this.toastService.show('Logged out successfully.', 'info');
     this.router.navigate(['/']);
   }
 
