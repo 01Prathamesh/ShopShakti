@@ -68,31 +68,22 @@ namespace ShopShakti_backend.Controllers
 
         // PUT: api/users/1
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDto updateDto)
         {
-            if (user == null || id != user.Id)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
-                return BadRequest(new { message = "Invalid user data or ID mismatch" });
+                return NotFound(new { message = "User not found" });
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            // Only update the fields provided
+            if (updateDto.Name != null) user.Name = updateDto.Name;
+            if (updateDto.Address != null) user.Address = updateDto.Address;
+            if (updateDto.Phone != null) user.Phone = updateDto.Phone;
+            if (updateDto.ProfileImage != null) user.ProfileImage = updateDto.ProfileImage;
+            if (updateDto.IsBlocked.HasValue) user.IsBlocked = updateDto.IsBlocked.Value;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Users.Any(e => e.Id == id))
-                {
-                    return NotFound(new { message = "User not found" });
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

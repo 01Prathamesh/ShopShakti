@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../../services/profile.service';
 import { User } from '../../../models/user.model';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -21,7 +22,7 @@ export class ProfileComponent implements OnInit {
   originalUserData: User | null = null;
   selectedAvatar: string | null = null;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService, private authService: AuthService) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('user');
@@ -71,8 +72,13 @@ export class ProfileComponent implements OnInit {
       ...this.user,
       profileImage: this.previewImage || this.user.profileImage
     };
-
-    this.profileService.updateUserProfile(0, updatedUser).subscribe({
+    
+    const userId = this.authService.getCurrentUserId();
+    if (!userId) {
+      this.error = 'User not authenticated.';
+      return;
+    }
+    this.profileService.updateUserProfile(userId, updatedUser).subscribe({
       next: (updatedUser: User) => {
         this.user = updatedUser;
         this.isEditing = false;

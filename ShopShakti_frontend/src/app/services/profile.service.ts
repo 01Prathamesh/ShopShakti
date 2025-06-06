@@ -25,7 +25,7 @@ export class ProfileService {
    */
   updateUserProfile(id: number, updatedUser: Partial<User>): Observable<User> {
     return this.http
-      .put<User>(`${this.baseUrl}/profile`, updatedUser)
+      .put<User>(`${this.baseUrl}/${id}`, updatedUser)
       .pipe(catchError(this.handleError));
   }
 
