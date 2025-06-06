@@ -34,7 +34,8 @@ namespace ShopShakti_backend.Services
                 new Claim("id", user.Id.ToString()),
                 new Claim("email", user.Email),
                 new Claim("name", user.Name),
-                new Claim("isBlocked", user.IsBlocked.ToString().ToLower())
+                new Claim("isBlocked", user.IsBlocked.ToString().ToLower()),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var token = new JwtSecurityToken(

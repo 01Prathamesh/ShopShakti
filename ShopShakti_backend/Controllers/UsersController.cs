@@ -129,6 +129,7 @@ namespace ShopShakti_backend.Controllers
                     Id = user.Id,
                     Name = user.Name,
                     Email = user.Email,
+                    Role = user.Role,
                     IsBlocked = user.IsBlocked,
                     ProfileImage = user.ProfileImage
                 }

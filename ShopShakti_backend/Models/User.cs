@@ -27,4 +27,6 @@ public class User
     public string Password { get; set; }  // Still hash before storing
 
     public bool IsBlocked { get; set; } = false;
+
+    public string Role { get; set; } = "User";
 }
