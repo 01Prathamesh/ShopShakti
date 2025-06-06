@@ -10,16 +10,17 @@ namespace ShopShakti_backend.Models
         [Required]
         public int ProductId { get; set; }
 
+        [Required]
+        [StringLength(100)]
         public string Name { get; set; }
 
+        [Range(0.01, double.MaxValue)]
         public decimal Price { get; set; }
 
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
-        // ✅ Make optional so EF can fill it after the order is created
         public int? OrderId { get; set; }
-
-        // ✅ Optional navigation
         public Order? Order { get; set; }
     }
 }

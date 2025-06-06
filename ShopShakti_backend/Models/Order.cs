@@ -1,33 +1,37 @@
+using ShopShakti_backend.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShopShakti_backend.Models
+public class Order
 {
-    public class Order
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        [Required]
-        public int UserId { get; set; }
+    [Required]
+    public int UserId { get; set; }
 
-        public string Status { get; set; }
+    [Required]
+    [StringLength(50)]
+    public string Status { get; set; } = "Pending";
 
-        public DateTime OrderDate { get; set; }
+    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
 
-        public decimal TotalAmount { get; set; }
+    [Range(0, double.MaxValue)]
+    public decimal TotalAmount { get; set; }
 
-        public decimal ShippingFee { get; set; } = 0;
+    [Range(0, double.MaxValue)]
+    public decimal ShippingFee { get; set; } = 0;
 
-        public decimal Tax { get; set; } = 0;
+    [Range(0, double.MaxValue)]
+    public decimal Tax { get; set; } = 0;
 
-        public string PaymentMethod { get; set; } = "COD"; //Cash on Delivery, or any default
+    [Required]
+    [StringLength(20)]
+    public string PaymentMethod { get; set; } = "COD";
 
-        [NotMapped]
-        public decimal Subtotal => TotalAmount - ShippingFee - Tax;
+    [NotMapped]
+    public decimal Subtotal => TotalAmount - ShippingFee - Tax;
 
-        public List<OrderItem> Items { get; set; } = new();
+    public List<OrderItem> Items { get; set; } = new();
 
-        public User? User { get; set; }
-    }
-
+    public User? User { get; set; }
 }
