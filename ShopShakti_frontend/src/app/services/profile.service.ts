@@ -16,8 +16,8 @@ export class ProfileService {
   /**
    * Get the profile information of the user by ID.
    */
-  getUserProfileById(id: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
+  getUserProfile(): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/profile`);
   }
 
   /**
@@ -25,7 +25,7 @@ export class ProfileService {
    */
   updateUserProfile(id: number, updatedUser: Partial<User>): Observable<User> {
     return this.http
-      .put<User>(`${this.baseUrl}/${id}`, updatedUser)
+      .put<User>(`${this.baseUrl}/profile`, updatedUser)
       .pipe(catchError(this.handleError));
   }
 

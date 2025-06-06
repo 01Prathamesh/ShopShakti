@@ -23,14 +23,18 @@ namespace ShopShakti_backend.Controllers
             _tokenService = tokenService;
         }
 
-        // GET: api/users/1
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        //GET: api/users/profile
+        [HttpGet("profile")]
+        public async Task<ActionResult<User>> GetProfile()
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null) 
+            var claim = User.FindFirst("id")?.Value;
+            if (!int.TryParse(claim, out var userId))
+                return Unauthorized();
+
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
                 return NotFound(new { message = "User not found" });
-            
+
             return Ok(user);
         }
 
@@ -59,7 +63,7 @@ namespace ShopShakti_backend.Controllers
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(GetProfile), null, user);
         }
 
         // PUT: api/users/1

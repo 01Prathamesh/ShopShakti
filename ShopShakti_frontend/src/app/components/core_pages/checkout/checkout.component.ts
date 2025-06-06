@@ -42,7 +42,7 @@ export class CheckoutComponent implements OnInit {
     }
 
     // Fetch user profile
-    this.userService.getUserProfileById(userId).subscribe({
+    this.userService.getUserProfile().subscribe({
       next: (userData: User) => {
         this.user = userData;
         this.selectedAddress = userData.address || '';
