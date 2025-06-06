@@ -1,9 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
 using ShopShakti_backend.Models.DTOs;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ShopShakti_backend.Controllers
 {
@@ -19,10 +19,11 @@ namespace ShopShakti_backend.Controllers
             _context = context;
         }
 
-        private string? GetUserIdFromHeader()
+        private int? GetUserIdFromClaims()
         {
-            if (Request.Headers.TryGetValue("X-User-Id", out var userId))
-                return userId.ToString();
+            var claim = User.FindFirst("id")?.Value;
+            if (int.TryParse(claim, out var userId))
+                return userId;
             return null;
         }
 
@@ -30,9 +31,9 @@ namespace ShopShakti_backend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems()
         {
-            var userId = GetUserIdFromHeader();
+            var userId = GetUserIdFromClaims();
             if (userId == null)
-                return Unauthorized("User ID is missing");
+                return Unauthorized("User ID is missing or invalid");
 
             return await _context.CartItems
                 .Where(c => c.UserId == userId)
@@ -43,7 +44,7 @@ namespace ShopShakti_backend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<CartItem>> GetCartItem(int id)
         {
-            var userId = GetUserIdFromHeader();
+            var userId = GetUserIdFromClaims();
             if (userId == null)
                 return Unauthorized();
 
@@ -60,9 +61,9 @@ namespace ShopShakti_backend.Controllers
         [HttpPost]
         public async Task<ActionResult<CartItem>> PostCartItem([FromBody] CartItemCreateDto dto)
         {
-            var userId = GetUserIdFromHeader();
+            var userId = GetUserIdFromClaims();
             if (userId == null)
-                return Unauthorized("Missing user ID");
+                return Unauthorized("User ID is missing");
 
             var cartItem = new CartItem
             {
@@ -70,7 +71,7 @@ namespace ShopShakti_backend.Controllers
                 Price = dto.Price,
                 Quantity = dto.Quantity,
                 ImageUrl = dto.ImageUrl,
-                UserId = userId
+                UserId = userId.Value
             };
 
             _context.CartItems.Add(cartItem);
@@ -79,11 +80,11 @@ namespace ShopShakti_backend.Controllers
             return CreatedAtAction(nameof(GetCartItem), new { id = cartItem.Id }, cartItem);
         }
 
-        // POST: api/cartitems
+        // PUT: api/cartitems/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCartItem(int id, CartItem cartItem)
         {
-            var userId = GetUserIdFromHeader();
+            var userId = GetUserIdFromClaims();
             if (userId == null)
                 return Unauthorized();
 
@@ -110,7 +111,7 @@ namespace ShopShakti_backend.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCartItem(int id)
         {
-            var userId = GetUserIdFromHeader();
+            var userId = GetUserIdFromClaims();
             if (userId == null)
                 return Unauthorized();
 

@@ -17,6 +17,13 @@ namespace ShopShakti_backend.Controllers
         {
             _context = context;
         }
+        private int? GetUserIdFromClaims()
+        {
+            var claim = User.FindFirst("id")?.Value;
+            if (int.TryParse(claim, out var userId))
+                return userId;
+            return null;
+        }
 
         // GET: api/orders
         [HttpGet]
@@ -58,7 +65,7 @@ namespace ShopShakti_backend.Controllers
             // Clear cart items only if this was a cart checkout
             if (Request.Headers.TryGetValue("X-Clear-Cart", out var clearCartFlag) && clearCartFlag == "true")
             {
-                var userId = order.UserId.ToString();
+                var userId = order.UserId;
                 var cartItems = _context.CartItems.Where(c => c.UserId == userId);
                 _context.CartItems.RemoveRange(cartItems);
                 await _context.SaveChangesAsync();
@@ -104,9 +111,13 @@ namespace ShopShakti_backend.Controllers
         }
 
         // GET: api/orders/user/{id}
-        [HttpGet("user/{userId}")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersForUser(int userId)
+        [HttpGet("user")]
+        public async Task<ActionResult<IEnumerable<Order>>> GetOrdersForUser()
         {
+            var userId = GetUserIdFromClaims();
+            if (userId == null)
+                return Unauthorized();
+
             return await _context.Orders
                 .Include(o => o.Items)
                 .Where(o => o.UserId == userId)
