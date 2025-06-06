@@ -17,45 +17,10 @@ export class UserManagementComponent implements OnInit {
   searchQuery = '';
   isLoading = false;
   errorMessage = '';
-  expandedUserId: string | null = null;
-  editingUserId: string | null = null;
+  expandedUserId: number | null = null;
+  editingUserId: number | null = null;
   editForm: Partial<User> = {};
-
-
-  toggleDropdown(userId: string) {
-    if (this.expandedUserId === userId) {
-      this.expandedUserId = null;
-      this.editingUserId = null;
-    } else {
-      this.expandedUserId = userId;
-      this.editingUserId = null;
-    }
-  }
-  startEditing(user: User): void {
-    this.editingUserId = user.id;
-    this.editForm = { ...user }; // clone user data into form
-  }
-  saveUser(): void {
-    if (!this.editingUserId) return;
-
-    fetch(`https://localhost:7171/api/Users/${this.editingUserId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(this.editForm),
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Update failed');
-        this.loadUsers(); // reload user list
-        this.editingUserId = null;
-      })
-      .catch(err => {
-        console.error('Edit error:', err);
-        this.errorMessage = 'Failed to update user.';
-      });
-  }
-
-
-
+  selectedAvatar: string | null = null;
 
   constructor(private profileService: ProfileService) {}
 
@@ -67,23 +32,71 @@ export class UserManagementComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
 
-    fetch('https://localhost:7171/api/Users')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Failed to fetch users');
-        }
-        return res.json();
-      })
-      .then((data: User[]) => {
+    this.profileService.getAllUsers().subscribe({
+      next: (data) => {
         this.users = data;
         this.filteredUsers = data;
         this.isLoading = false;
-      })
-      .catch(err => {
-        console.error(err);
+      },
+      error: () => {
         this.errorMessage = 'Failed to load users.';
         this.isLoading = false;
+      }
+    });
+  }
+
+  toggleDropdown(userId: number) {
+    if (this.expandedUserId === userId) {
+      this.expandedUserId = null;
+      this.editingUserId = null;
+    } else {
+      this.expandedUserId = userId;
+      this.editingUserId = null;
+    }
+  }
+
+  startEditing(user: User): void {
+    this.editingUserId = user.id;
+    this.editForm = { ...user };
+  }
+
+  saveUser(): void {
+    if (this.editingUserId === null) return;
+
+    this.profileService.updateUserProfile(this.editingUserId, this.editForm).subscribe({
+      next: () => {
+        this.loadUsers();
+        this.editingUserId = null;
+      },
+      error: () => {
+        this.errorMessage = 'Failed to update user.';
+      }
+    });
+  }
+
+  deleteUser(id: number): void {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.profileService.deleteUser(id).subscribe({
+        next: () => {
+          this.users = this.users.filter(u => u.id !== id);
+          this.filteredUsers = this.filteredUsers.filter(u => u.id !== id);
+        },
+        error: () => {
+          this.errorMessage = 'Failed to delete user.';
+        }
       });
+    }
+  }
+
+  toggleBlockUser(user: User): void {
+    const updatedUser = { ...user, isBlocked: !user.isBlocked };
+
+    this.profileService.updateUserProfile(user.id, updatedUser).subscribe({
+      next: () => this.loadUsers(),
+      error: () => {
+        this.errorMessage = 'Failed to update user status.';
+      }
+    });
   }
 
   onSearch(): void {
@@ -94,52 +107,7 @@ export class UserManagementComponent implements OnInit {
     );
   }
 
-  editUser(user: User): void {
-    console.log('Editing user:', user);
-    // In a real app, you'd open a modal or navigate to an edit page
-    alert(`Edit user: ${user.name}`);
-  }
-
-  deleteUser(id: string): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      fetch(`https://localhost:7171/api/Users/${id}`, { method: 'DELETE' })
-        .then(res => {
-          if (!res.ok) {
-            throw new Error('Delete failed');
-          }
-          this.users = this.users.filter(u => u.id !== id);
-          this.filteredUsers = this.filteredUsers.filter(u => u.id !== id);
-        })
-        .catch(err => {
-          console.error(err);
-          this.errorMessage = 'Failed to delete user.';
-        });
-    }
-  }
-
-  toggleBlockUser(user: User): void {
-    const updatedUser = { ...user, isBlocked: !user.isBlocked };
-
-    fetch(`https://localhost:7171/api/Users/${user.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedUser),
-    })
-      .then(res => {
-        if (!res.ok) {
-          throw new Error('Failed to update block status');
-        }
-        this.loadUsers();
-      })
-      .catch(err => {
-        console.error(err);
-        this.errorMessage = 'Failed to update user status.';
-      });
-  }
-  selectedAvatar: string | null = null;
-
   onAvatarClick(imageUrl: string) {
     this.selectedAvatar = imageUrl;
   }
-
 }
