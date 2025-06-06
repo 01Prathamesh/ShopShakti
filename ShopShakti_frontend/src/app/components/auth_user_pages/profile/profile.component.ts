@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
   isEditing = false; // Track whether we are in edit mode
   previewImage: string | null = null; // For displaying image preview
   originalUserData: User | null = null; // To store the original data for cancel functionality
+  selectedAvatar: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -124,5 +125,9 @@ export class ProfileComponent implements OnInit {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  onAvatarClick(imageUrl: string): void {
+    this.selectedAvatar = imageUrl;
   }
 }

@@ -7,6 +7,7 @@
         alt="{{ user.name }}" 
         class="profile-image" 
         [attr.aria-label]="'Profile image of ' + user.name"
+        (click)="onAvatarClick(user.profileImage || 'assets/images/default-profile.png')"
       />
       <!-- Add Profile Image Upload -->
       <div *ngIf="isEditing">
@@ -92,3 +93,7 @@
     {{ error || 'Unable to load profile. Please try again later.' }}
   </div>
 </ng-template>
+<!-- Avatar Modal -->
+<div class="avatar-modal" *ngIf="selectedAvatar" (click)="selectedAvatar = null">
+  <img [src]="selectedAvatar" alt="Full-size profile image" />
+</div>
