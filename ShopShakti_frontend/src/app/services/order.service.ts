@@ -31,31 +31,23 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  // Place a new order
-  placeOrder(order: any, clearCart: boolean = false): Observable<any> {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const userId = user?.id;
-
-    const headers = new HttpHeaders({
-      'X-User-Id': userId,
-      ...(clearCart ? { 'X-Clear-Cart': 'true' } : {})
-    });
+  placeOrder(order: Order, clearCart: boolean = false): Observable<any> {
+    const headers = clearCart
+      ? new HttpHeaders({ 'X-Clear-Cart': 'true' })
+      : undefined;
 
     return this.http.post(this.baseUrl, order, { headers });
   }
 
-  // Get all orders
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.baseUrl);
   }
 
-  // Get a specific order by ID
   getOrderById(id: number): Observable<Order> {
     return this.http.get<Order>(`${this.baseUrl}/${id}`);
   }
 
-  getOrdersByUser(userId: number): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.baseUrl}/user/${userId}`);
+  getOrdersByUser(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.baseUrl}/user`);
   }
-
 }
