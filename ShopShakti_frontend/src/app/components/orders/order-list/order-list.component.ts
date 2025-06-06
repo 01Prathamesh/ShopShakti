@@ -27,7 +27,7 @@ export class OrderListComponent implements OnInit {
       return;
     }
 
-    this.orderService.getOrdersByUser(userId).subscribe({
+    this.orderService.getOrdersByUser().subscribe({
       next: (data) => {
         this.orders = data;
         this.orders = this.orders.sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime())

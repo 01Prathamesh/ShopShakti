@@ -54,7 +54,7 @@ export class ProfileComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.profileService.getUserProfileById(id).subscribe({
+    this.profileService.getUserProfileById(+id).subscribe({
       next: (data: User) => {
         this.user = data;
         this.originalUserData = { ...data }; // Store the original data for cancellation
@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit {
     };
 
     // Call the service to update the user profile
-    this.profileService.updateUserProfile(this.userId!, updatedUser).subscribe({
+    this.profileService.updateUserProfile(+this.userId!, updatedUser).subscribe({
       next: (updatedUser: User) => {
         this.user = updatedUser; // Update the profile data
         this.isEditing = false; // Switch back to view mode
