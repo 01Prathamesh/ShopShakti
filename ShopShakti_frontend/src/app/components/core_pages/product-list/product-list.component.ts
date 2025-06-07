@@ -42,7 +42,7 @@ export class ProductListComponent implements OnInit {
   }
 
   get uniqueCategories(): string[] {
-    return [...new Set(this.products.map(p => p.category))];
+    return [...new Set(this.products.map(p => p.category))].sort((a, b) => a.localeCompare(b));
   }
 
   filteredProducts(): Product[] {

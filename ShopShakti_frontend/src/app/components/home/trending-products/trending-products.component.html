@@ -1,11 +1,24 @@
-<section class="section product-grid">
-    <h2>Trending Now</h2>
-    <div class="grid">
-    <div class="card product" *ngFor="let product of trendingProducts">
-        <img [src]="product.imageUrl" [alt]="product.name" />
-        <h4>{{ product.name }}</h4>
-        <p class="price">₹{{ product.price }}</p>
-        <button class="secondary-btn">Buy Now</button>
+<div class="trending-products">
+  <h2>Trending Now</h2>
+
+  <div *ngIf="isLoading" class="loading">
+    <div class="shimmer-card" *ngFor="let i of [].constructor(8)"></div>
+  </div>
+
+  <div *ngIf="!isLoading && trendingProducts.length === 0" class="no-data">
+    <p>No trending products at the moment.</p>
+  </div>
+
+  <div class="grid" *ngIf="!isLoading && trendingProducts.length > 0">
+    <div
+      class="product-card"
+      *ngFor="let product of trendingProducts"
+      (click)="viewDetails(product.id)"
+    >
+      <img [src]="product.imageUrl" [alt]="product.name" />
+      <h3>{{ product.name }}</h3>
+      <p class="price">₹{{ product.price }}</p>
+      <button class="add-cart" (click)="addToCart(product, $event)">Add to Cart</button>
     </div>
-    </div>
-</section>
+  </div>
+</div>

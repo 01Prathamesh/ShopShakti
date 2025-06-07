@@ -1,53 +1,90 @@
-/* Trending Products Section */
-.section {
-  padding: 50px 20px;
+.trending-products {
+  padding: 2rem;
   text-align: center;
 }
 
-.product-grid .grid {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-/* Product Cards */
-.card {
-  background: #fff;
+.product-card {
+  background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 15px;
-  transition: transform 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease;
+  cursor: pointer;
 }
-.card:hover {
+
+.product-card:hover {
   transform: translateY(-5px);
 }
-.card img {
+
+.product-card img {
   width: 100%;
-  border-radius: 8px;
-}
-.card h4 {
-  margin: 10px 0 5px;
-}
-.card p {
-  font-weight: 500;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 0.8rem;
+  background-color: #f9f9f9;
+  border-radius: 6px;
 }
 
-/* Price styling */
+.product-card h3 {
+  font-size: 1rem;
+  margin: 0.3rem 0;
+  font-weight: 600;
+  color: #333;
+}
+
 .price {
   color: #e91e63;
   font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
 }
 
-/* Button styling */
-.secondary-btn {
-  padding: 10px 20px;
+.add-cart {
+  margin-top: auto;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 8px;
   background-color: #2196f3;
   color: white;
-  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
 }
-.secondary-btn:hover {
+
+.add-cart:hover {
   background-color: #1976d2;
+}
+
+/* Loading shimmer style */
+.loading .shimmer-card {
+  height: 300px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.no-data {
+  margin-top: 2rem;
+  font-size: 1rem;
+  color: #777;
 }
