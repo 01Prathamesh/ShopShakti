@@ -47,6 +47,14 @@ ShopShakti_frontend/
 │ │ │ │ ├── order-list/
 │ │ │ │ ├── order-summary/
 │ │ │ │ └── order-success/
+│ │ │ ├── staff/
+│ │ │ │ ├── staff-dashboard/                         
+│ │ │ │ ├── manage-tranding-products/               
+│ │ │ │ ├── manage-benefits/                        
+│ │ │ │ ├── manage-top-deals/                       
+│ │ │ │ ├── manage-customer-reviews/                
+│ │ │ │ ├── manage-featured-categories/             
+│ │ │ │ └── manage-newsletter-subscription/
 │ │ │ ├── home/
 │ │ │ │ ├── tranding-products/
 │ │ │ │ ├── featured-categories/
@@ -56,6 +64,8 @@ ShopShakti_frontend/
 │ │ │ │ └── newsletter-subscription/
 │ │ │ └── ui_ux/
 │ │ │   ├── navbar/
+│ │ │   ├── admin-button/
+│ │ │   ├── cart-button/
 │ │ │   ├── footer/
 │ │ │   ├── searchbar/
 │ │ │   ├── category-sidebar/
