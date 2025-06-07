@@ -10,6 +10,7 @@ import { CheckoutComponent } from './components/core_pages/checkout/checkout.com
 import { OrderSuccessComponent } from './components/orders/order-success/order-success.component';
 import { OrderListComponent } from './components/orders/order-list/order-list.component';
 import { OrderSummaryComponent } from './components/orders/order-summary/order-summary.component';
+import { StaffDashboardComponent } from './components/staff/staff-dashboard/staff-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -56,6 +57,7 @@ export const routes: Routes = [
     component: OrderSummaryComponent,
     canActivate: [canActivateUser]
   },
+  { path: 'staff', component: StaffDashboardComponent },
 
   { path: '**', redirectTo: '' }
 ];
