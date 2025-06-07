@@ -22,5 +22,9 @@ namespace ShopShakti_backend.Data
         // DbSet for Orders
         public DbSet<Order> Orders { get; set; }
 
+        //Db for TrendingProducts
+        public DbSet<TrendingProducts> TrendingProducts { get; set; }
+
+
     }
 }
