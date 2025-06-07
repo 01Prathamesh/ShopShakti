@@ -1,21 +1,23 @@
 /* -----------------------------
-   Container & Typography Styles
+   General Container & Typography
 ------------------------------ */
 .user-management {
   margin: 2rem auto;
   max-width: 1200px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #2c3e50;
-  background-color: #f9fafb;
-  padding: 1rem;
+  padding: 2rem;
+  background-color: #ffffff;
   border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', sans-serif;
+  color: #1f2937;
 }
 
 .user-management h1 {
-  font-size: 2.2rem;
+  font-size: 2.5rem;
+  font-weight: 700;
   text-align: center;
+  color: #111827;
   margin-bottom: 2rem;
-  color: #1a1a1a;
 }
 
 /* -----------------------------
@@ -24,90 +26,86 @@
 .search-input {
   width: 100%;
   max-width: 400px;
-  padding: 10px 14px;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
-  border: 1px solid #ccc;
   font-size: 1rem;
-  margin-bottom: 1.5rem;
-  transition: border-color 0.3s ease;
+  margin-bottom: 2rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .search-input:focus {
-  border-color: #007bff;
+  border-color: #2563eb;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
 /* -----------------------------
-   Table Container & Layout
+   User Table Layout
 ------------------------------ */
 .user-table {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
-/* Header row and each user row structure */
 .table-header,
 .table-row {
   display: grid;
-  grid-template-columns: 50px 60px 1.5fr 2fr 1.5fr 2fr 1.2fr 1.2fr;
-  gap: 10px;
+  grid-template-columns: 50px 60px 1.5fr 2fr 1.5fr 2fr 1.2fr 1.2fr auto;
+  gap: 12px;
   align-items: center;
-  background-color: #fff;
-  padding: 12px 16px;
+  padding: 14px 18px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
-  border: 1px solid #e1e1e1;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.03);
 }
 
 .table-header {
-  font-weight: bold;
-  background-color: #f1f3f5;
-  color: #444;
+  font-weight: 600;
+  background-color: #f3f4f6;
+  color: #374151;
 }
 
 /* -----------------------------
-   Avatar (Profile Image)
+   Avatar Styling
 ------------------------------ */
 .avatar {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  border: 1px solid #ccc;
+  object-fit: cover;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  border: 2px solid #e5e7eb;
+  transition: transform 0.2s;
 }
 
 .avatar:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
-/* Fullscreen avatar modal on click */
+/* Avatar Modal */
 .avatar-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.75);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  cursor: pointer;
 }
 
 .avatar-modal img {
   max-width: 90%;
   max-height: 90%;
   border-radius: 50%;
-  border: 6px solid white;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  border: 8px solid #ffffff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
   animation: popIn 0.3s ease-out;
-  background-color: white;
 }
 
-/* Simple pop animation */
+/* Modal animation */
 @keyframes popIn {
   from {
     transform: scale(0.7);
@@ -119,147 +117,140 @@
   }
 }
 
-/* Close avatar modal when clicked */
-.avatar-modal:after {
-  content: '×';
-  position: absolute;
-  top: 30px;
-  right: 40px;
-  font-size: 3rem;
-  color: #fff;
-  cursor: pointer;
-}
-
 /* -----------------------------
-   Dropdown (Modify) Actions
+   Dropdown and Actions
 ------------------------------ */
 .dropdown-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  padding: 12px 16px;
-  border: 1px solid #e1e1e1;
+  padding: 14px 18px;
+  background-color: #f1f5f9;
+  border: 1px solid #e5e7eb;
   border-top: none;
   border-radius: 0 0 10px 10px;
-  background-color: #f8f9fa;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
-  margin-top: -10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
 }
 
 .dropdown-content {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 10px;
-  flex-wrap: wrap;
+}
+
+/* -----------------------------
+   Edit Form
+------------------------------ */
+.edit-form-row {
+  padding: 18px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+}
+
+.edit-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.edit-form input,
+.edit-form select {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.edit-form input:focus,
+.edit-form select:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
 /* -----------------------------
    Buttons
 ------------------------------ */
 .btn {
-  padding: 6px 12px;
+  padding: 8px 14px;
+  font-size: 0.95rem;
   font-weight: 600;
-  font-size: 0.9rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  color: #fff;
+  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .btn.edit {
-  background-color: #17a2b8;
+  background-color: #3b82f6;
+  color: #fff;
 }
 .btn.edit:hover {
-  background-color: #138496;
+  background-color: #2563eb;
 }
 
 .btn.delete {
-  background-color: #dc3545;
+  background-color: #ef4444;
+  color: #fff;
 }
 .btn.delete:hover {
-  background-color: #bd2130;
+  background-color: #dc2626;
 }
 
 .btn.block {
-  background-color: #ffc107;
-  color: #212529;
+  background-color: #facc15;
+  color: #111827;
 }
 .btn.block:hover {
-  background-color: #e0a800;
+  background-color: #eab308;
 }
 .btn.block.blocked {
-  background-color: #6c757d;
-  color: #fff;
+  background-color: #9ca3af;
+  color: #ffffff;
 }
 .btn.block.blocked:hover {
-  background-color: #5a6268;
+  background-color: #6b7280;
 }
 
 .btn.save {
-  background-color: #28a745;
+  background-color: #10b981;
+  color: #ffffff;
 }
 .btn.save:hover {
-  background-color: #218838;
+  background-color: #059669;
 }
 
 .btn.cancel {
-  background-color: #6c757d;
+  background-color: #6b7280;
+  color: #ffffff;
 }
 .btn.cancel:hover {
-  background-color: #5a6268;
+  background-color: #4b5563;
 }
 
 /* -----------------------------
-   Edit Form Row Styling
------------------------------- */
-.edit-form-row {
-  background-color: #fdfdfd;
-  border: 1px solid #e1e1e1;
-  border-top: none;
-  border-radius: 0 0 10px 10px;
-  padding: 16px;
-  margin-top: -10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-}
-
-.edit-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
-}
-
-.edit-form input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-/* -----------------------------
-   Error Message Styling
+   Error Message
 ------------------------------ */
 .error {
-  color: #d9534f;
-  background-color: #fcebea;
-  border: 1px solid #f5c6cb;
-  padding: 10px 16px;
-  border-radius: 6px;
-  margin-bottom: 1rem;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: 1px solid #fca5a5;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
   max-width: 600px;
 }
 
 /* -----------------------------
-   Responsive Layout
+   Responsive Design
 ------------------------------ */
-@media (max-width: 992px) {
+@media (max-width: 1024px) {
   .table-header,
   .table-row {
-    grid-template-columns: 40px 50px 1fr 1.5fr 1fr 1.5fr 1fr 1fr;
-    font-size: 0.9rem;
-  }
-
-  .search-input {
-    width: 100%;
+    grid-template-columns: 40px 50px 1fr 1.5fr 1fr 1.5fr 1fr 1fr auto;
+    font-size: 0.95rem;
   }
 }
 
@@ -268,15 +259,13 @@
   .table-row {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+    gap: 8px;
     padding: 12px;
   }
 
   .dropdown-content,
   .edit-form {
     flex-direction: column;
-    align-items: stretch;
   }
 
   .btn {
@@ -284,8 +273,8 @@
   }
 
   .avatar {
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
   }
 
   .edit-form {
