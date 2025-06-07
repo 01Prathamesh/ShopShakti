@@ -2,7 +2,7 @@
     <h2>Trending Now</h2>
     <div class="grid">
     <div class="card product" *ngFor="let product of trendingProducts">
-        <img [src]="product.image" [alt]="product.name" />
+        <img [src]="product.imageUrl" [alt]="product.name" />
         <h4>{{ product.name }}</h4>
         <p class="price">₹{{ product.price }}</p>
         <button class="secondary-btn">Buy Now</button>
