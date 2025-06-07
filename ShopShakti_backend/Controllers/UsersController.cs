@@ -83,6 +83,12 @@ namespace ShopShakti_backend.Controllers
             if (updateDto.ProfileImage != null) user.ProfileImage = updateDto.ProfileImage;
             if (updateDto.IsBlocked.HasValue) user.IsBlocked = updateDto.IsBlocked.Value;
 
+            var callerRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+            if (callerRole == "Admin" && !string.IsNullOrEmpty(updateDto.Role))
+            {
+                user.Role = updateDto.Role;
+            }
+
             await _context.SaveChangesAsync();
             return NoContent();
         }

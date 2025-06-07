@@ -21,6 +21,7 @@
       <span>Phone</span>
       <span>Address</span>
       <span>Joined</span>
+      <span>Role</span>
       <span>Actions</span>
     </div>
 
@@ -34,6 +35,7 @@
         <span>{{ user.phone }}</span>
         <span>{{ user.address }}</span>
         <span>{{ user.joinedDate | date }}</span>
+        <span>{{ user.role }}</span>
         <div>
           <button class="btn edit" (click)="toggleDropdown(user.id)">
             {{ expandedUserId === user.id ? 'Undo' : 'Modify' }}
@@ -65,7 +67,11 @@
           <input [(ngModel)]="editForm.email" placeholder="Email" />
           <input [(ngModel)]="editForm.phone" placeholder="Phone" />
           <input [(ngModel)]="editForm.address" placeholder="Address" />
-
+          <select [(ngModel)]="editForm.role">
+            <option value="User">User</option>
+            <option value="Staff">Staff</option>
+            <option value="Admin">Admin</option>
+          </select>
           <button class="btn save" (click)="saveUser()">Save</button>
           <button class="btn cancel" (click)="editingUserId = null">Cancel</button>
         </div>

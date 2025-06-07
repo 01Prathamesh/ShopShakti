@@ -7,6 +7,7 @@
         public string? Phone { get; set; }
         public string? ProfileImage { get; set; }
         public bool? IsBlocked { get; set; }
+        public string? Role { get; set; }
     }
 
 }

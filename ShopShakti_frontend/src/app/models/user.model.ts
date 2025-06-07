@@ -7,4 +7,5 @@ export interface User {
   joinedDate: string;
   profileImage: string;
   isBlocked: boolean; 
+  role: string;
 }

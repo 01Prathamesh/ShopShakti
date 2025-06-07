@@ -57,7 +57,15 @@ export class UserManagementComponent implements OnInit {
 
   startEditing(user: User): void {
     this.editingUserId = user.id;
-    this.editForm = { ...user };
+    this.editForm = {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      address: user.address,
+      profileImage: user.profileImage,
+      isBlocked: user.isBlocked,
+      role: user.role || 'User'
+    };
   }
 
   saveUser(): void {

@@ -35,6 +35,7 @@ namespace ShopShakti_backend.Services
                 new Claim("email", user.Email),
                 new Claim("name", user.Name),
                 new Claim("isBlocked", user.IsBlocked.ToString().ToLower()),
+                new Claim("role", user.Role), 
                 new Claim(ClaimTypes.Role, user.Role)
             };
 
