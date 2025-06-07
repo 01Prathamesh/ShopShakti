@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -12,10 +13,12 @@ import { FormsModule } from '@angular/forms';
 export class SearchbarComponent {
   query: string = '';
 
+  constructor(private router: Router) {}
+
   search() {
-    if (this.query.trim()) {
-      console.log('Searching for:', this.query);
-      // Trigger your search service or router navigation here
+    const trimmed = this.query.trim();
+    if (trimmed) {
+      this.router.navigate(['/products'], { queryParams: { search: trimmed } });
     }
   }
 }

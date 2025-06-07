@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../services/cart.service';
 import { NewCartItem } from '../../../models/cart-item.model';
@@ -25,10 +25,22 @@ export class ProductListComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private cartService: CartService,
+    private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.loadProducts();
+
+    // Populate filters from query params on load
+    this.route.queryParams.subscribe(params => {
+      this.searchQuery = params['search'] || '';
+      this.selectedCategory = params['category'] || '';
+      this.sortOption = params['sort'] || '';
+    });
+  }
+
+  loadProducts(): void {
     this.productService.getAllProducts().subscribe({
       next: (data) => {
         this.products = data;
@@ -37,7 +49,7 @@ export class ProductListComponent implements OnInit {
       error: () => {
         this.errorMessage = 'Failed to load products. Please try again.';
         this.isLoading = false;
-      },
+      }
     });
   }
 
@@ -46,8 +58,10 @@ export class ProductListComponent implements OnInit {
   }
 
   filteredProducts(): Product[] {
+    let query = this.searchQuery.toLowerCase();
+
     let filtered = this.products.filter(p =>
-      p.name.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
+      (p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)) &&
       (this.selectedCategory ? p.category === this.selectedCategory : true)
     );
 
@@ -60,28 +74,44 @@ export class ProductListComponent implements OnInit {
     return filtered;
   }
 
-  viewDetails(productId: number) {
+
+  onSearch(): void {
+    // Sync current filters to URL
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        search: this.searchQuery || null,
+        category: this.selectedCategory || null,
+        sort: this.sortOption || null
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  viewDetails(productId: number): void {
     this.router.navigate(['/product', productId]);
   }
 
-  addToCart(product: Product, event: Event) {
+  addToCart(product: Product, event: Event): void {
+    event.stopPropagation();
+
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const userId = user?.id;
+
     if (!userId) {
       alert('Please log in to add items to the cart.');
       return;
     }
-    event.stopPropagation();
 
     const cartItem: NewCartItem = {
       name: product.name,
       price: product.price,
-      quantity: 1, // default quantity
+      quantity: 1,
       imageUrl: product.imageUrl
     };
 
     this.cartService.addCartItem(cartItem).subscribe({
-      next: () => alert(`${product.name} added to cart`),
+      next: () => alert(`${product.name} added to cart.`),
       error: (err) => {
         console.error('Add to cart failed:', err);
         alert(`Failed to add ${product.name} to cart. Please try again.`);

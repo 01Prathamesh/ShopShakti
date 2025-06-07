@@ -2,7 +2,7 @@
   <h2>Explore Products</h2>
 
   <div class="controls">
-    <input type="text" [(ngModel)]="searchQuery" placeholder="Search products..." />
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Search by name or category..." />
     <select [(ngModel)]="selectedCategory">
       <option value="">All Categories</option>
       <option *ngFor="let cat of uniqueCategories" [value]="cat">{{ cat }}</option>
