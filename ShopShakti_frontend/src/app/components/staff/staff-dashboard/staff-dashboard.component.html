@@ -1,25 +1,49 @@
-<h1>Staff Dashboard</h1>
+<div class="admin-dashboard">
+  <h1>Staff Dashboard</h1>
 
-<section>
-  <app-manage-tranding-products></app-manage-tranding-products>
-</section>
+  <div class="section-buttons">
+    <button (click)="toggle('trending')">
+      {{ showTrending ? 'Hide' : 'Show' }} Trending Products
+    </button>
+    <button (click)="toggle('benefits')">
+      {{ showBenefits ? 'Hide' : 'Show' }} Benefits
+    </button>
+    <button (click)="toggle('deals')">
+      {{ showDeals ? 'Hide' : 'Show' }} Top Deals
+    </button>
+    <button (click)="toggle('reviews')">
+      {{ showReviews ? 'Hide' : 'Show' }} Customer Reviews
+    </button>
+    <button (click)="toggle('categories')">
+      {{ showCategories ? 'Hide' : 'Show' }} Featured Categories
+    </button>
+    <button (click)="toggle('newsletter')">
+      {{ showNewsletter ? 'Hide' : 'Show' }} Newsletter
+    </button>
+    <button (click)="toggle('orderManage')">
+      {{ showOrderManagement ? 'Hide' : 'Show' }} Order Management
+    </button>
+  </div>
 
-<section>
-  <app-manage-benefits></app-manage-benefits>
-</section>
-
-<section>
-  <app-manage-top-deals></app-manage-top-deals>
-</section>
-
-<section>
-  <app-manage-customer-reviews></app-manage-customer-reviews>
-</section>
-
-<section>
-  <app-manage-featured-categories></app-manage-featured-categories>
-</section>
-
-<section>
-  <app-manage-newsletter-subscription></app-manage-newsletter-subscription>
-</section>
+  <div *ngIf="showTrending">
+    <app-manage-tranding-products></app-manage-tranding-products>
+  </div>
+  <div *ngIf="showBenefits">
+    <app-manage-benefits></app-manage-benefits>
+  </div>
+  <div *ngIf="showDeals">
+    <app-manage-top-deals></app-manage-top-deals>
+  </div>
+  <div *ngIf="showReviews">
+    <app-manage-customer-reviews></app-manage-customer-reviews>
+  </div>
+  <div *ngIf="showCategories">
+    <app-manage-featured-categories></app-manage-featured-categories>
+  </div>
+  <div *ngIf="showNewsletter">
+    <app-manage-newsletter-subscription></app-manage-newsletter-subscription>
+  </div>
+  <div *ngIf="showOrderManagement">
+    <app-order-management></app-order-management>
+  </div>
+</div>

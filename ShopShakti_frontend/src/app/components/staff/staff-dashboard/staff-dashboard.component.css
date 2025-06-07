@@ -1,12 +1,46 @@
-h1 {
+.admin-dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #2c3e50;
+  background-color: #f5f8fa;
+}
+
+.admin-dashboard h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
   text-align: center;
+  color: #1a1a1a;
+}
+
+.section-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
-section {
-  margin-bottom: 3rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  background: #f9f9f9;
+.section-buttons button {
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.1);
+}
+
+.section-buttons button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.section-buttons button:focus {
+  outline: 2px solid #0056b3;
+  outline-offset: 2px;
 }
