@@ -64,4 +64,3 @@ export class TrendingProductsComponent implements OnInit {
     });
   }
 }
-git 
