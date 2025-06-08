@@ -7,6 +7,8 @@ import { CartService } from '../../../services/cart.service';
 import { FormsModule } from '@angular/forms';
 import { CartItem, NewCartItem } from '../../../models/cart-item.model';
 import { AuthService } from '../../../services/auth.service';
+import { Review } from '../../../models/review.model';
+import { ReviewService } from '../../../services/review.service';
 
 @Component({
   standalone: true,
@@ -17,12 +19,13 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
-  products: Product[] = [];               // ✅ all products for filtering related
-  relatedProducts: Product[] = [];        // ✅ Related suggestions
+  products: Product[] = [];
+  relatedProducts: Product[] = [];
   quantity: number = 1;
   availability: string = 'In Stock';
   rating: number = 4.2;
-
+  reviews: Review[] = [];
+  newReview: Partial<Review> = { rating: 5, message: '' };
   isLoading = true;
   errorMessage = '';
   successMessage = '';
@@ -32,6 +35,7 @@ export class ProductDetailComponent implements OnInit {
     private productService: ProductService,
     private cartService: CartService,
     private authService: AuthService,
+    private reviewService: ReviewService,
     private router: Router
   ) {}
 
@@ -42,6 +46,7 @@ export class ProductDetailComponent implements OnInit {
         next: (data) => {
           this.product = data;
           this.isLoading = false;
+          this.loadReviews(data.id);
 
           // Fetch all products to filter related ones
           this.productService.getAllProducts().subscribe({
@@ -116,5 +121,39 @@ export class ProductDetailComponent implements OnInit {
 
   viewProduct(productId: number): void {
     this.router.navigate(['/products', productId]);
+  }
+
+  
+
+  loadReviews(productId: number): void {
+    this.reviewService.getProductReviews(productId).subscribe(reviews => this.reviews = reviews);
+  }
+
+  submitReview(): void {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user?.id) {
+      alert('Please login to review.');
+      return;
+    }
+
+    const review: Review = {
+      userId: user.id,
+      userName: user.name,
+      productId: this.product?.id,
+      message: this.newReview.message!,
+      rating: this.newReview.rating!,
+    };
+
+    this.reviewService.submit(review).subscribe({
+      next: () => {
+        this.loadReviews(this.product!.id);
+        this.newReview = { rating: 5, message: '' };
+        this.successMessage = 'Review submitted successfully!';
+        setTimeout(() => this.successMessage = '', 3000);
+      },
+      error: () => {
+        alert('Something went wrong. Try again.');
+      }
+    });
   }
 }

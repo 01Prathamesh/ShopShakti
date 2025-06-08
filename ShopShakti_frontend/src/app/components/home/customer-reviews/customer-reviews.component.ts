@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { Review } from '../../../models/review.model';
+import { ReviewService } from '../../../services/review.service';
 
 @Component({
   standalone: true,
@@ -9,11 +11,16 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './customer-reviews.component.html',
   styleUrl: './customer-reviews.component.css'
 })
-export class CustomerReviewsComponent {
-  constructor (public router: Router) {}
-  reviews = [
-    { name: 'Anjali R.', message: 'ShopShakti is my go-to for amazing discounts!' },
-    { name: 'Rahul K.', message: 'Fast delivery and genuine products!' },
-    { name: 'Neha P.', message: 'Customer service is super helpful and quick.' },
-  ];
+export class CustomerReviewsComponent implements OnInit {
+  reviews: Review[] = [];
+
+  constructor(private reviewService: ReviewService) {}
+
+  ngOnInit(): void {
+    this.reviewService.getPlatformReviews().subscribe(data => {
+    this.reviews = data.filter(r => r.isApprovedForHomepage);
+  });
+
+  }
+  
 }
