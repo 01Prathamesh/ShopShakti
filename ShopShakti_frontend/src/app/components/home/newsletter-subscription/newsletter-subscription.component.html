@@ -2,7 +2,9 @@
   <h2>Subscribe for Offers</h2>
   <p>Get exclusive deals and early access to new products</p>
   <div class="subscribe-box">
-    <input type="email" placeholder="Enter your email" />
-    <button class="primary-btn">Subscribe</button>
+    <input [(ngModel)]="email" type="email" placeholder="Enter your email" />
+    <button class="primary-btn" (click)="subscribe()">Subscribe</button>
   </div>
+  <p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
 </section>

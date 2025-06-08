@@ -1,1 +1,10 @@
-<p>manage-newsletter-subscription works!</p>
+<section class="manage-newsletter">
+  <h2>Newsletter Subscribers</h2>
+  <div *ngIf="subscribers.length === 0">No subscribers yet.</div>
+  <ul>
+    <li *ngFor="let sub of subscribers">
+      {{ sub.email }} — <small>{{ sub.subscribedAt | date:'medium' }}</small>
+      <button (click)="delete(sub.id)">Remove</button>
+    </li>
+  </ul>
+</section>
