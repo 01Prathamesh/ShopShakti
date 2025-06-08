@@ -37,5 +37,8 @@ namespace ShopShakti_backend.Data
         //Db for Newsletter Subscribers
         public DbSet<NewsletterSubscriber> NewsletterSubscribers { get; set; }
 
+        //Db for Benefits of ShopShakti Platform
+        public DbSet<Benefit> Benefits { get; set; }
+
     }
 }
