@@ -1,1 +1,31 @@
-<p>manage-top-deals works!</p>
+<section class="manage-top-deals">
+  <h2>Manage Top Deals</h2>
+
+  <form class="deal-form" (ngSubmit)="saveDeals()">
+    <div class="deal-input" *ngFor="let deal of topDeals; let i = index">
+      <div class="autocomplete">
+        <input
+          type="text"
+          [(ngModel)]="deal.name"
+          name="name{{ i }}"
+          placeholder="Product Name"
+          (input)="onProductNameChange(i, deal.name)"
+          (focus)="activeIndex = i"
+          (blur)="hideSuggestionsWithDelay()" />
+
+        <ul *ngIf="activeIndex === i" class="suggestion-list">
+          <li *ngFor="let suggestion of getSuggestions(deal.name)" (click)="selectSuggestion(i, suggestion)">
+            {{ suggestion }}
+          </li>
+        </ul>
+      </div>
+
+      <input type="text" [(ngModel)]="deal.imageUrl" name="image{{i}}" placeholder="Image URL" required />
+      <input type="number" [(ngModel)]="deal.price" name="price{{i}}" placeholder="Price" required />
+      <button type="button" (click)="removeDeal(i)">Remove</button>
+    </div>
+
+    <button type="button" (click)="addDeal()">+ Add Deal</button>
+    <button type="submit" [disabled]="topDeals.length === 0">Save Deals</button>
+  </form>
+</section>
