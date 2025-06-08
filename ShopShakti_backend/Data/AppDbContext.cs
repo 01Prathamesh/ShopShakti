@@ -34,5 +34,8 @@ namespace ShopShakti_backend.Data
         //Db for Reviews
         public DbSet<Review> Reviews { get; set; }
 
+        //Db for Newsletter Subscribers
+        public DbSet<NewsletterSubscriber> NewsletterSubscribers { get; set; }
+
     }
 }
