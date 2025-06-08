@@ -1,0 +1,150 @@
+.manage-benefits {
+  padding: 40px 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+  max-width: 1000px;
+  margin: 30px auto;
+  font-family: 'Inter', sans-serif;
+}
+
+.manage-benefits h2 {
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 30px;
+  padding-left: 12px;
+  border-left: 5px solid #e91e63;
+}
+
+/* ===== FORM STYLES ===== */
+.benefit-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+
+.benefit-form input[type="text"],
+.benefit-form textarea {
+  padding: 14px 16px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f9f9f9;
+  transition: border-color 0.3s ease, background-color 0.3s;
+}
+
+.benefit-form input:focus,
+.benefit-form textarea:focus {
+  border-color: #e91e63;
+  background: #fff;
+  outline: none;
+}
+
+.benefit-form label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #444;
+  margin-top: 6px;
+}
+
+/* Checkbox block */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+/* Submit button */
+.benefit-form button[type="submit"] {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 12px 26px;
+  background-color: #e91e63;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.benefit-form button:hover {
+  background-color: #d21658;
+}
+
+/* ===== LIST CARD STYLES ===== */
+.benefit-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.benefit-card {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.benefit-card i {
+  font-size: 28px;
+  color: #e91e63;
+  margin-bottom: 12px;
+}
+
+.benefit-card h4 {
+  font-size: 1.2rem;
+  color: #222;
+  margin: 5px 0 10px;
+}
+
+.benefit-card p {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.benefit-card label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+/* Delete button */
+.benefit-card button {
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  background-color: #ff5252;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.benefit-card button:hover {
+  background-color: #e53935;
+}
+
+/* ===== RESPONSIVE TWEAKS ===== */
+@media (max-width: 500px) {
+  .benefit-form {
+    grid-template-columns: 1fr;
+  }
+}
