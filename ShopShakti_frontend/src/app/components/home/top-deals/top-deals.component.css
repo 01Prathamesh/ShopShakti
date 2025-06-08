@@ -1,54 +1,54 @@
-/* Section Layout */
 .section {
-  padding: 50px 20px;
+  padding: 60px 20px;
+  text-align: center;
+  background: linear-gradient(to bottom, #fff, #f9f9f9);
+  font-family: 'Inter', sans-serif;
+}
+
+.section h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  justify-items: center;
+}
+
+.deal-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+  max-width: 240px;
   text-align: center;
 }
 
-/* Grid Layout */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
+.deal-card:hover {
+  transform: translateY(-4px);
 }
 
-/* Card Styling */
-.card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 15px;
-  transition: transform 0.3s;
-}
-.card:hover {
-  transform: translateY(-5px);
-}
-.card img {
+.deal-card img {
   width: 100%;
-  border-radius: 8px;
-}
-.card p {
-  margin-top: 10px;
-  font-weight: 500;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 10px;
 }
 
-/* Product Card Titles */
-.product h4 {
+.deal-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
   margin: 10px 0 5px;
+  color: #222;
 }
 
-/* Price Tag */
 .price {
+  font-size: 1.05rem;
   color: #e91e63;
-  font-weight: bold;
-}
-
-/* Button Styles */
-.secondary-btn {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #2196f3;
-  color: white;
+  font-weight: 600;
 }

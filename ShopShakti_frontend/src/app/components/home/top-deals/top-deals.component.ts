@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
+import { TopDeal } from '../../../models/top-deal.model';
+import { TopDealService } from '../../../services/top-deal.service';
 
 @Component({
   standalone: true,
@@ -10,11 +12,19 @@ import { Router, RouterModule } from '@angular/router';
   styleUrl: './top-deals.component.css'
 })
 export class TopDealsComponent {
-  constructor(public router: Router) {}
-  topDeals = [
-    { name: 'Smartphone', image: 'assets/images/deals/phone.jpg', price: 11999 },
-    { name: 'Sneakers', image: 'assets/images/deals/shoes.jpg', price: 2599 },
-    { name: 'Washing Machine', image: 'assets/images/deals/wash.jpg', price: 15999 },
-  ];
+  topDeals: TopDeal[] = [];
+
+  constructor(private topDealService: TopDealService, public router: Router) {}
+
+  ngOnInit(): void {
+    this.topDealService.getAll().subscribe({
+      next: (data) => this.topDeals = data,
+      error: () => console.error('Failed to load top deals')
+    });
+  }
+
+  goToProduct(deal: TopDeal): void {
+    this.router.navigate(['/product', deal.productId]);
+  }
 
 }

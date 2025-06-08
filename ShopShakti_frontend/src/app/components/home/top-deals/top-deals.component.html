@@ -1,11 +1,10 @@
-<section class="section deals">
-  <h2>Top Deals Today</h2>
+<section class="section top-deals">
+  <h2>Top Deals</h2>
   <div class="grid">
-    <div class="card product" *ngFor="let deal of topDeals">
-      <img [src]="deal.image" [alt]="deal.name" />
-      <h4>{{ deal.name }}</h4>
+    <div class="deal-card" *ngFor="let deal of topDeals" (click)="goToProduct(deal)">
+      <img [src]="deal.imageUrl" [alt]="deal.name" />
+      <h3>{{ deal.name }}</h3>
       <p class="price">₹{{ deal.price }}</p>
-      <button class="secondary-btn">Buy Now</button>
     </div>
   </div>
 </section>
