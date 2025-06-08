@@ -25,10 +25,10 @@ namespace ShopShakti_backend.Data
         //Db for TrendingProducts
         public DbSet<TrendingProducts> TrendingProducts { get; set; }
 
-        //Dv for Featured Category
+        //Db for Featured Category
         public DbSet<FeaturedCategory> FeaturedCategories { get; set; }
 
-
-
+        //Db for Top Deals
+        public DbSet<TopDeal> TopDeals { get; set; }
     }
 }
