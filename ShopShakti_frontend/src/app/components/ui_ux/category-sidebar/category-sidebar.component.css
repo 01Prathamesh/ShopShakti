@@ -5,8 +5,11 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   font-family: 'Inter', sans-serif;
   border: 1px solid #e0e0e0;
+  max-height: 80vh;
+  padding-right: 10px;
 }
 
+/* Heading style remains unchanged */
 .category-sidebar h3 {
   font-size: 1.5rem;
   color: #333;
@@ -15,12 +18,26 @@
   margin-bottom: 20px;
 }
 
+/* Scroll enabled on category list */
 .category-sidebar ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 5px;
 }
 
+/* Optional: prettier custom scrollbar */
+.category-sidebar ul::-webkit-scrollbar {
+  width: 6px;
+}
+.category-sidebar ul::-webkit-scrollbar-thumb {
+  background-color: #e91e63;
+  border-radius: 4px;
+}
+
+/* Category items */
 .category-sidebar li {
   padding: 12px 16px;
   border-radius: 8px;
@@ -31,6 +48,7 @@
   color: #444;
 }
 
+/* Active and hover styles */
 .category-sidebar li:hover,
 .category-sidebar li.active {
   background-color: #e91e63;

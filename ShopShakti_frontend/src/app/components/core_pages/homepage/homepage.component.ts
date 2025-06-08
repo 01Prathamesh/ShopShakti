@@ -10,6 +10,7 @@ import { BenefitsComponent } from '../../home/benefits/benefits.component';
 import { TopDealsComponent } from '../../home/top-deals/top-deals.component';
 import { CustomerReviewsComponent } from '../../home/customer-reviews/customer-reviews.component';
 import { NewsletterSubscriptionComponent } from '../../home/newsletter-subscription/newsletter-subscription.component';
+import { ProductService } from '../../../services/product.service';
 
 @Component({
   standalone: true,
@@ -20,6 +21,25 @@ import { NewsletterSubscriptionComponent } from '../../home/newsletter-subscript
 })
 
 export class HomepageComponent {
-  constructor(public router: Router) {}
+  categories: string[] = [];
 
+  constructor(
+    public router: Router,
+    private productService: ProductService
+  ) {}
+
+  ngOnInit(): void {
+    this.productService.getAllProducts().subscribe({
+      next: products => {
+        this.categories = [...new Set(products.map(p => p.category))].sort((a, b) => a.localeCompare(b));
+      },
+      error: err => {
+        console.error('Failed to fetch categories:', err);
+      }
+    });
+  }
+  onCategorySelected(category: string) {
+    const queryParams = { category };
+    this.router.navigate(['/products'], { queryParams });
+  }
 }
