@@ -30,5 +30,9 @@ namespace ShopShakti_backend.Data
 
         //Db for Top Deals
         public DbSet<TopDeal> TopDeals { get; set; }
+
+        //Db for Reviews
+        public DbSet<Review> Reviews { get; set; }
+
     }
 }
