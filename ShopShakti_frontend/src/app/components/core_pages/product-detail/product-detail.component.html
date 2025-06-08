@@ -68,8 +68,29 @@
 <!-- Reviews Section -->
 <div class="reviews">
   <h3>Customer Reviews</h3>
-  <p><em>Coming soon...</em></p>
-  <!-- Future enhancement: Add review form + display -->
+
+  <div *ngIf="reviews.length; else noReviews">
+    <div *ngFor="let r of reviews" class="review">
+      <strong>{{ r.userName }}</strong>
+      <span class="rating">★ {{ r.rating }}</span>
+      <p>{{ r.message }}</p>
+    </div>
+  </div>
+  <ng-template #noReviews>
+    <p>No reviews yet.</p>
+  </ng-template>
+
+  <!-- Review Form -->
+  <form (ngSubmit)="submitReview()" class="review-form">
+    <label>
+      Rating:
+      <select [(ngModel)]="newReview.rating" name="rating">
+        <option *ngFor="let r of [5,4,3,2,1]" [value]="r">{{ r }}</option>
+      </select>
+    </label>
+    <textarea [(ngModel)]="newReview.message" name="message" placeholder="Write your review" required></textarea>
+    <button type="submit">Submit Review</button>
+  </form>
 </div>
 
 <!-- State Handling -->
