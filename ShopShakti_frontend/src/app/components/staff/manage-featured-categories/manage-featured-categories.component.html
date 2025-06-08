@@ -1,1 +1,20 @@
-<p>manage-featured-categories works!</p>
+<section class="featured-admin">
+  <h2>Manage Featured Categories</h2>
+  <button class="save-btn" (click)="saveFeaturedCategories()" [disabled]="isSaving">
+    {{ isSaving ? 'Saving...' : 'Save Featured Categories' }}
+  </button>
+
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+
+  <div class="grid" *ngIf="!isLoading">
+    <div
+      class="card"
+      *ngFor="let cat of categories"
+      (click)="toggleCategory(cat.name)"
+      [class.selected]="isSelected(cat.name)">
+      <img [src]="cat.imageUrl" [alt]="cat.name" />
+      <p>{{ cat.name }}</p>
+    </div>
+  </div>
+
+</section>
