@@ -1,0 +1,105 @@
+.manage-reviews-container {
+  padding: 40px 20px;
+  font-family: 'Inter', sans-serif;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+.manage-reviews-container h2 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  border-left: 5px solid #e91e63;
+  padding-left: 12px;
+  color: #333;
+}
+
+.review-section {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-bottom: 30px;
+}
+
+.review {
+  border-bottom: 1px solid #eee;
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.review:last-child {
+  border-bottom: none;
+}
+
+.review-content {
+  max-width: 80%;
+}
+
+.review-content strong {
+  font-weight: 600;
+  color: #222;
+}
+
+.review-content p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.review .rating {
+  font-weight: 500;
+  color: #f1c40f;
+  font-size: 1rem;
+}
+
+.review .product-id {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 4px;
+}
+
+.review-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.review-actions button {
+  padding: 6px 14px;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.review-actions button:first-child {
+  background-color: #2874f0;
+  color: white;
+}
+
+.review-actions button:first-child:hover {
+  background-color: #1a5fd0;
+}
+
+.review-actions button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+.review-actions button:last-child:hover {
+  background-color: #c82333;
+}
+
+.badge-approved {
+  display: inline-block;
+  background-color: #28a745;
+  color: white;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-left: 8px;
+}

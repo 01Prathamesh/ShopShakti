@@ -4,6 +4,8 @@ import { ProfileService } from '../../../services/profile.service';
 import { User } from '../../../models/user.model';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
+import { ReviewService } from '../../../services/review.service';
+import { Review } from '../../../models/review.model';
 
 @Component({
   standalone: true,
@@ -21,8 +23,9 @@ export class ProfileComponent implements OnInit {
   previewImage: string | null = null;
   originalUserData: User | null = null;
   selectedAvatar: string | null = null;
+  platformReview: Partial<Review> = { rating: 5, message: '' };
 
-  constructor(private profileService: ProfileService, private authService: AuthService) {}
+  constructor(private profileService: ProfileService, private authService: AuthService, private reviewService: ReviewService) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('user');
@@ -114,5 +117,25 @@ export class ProfileComponent implements OnInit {
 
   onAvatarClick(imageUrl: string): void {
     this.selectedAvatar = imageUrl;
+  }
+
+  submitPlatformReview(): void {
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!user?.id || !this.platformReview.message) return;
+
+    const review: Review = {
+      userId: user.id,
+      userName: user.name,
+      message: this.platformReview.message!,
+      rating: this.platformReview.rating!,
+    };
+
+    this.reviewService.submit(review).subscribe({
+      next: () => {
+        this.platformReview = { rating: 5, message: '' };
+        alert('Thank you for your feedback!');
+      },
+      error: () => alert('Failed to submit review. Try again later.')
+    });
   }
 }

@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   padding: 40px 20px;
-  background-color: #f8f9fa;
+  background: linear-gradient(to right, #fce4ec, #f8f9fa);
   min-height: 100vh;
 }
 
@@ -177,6 +177,53 @@
   font-size: 1.1rem;
   color: #e91e63;
   margin-top: 20px;
+}
+
+/* Platform Review Section */
+.platform-review {
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.platform-review h3 {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+  color: #222;
+}
+
+.platform-review label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+.platform-review select,
+.platform-review textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.platform-review button {
+  background-color: #e91e63;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.platform-review button:hover {
+  background-color: #d81b60;
 }
 
 /* Responsive Styles */

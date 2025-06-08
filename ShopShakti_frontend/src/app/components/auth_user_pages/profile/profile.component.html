@@ -77,6 +77,22 @@
       </button>
     </div>
 
+    <!-- PLATFORM REVIEW SECTION -->
+    <section class="platform-review">
+      <h3>Leave a Review for ShopShakti</h3>
+      <form (ngSubmit)="submitPlatformReview()" *ngIf="user">
+        <label for="rating">Rating:</label>
+        <select [(ngModel)]="platformReview.rating" name="rating" required>
+          <option *ngFor="let r of [5,4,3,2,1]" [value]="r">{{ r }}</option>
+        </select>
+
+        <label for="message">Message:</label>
+        <textarea [(ngModel)]="platformReview.message" name="message" rows="3" required></textarea>
+
+        <button class="primary-btn" type="submit">Submit Review</button>
+      </form>
+    </section>
+
   </div>
 </section>
 

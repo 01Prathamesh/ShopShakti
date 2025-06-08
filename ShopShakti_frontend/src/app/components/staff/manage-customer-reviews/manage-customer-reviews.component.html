@@ -1,1 +1,36 @@
-<p>manage-customer-reviews works!</p>
+<div class="manage-reviews-container">
+
+  <h2>Platform Reviews</h2>
+  <div class="review-section">
+    <div *ngFor="let r of platformReviews" class="review">
+      <div class="review-content">
+        <strong>{{ r.userName }}</strong>
+        <span class="rating">★ {{ r.rating }}</span>
+        <span *ngIf="r.isApprovedForHomepage" class="badge-approved">Approved</span>
+        <p>{{ r.message }}</p>
+      </div>
+      <div class="review-actions">
+        <button (click)="toggleApproval(r)">
+          {{ r.isApprovedForHomepage ? 'Unapprove' : 'Approve for Homepage' }}
+        </button>
+        <button (click)="deleteReview(r.id!)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <h2>Product Reviews</h2>
+  <div class="review-section">
+    <div *ngFor="let r of productReviews" class="review">
+      <div class="review-content">
+        <strong>{{ r.userName }}</strong>
+        <span class="rating">★ {{ r.rating }}</span>
+        <div class="product-id">Product ID: {{ r.productId }}</div>
+        <p>{{ r.message }}</p>
+      </div>
+      <div class="review-actions">
+        <button (click)="deleteReview(r.id!)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+</div>
