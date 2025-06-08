@@ -20,7 +20,7 @@
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
   <div class="grid">
-    <div class="product-card" *ngFor="let product of filteredProducts()" (click)="viewDetails(product.id)">
+    <div class="product-card" *ngFor="let product of paginatedProducts" (click)="viewDetails(product.id)">
       <img [src]="product.imageUrl" alt="{{ product.name }}" />
       <h3>{{ product.name }}</h3>
       <p class="price">₹{{ product.price }}</p>
@@ -28,4 +28,25 @@
       <button class="add-cart" (click)="addToCart(product, $event)">Add to Cart</button>
     </div>
   </div>
+
+  <!-- Pagination controls -->
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">«</button>
+
+    <button *ngIf="currentPage > 3" (click)="changePage(1)">1</button>
+    <span *ngIf="currentPage > 4">...</span>
+
+    <button *ngFor="let page of visiblePageNumbers"
+            [class.active]="page === currentPage"
+            (click)="changePage(page)">
+      {{ page }}
+    </button>
+
+    <span *ngIf="currentPage < totalPages - 3">...</span>
+    <button *ngIf="currentPage < totalPages - 2" (click)="changePage(totalPages)">{{ totalPages }}</button>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">»</button>
+  </div>
+
+
 </div>

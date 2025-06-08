@@ -21,6 +21,9 @@ export class ProductListComponent implements OnInit {
   searchQuery = '';
   selectedCategory = '';
   sortOption = '';
+  currentPage = 1;
+  itemsPerPage = 12;
+
 
   constructor(
     private productService: ProductService,
@@ -118,5 +121,36 @@ export class ProductListComponent implements OnInit {
       }
     });
   }
+
+  get paginatedProducts(): Product[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return this.filteredProducts().slice(start, end);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.filteredProducts().length / this.itemsPerPage);
+  }
+
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+  get visiblePageNumbers(): number[] {
+    const total = this.totalPages;
+    const current = this.currentPage;
+    const range = 2; // Show ±2 pages around current
+
+    let start = Math.max(current - range, 1);
+    let end = Math.min(current + range, total);
+
+    // Shift window if near start/end
+    if (current <= range) end = Math.min(5, total);
+    if (current >= total - range + 1) start = Math.max(total - 4, 1);
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }
+
 
 }

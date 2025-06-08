@@ -4,41 +4,103 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  justify-items: center;
+  padding: 20px 0;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pagination button.active {
+  background: #e91e63;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .product-card {
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 18px 14px;
+  width: 100%;
+  max-width: 300px;
+  min-height: 420px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-align: center;
-  padding: 1rem;
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .product-card:hover {
-  transform: translateY(-5px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
 }
 
 .product-card img {
   width: 100%;
-  height: 180px;
+  height: 200px;
   object-fit: contain;
-  margin-bottom: 0.8rem;
-  background-color: #f9f9f9;
-  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.product-card img:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.product-card h3 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 4px 0;
+  height: 36px;
+  overflow: hidden;
+  color: #333;
 }
 
 .price {
-  color: #2874f0;
-  font-weight: bold;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #388e3c; /* Green like Flipkart */
+}
+
+.original-price {
+  text-decoration: line-through;
+  font-size: 0.8rem;
+  color: #888;
+  margin-left: 6px;
+}
+
+.discount {
+  font-size: 0.75rem;
+  color: #d32f2f;
+  font-weight: 600;
+  margin-left: 4px;
 }
 
 .category {
-  font-size: 0.9rem;
-  color: #777;
+  font-size: 0.75rem;
+  color: #666;
 }
 
 .controls {
@@ -69,17 +131,32 @@
 }
 
 .add-cart {
-  margin-top: 0.5rem;
-  padding: 0.4rem 0.8rem;
-  border: none;
-  background-color: #ff5722;
+  font-size: 0.8rem;
+  background-color: #ff9f00;
   color: white;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.3s ease;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  margin-top: 8px;
+  transition: background 0.2s;
 }
 
 .add-cart:hover {
-  background-color: #e64a19;
+  background-color: #fb641b;
+}
+
+
+.rating-badge {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.rating {
+  background-color: #388e3c;
+  color: white;
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
 }
