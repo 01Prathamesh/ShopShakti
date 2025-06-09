@@ -1,0 +1,9 @@
+<!-- Show only if user is Staff or Admin -->
+<button 
+  *ngIf="isStaffOrAdmin" 
+  class="staff-btn" 
+  (click)="goToStaffDashboard()" 
+  aria-label="Go to Staff Dashboard"
+>
+  🛒 <span class="btn-text">Staff Dashboard</span>
+</button>
