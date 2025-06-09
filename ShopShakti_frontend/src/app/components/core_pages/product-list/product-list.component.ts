@@ -6,6 +6,7 @@ import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CartService } from '../../../services/cart.service';
 import { NewCartItem } from '../../../models/cart-item.model';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -24,18 +25,16 @@ export class ProductListComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 12;
 
-
   constructor(
     private productService: ProductService,
     private cartService: CartService,
+    private toastService: ToastService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadProducts();
-
-    // Populate filters from query params on load
     this.route.queryParams.subscribe(params => {
       this.searchQuery = params['search'] || '';
       this.selectedCategory = params['category'] || '';
@@ -50,8 +49,9 @@ export class ProductListComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        this.errorMessage = 'Failed to load products. Please try again.';
+        this.errorMessage = 'Failed to load products.';
         this.isLoading = false;
+        this.toastService.show(this.errorMessage, 'error', 4000);
       }
     });
   }
@@ -62,7 +62,6 @@ export class ProductListComponent implements OnInit {
 
   filteredProducts(): Product[] {
     let query = this.searchQuery.toLowerCase();
-
     let filtered = this.products.filter(p =>
       (p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)) &&
       (this.selectedCategory ? p.category === this.selectedCategory : true)
@@ -77,9 +76,7 @@ export class ProductListComponent implements OnInit {
     return filtered;
   }
 
-
   onSearch(): void {
-    // Sync current filters to URL
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
@@ -99,10 +96,8 @@ export class ProductListComponent implements OnInit {
     event.stopPropagation();
 
     const user = JSON.parse(localStorage.getItem('user') || '{}');
-    const userId = user?.id;
-
-    if (!userId) {
-      alert('Please log in to add items to the cart.');
+    if (!user?.id) {
+      this.toastService.show('Please log in to add items to the cart.', 'error');
       return;
     }
 
@@ -114,11 +109,8 @@ export class ProductListComponent implements OnInit {
     };
 
     this.cartService.addCartItem(cartItem).subscribe({
-      next: () => alert(`${product.name} added to cart.`),
-      error: (err) => {
-        console.error('Add to cart failed:', err);
-        alert(`Failed to add ${product.name} to cart. Please try again.`);
-      }
+      next: () => this.toastService.show(`${product.name} added to cart.`, 'success'),
+      error: () => this.toastService.show(`Failed to add ${product.name} to cart.`, 'error')
     });
   }
 
@@ -137,20 +129,15 @@ export class ProductListComponent implements OnInit {
       this.currentPage = page;
     }
   }
+
   get visiblePageNumbers(): number[] {
     const total = this.totalPages;
     const current = this.currentPage;
-    const range = 2; // Show ±2 pages around current
-
+    const range = 2;
     let start = Math.max(current - range, 1);
     let end = Math.min(current + range, total);
-
-    // Shift window if near start/end
     if (current <= range) end = Math.min(5, total);
     if (current >= total - range + 1) start = Math.max(total - 4, 1);
-
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
-
-
 }
