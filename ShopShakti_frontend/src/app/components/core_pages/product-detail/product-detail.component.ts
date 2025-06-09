@@ -65,6 +65,10 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
+  getRoundedRating(): number {
+    return Math.round(this.rating);
+  }
+
   getRelatedProducts(category: string, currentId: number): Product[] {
     return this.products.filter(p => p.category === category && p.id !== currentId).slice(0, 3);
   }
