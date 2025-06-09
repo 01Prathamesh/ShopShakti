@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -17,7 +18,7 @@ export class RegisterComponent {
   successMessage = '';
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private toastService: ToastService) {
     this.registerForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -52,18 +53,18 @@ export class RegisterComponent {
       address: '',
       joinedDate: new Date().toISOString(),
       profileImage: '',
-      password: formValues.password  // <-- Add this field
+      password: formValues.password
     };
 
     this.http.post('https://localhost:7171/api/users', newUser).subscribe({
-      next: (response) => {
+      next: () => {
         this.successMessage = 'Registration successful!';
+        this.toastService.show(this.successMessage, 'success');
         this.registerForm.reset();
         this.isSubmitted = false;
       },
       error: (error) => {
         console.error('Registration error:', error);
-        // Display detailed validation errors if available
         if (error.error && error.error.errors) {
           this.errorMessage = '';
           for (const key in error.error.errors) {
@@ -74,6 +75,7 @@ export class RegisterComponent {
         } else {
           this.errorMessage = 'Registration failed. Please try again.';
         }
+        this.toastService.show(this.errorMessage, 'error', 4000);
       }
     });
   }

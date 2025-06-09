@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ReviewService } from '../../../services/review.service';
 import { Review } from '../../../models/review.model';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -25,7 +26,12 @@ export class ProfileComponent implements OnInit {
   selectedAvatar: string | null = null;
   platformReview: Partial<Review> = { rating: 5, message: '' };
 
-  constructor(private profileService: ProfileService, private authService: AuthService, private reviewService: ReviewService) {}
+  constructor(
+    private profileService: ProfileService,
+    private authService: AuthService,
+    private reviewService: ReviewService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     const token = localStorage.getItem('user');
@@ -49,11 +55,13 @@ export class ProfileComponent implements OnInit {
         this.user = data;
         this.originalUserData = { ...data };
         this.loading = false;
+        this.toastService.show('Profile loaded successfully!', 'success');
       },
       error: (err) => {
         console.error('Error loading profile:', err);
         this.error = 'Failed to load user profile. Please refresh or try again later.';
         this.loading = false;
+        this.toastService.show(this.error, 'error', 4000);
       }
     });
   }
@@ -75,7 +83,7 @@ export class ProfileComponent implements OnInit {
       ...this.user,
       profileImage: this.previewImage || this.user.profileImage
     };
-    
+
     const userId = this.authService.getCurrentUserId();
     if (!userId) {
       this.error = 'User not authenticated.';
@@ -87,11 +95,13 @@ export class ProfileComponent implements OnInit {
         this.isEditing = false;
         this.previewImage = null;
         this.loading = false;
+        this.toastService.show('Profile updated successfully!', 'success');
       },
       error: (err) => {
         console.error('Error saving profile:', err);
         this.error = 'Failed to save profile. Please try again later.';
         this.loading = false;
+        this.toastService.show(this.error, 'error', 4000);
       }
     });
   }
@@ -133,9 +143,11 @@ export class ProfileComponent implements OnInit {
     this.reviewService.submit(review).subscribe({
       next: () => {
         this.platformReview = { rating: 5, message: '' };
-        alert('Thank you for your feedback!');
+        this.toastService.show('Thank you for your feedback!', 'success');
       },
-      error: () => alert('Failed to submit review. Try again later.')
+      error: () => {
+        this.toastService.show('Failed to submit review. Try again later.', 'error', 4000);
+      }
     });
   }
 }
