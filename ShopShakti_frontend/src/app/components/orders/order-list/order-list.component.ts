@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../services/order.service';
 import { RouterModule } from '@angular/router';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -13,16 +14,15 @@ import { RouterModule } from '@angular/router';
 export class OrderListComponent implements OnInit {
   orders: any[] = [];
   isLoading = true;
-  
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private toast: ToastService) {}
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const userId = user?.id;
 
     if (!userId) {
-      console.error('User not logged in.');
+      this.toast.show('Please log in to view orders.', 'error');
       this.isLoading = false;
       return;
     }
@@ -30,11 +30,11 @@ export class OrderListComponent implements OnInit {
     this.orderService.getOrdersByUser().subscribe({
       next: (data) => {
         this.orders = data;
-        this.orders = this.orders.sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime())
+        this.orders = this.orders.sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Failed to load orders', err);
+      error: () => {
+        this.toast.show('Failed to load orders.', 'error');
         this.isLoading = false;
       }
     });

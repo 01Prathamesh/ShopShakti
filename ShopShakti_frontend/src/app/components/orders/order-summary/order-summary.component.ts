@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../services/order.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -16,14 +17,15 @@ export class OrderSummaryComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
     const orderId = Number(this.route.snapshot.paramMap.get('id'));
 
     if (!orderId) {
-      console.error('Invalid order ID.');
+      this.toast.show('Invalid order ID.', 'error');
       this.isLoading = false;
       return;
     }
@@ -40,7 +42,7 @@ export class OrderSummaryComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        console.error('Order not found.');
+        this.toast.show('Order not found.', 'error');
         this.isLoading = false;
       }
     });
