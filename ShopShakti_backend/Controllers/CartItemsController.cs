@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShopShakti.Models.Dto;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
 using ShopShakti_backend.Models.DTOs;
@@ -82,14 +83,11 @@ namespace ShopShakti_backend.Controllers
 
         // PUT: api/cartitems/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCartItem(int id, CartItem cartItem)
+        public async Task<IActionResult> UpdateCartItemQuantity(int id, [FromBody] CartItemUpdateQuantityDto dto)
         {
             var userId = GetUserIdFromClaims();
             if (userId == null)
                 return Unauthorized();
-
-            if (id != cartItem.Id)
-                return BadRequest();
 
             var existingItem = await _context.CartItems
                 .FirstOrDefaultAsync(ci => ci.Id == id && ci.UserId == userId);
@@ -97,10 +95,7 @@ namespace ShopShakti_backend.Controllers
             if (existingItem == null)
                 return NotFound();
 
-            existingItem.Quantity = cartItem.Quantity;
-            existingItem.Name = cartItem.Name;
-            existingItem.Price = cartItem.Price;
-            existingItem.ImageUrl = cartItem.ImageUrl;
+            existingItem.Quantity = dto.Quantity;
 
             await _context.SaveChangesAsync();
 

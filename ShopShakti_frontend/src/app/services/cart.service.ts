@@ -37,6 +37,12 @@ export class CartService {
     );
   }
 
+  updateCartItemQuantity(id: number, quantity: number): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, { quantity }).pipe(
+      tap(() => this.refreshCartCount())
+    );
+  }
+
   removeCartItem(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
       tap(() => this.refreshCartCount())

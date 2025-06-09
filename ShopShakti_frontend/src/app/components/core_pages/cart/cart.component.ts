@@ -46,14 +46,14 @@ export class CartComponent implements OnInit {
     if (item.quantity <= 0) {
       this.removeItem(item.id);
     } else {
-      this.cartService.updateCartItem(item).subscribe({
+      this.cartService.updateCartItemQuantity(item.id, item.quantity).subscribe({
         next: () => {
           this.loadCartItems();
-          this.toastService.show('Cart item updated!', 'success');
+          this.toastService.show('Cart item updated.', 'success');
         },
         error: err => {
           console.error('Error updating item:', err);
-          this.toastService.show('Failed to update cart item.', 'error', 4000);
+          this.toastService.show('Failed to update cart item.', 'error');
         }
       });
     }
