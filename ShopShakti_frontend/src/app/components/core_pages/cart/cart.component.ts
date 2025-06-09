@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { CartItem } from '../../../models/cart-item.model';
 import { CartService } from '../../../services/cart.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -14,7 +15,10 @@ import { CartService } from '../../../services/cart.service';
 export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.loadCartItems();
@@ -22,8 +26,14 @@ export class CartComponent implements OnInit {
 
   loadCartItems() {
     this.cartService.getCartItems().subscribe({
-      next: items => this.cartItems = items,
-      error: err => console.error('Error loading cart items:', err)
+      next: items => {
+        this.cartItems = items;
+        this.toastService.show('Cart items loaded successfully!', 'success');
+      },
+      error: err => {
+        console.error('Error loading cart items:', err);
+        this.toastService.show('Failed to load cart items.', 'error', 4000);
+      }
     });
   }
 
@@ -36,19 +46,29 @@ export class CartComponent implements OnInit {
     if (item.quantity <= 0) {
       this.removeItem(item.id);
     } else {
-      // Update item quantity in backend
       this.cartService.updateCartItem(item).subscribe({
-        next: () => this.loadCartItems(),
-        error: err => console.error('Error updating item:', err)
+        next: () => {
+          this.loadCartItems();
+          this.toastService.show('Cart item updated!', 'success');
+        },
+        error: err => {
+          console.error('Error updating item:', err);
+          this.toastService.show('Failed to update cart item.', 'error', 4000);
+        }
       });
     }
   }
 
   removeItem(id: number): void {
-    // Remove item in backend
     this.cartService.removeCartItem(id).subscribe({
-      next: () => this.loadCartItems(),
-      error: err => console.error('Error removing item:', err)
+      next: () => {
+        this.loadCartItems();
+        this.toastService.show('Item removed from cart.', 'success');
+      },
+      error: err => {
+        console.error('Error removing item:', err);
+        this.toastService.show('Failed to remove item.', 'error', 4000);
+      }
     });
   }
 }

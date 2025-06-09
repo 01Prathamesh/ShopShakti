@@ -11,21 +11,27 @@ import { TopDealsComponent } from '../../home/top-deals/top-deals.component';
 import { CustomerReviewsComponent } from '../../home/customer-reviews/customer-reviews.component';
 import { NewsletterSubscriptionComponent } from '../../home/newsletter-subscription/newsletter-subscription.component';
 import { ProductService } from '../../../services/product.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
   selector: 'app-homepage',
-  imports: [CommonModule, RouterModule, TrendingProductsComponent, FeaturedCategoriesComponent, BenefitsComponent, TopDealsComponent, CustomerReviewsComponent, NewsletterSubscriptionComponent, BannerCarouselComponent, SearchbarComponent, CategorySidebarComponent],
+  imports: [
+    CommonModule, RouterModule,
+    TrendingProductsComponent, FeaturedCategoriesComponent, BenefitsComponent,
+    TopDealsComponent, CustomerReviewsComponent, NewsletterSubscriptionComponent,
+    BannerCarouselComponent, SearchbarComponent, CategorySidebarComponent
+  ],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.css'
 })
-
 export class HomepageComponent {
   categories: string[] = [];
 
   constructor(
     public router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -35,9 +41,11 @@ export class HomepageComponent {
       },
       error: err => {
         console.error('Failed to fetch categories:', err);
+        this.toastService.show('Failed to load categories.', 'error', 4000);
       }
     });
   }
+
   onCategorySelected(category: string) {
     const queryParams = { category };
     this.router.navigate(['/products'], { queryParams });

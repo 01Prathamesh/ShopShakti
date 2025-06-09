@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../../models/user.model';
 import { ProfileService } from '../../../services/profile.service';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -30,7 +31,8 @@ export class CheckoutComponent implements OnInit {
     private orderService: OrderService,
     private authService: AuthService,
     private userService: ProfileService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -41,7 +43,6 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    // Fetch user profile
     this.userService.getUserProfile().subscribe({
       next: (userData: User) => {
         this.user = userData;
@@ -49,12 +50,12 @@ export class CheckoutComponent implements OnInit {
       },
       error: (err) => {
         console.error('Failed to fetch user profile:', err);
-        this.selectedAddress = ''; // fallback
+        this.selectedAddress = '';
+        this.toastService.show('Failed to fetch user details.', 'error', 4000);
       }
     });
 
     const buyNowItem = this.authService.getBuyNowItem();
-
     if (buyNowItem) {
       this.cartItems = [buyNowItem];
       this.total = buyNowItem.price * buyNowItem.quantity;
@@ -69,21 +70,19 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-
   confirmOrder() {
     const orderItems = this.cartItems.map(item => ({
       productId: item.id,
       name: item.name,
       price: item.price,
       quantity: item.quantity
-      // do NOT include orderId or order
     }));
-    
+
     const userId = this.authService.getCurrentUserId();
     const deliveryAddress = this.useDifferentAddress ? this.selectedAddress : this.user?.address;
 
     if (!userId) {
-      alert('Please log in to place an order.');
+      this.toastService.show('Please log in to place an order.', 'error');
       this.router.navigate(['/login']);
       return;
     }
@@ -91,23 +90,22 @@ export class CheckoutComponent implements OnInit {
     const order = {
       userId,
       items: orderItems,
-      totalAmount: this.total + 40 + 20, // example shipping + tax
+      totalAmount: this.total + 40 + 20,
       shippingFee: 40,
       tax: 20,
       address: deliveryAddress,
       paymentMethod: 'Cash on Delivery',
       status: 'Pending'
-      // do not include placedAt or address unless required in backend
     };
 
     this.orderService.placeOrder(order, !this.isBuyNow).subscribe({
       next: (response) => {
+        this.toastService.show('Order placed successfully!', 'success');
         this.router.navigate(['/order-success'], { queryParams: { orderId: response.id } });
       },
       error: (err) => {
         console.error('Order placement failed:', err);
-        if (err.error?.errors) console.table(err.error.errors);
-        alert('Order failed: ' + JSON.stringify(err.error));
+        this.toastService.show('Failed to place order.', 'error', 4000);
       }
     });
   }
