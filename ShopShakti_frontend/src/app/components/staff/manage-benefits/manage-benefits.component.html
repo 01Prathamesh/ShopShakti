@@ -2,15 +2,15 @@
   <h2>Manage Benefits</h2>
 
   <form class="benefit-form" (ngSubmit)="addBenefit()">
-    <input [(ngModel)]="newBenefit.title" name="title" placeholder="Title" required style="grid-column: 1 / -1"/>
-    <input [(ngModel)]="newBenefit.description" name="description" placeholder="Description" required style="grid-column: 1 / -1"/>
-    <input [(ngModel)]="newBenefit.iconClass" name="iconClass" placeholder="Icon Class (e.g. fa fa-star)" style="grid-column: 1 / -1"/>
-    <label>
-        <div class="checkbox-group">
-            <input type="checkbox" [(ngModel)]="newBenefit.isActive" name="isActive" id="isActive" />
-            <label for="isActive">Show on Homepage?</label>
-        </div>
-    </label>
+    <input class="form-control" [(ngModel)]="newBenefit.title" name="title" placeholder="Title" required style="grid-column: 1 / -1" />
+    <input class="form-control" [(ngModel)]="newBenefit.description" name="description" placeholder="Description" required style="grid-column: 1 / -1" />
+    <input class="form-control" [(ngModel)]="newBenefit.iconClass" name="iconClass" placeholder="Icon Class (e.g. fa fa-star)" style="grid-column: 1 / -1" />
+
+    <div class="checkbox-group" style="grid-column: 1 / -1">
+      <input type="checkbox" [(ngModel)]="newBenefit.isActive" name="isActive" id="isActive" />
+      <label for="isActive">Show on Homepage?</label>
+    </div>
+
     <button type="submit">Add Benefit</button>
   </form>
 
