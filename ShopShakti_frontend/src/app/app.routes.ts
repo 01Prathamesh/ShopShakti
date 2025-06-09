@@ -11,6 +11,7 @@ import { OrderSuccessComponent } from './components/orders/order-success/order-s
 import { OrderListComponent } from './components/orders/order-list/order-list.component';
 import { OrderSummaryComponent } from './components/orders/order-summary/order-summary.component';
 import { StaffDashboardComponent } from './components/staff/staff-dashboard/staff-dashboard.component';
+import { canActivateRole } from './guards/role.guard';
 
 export const routes: Routes = [
   { path: '', component: HomepageComponent },
@@ -57,7 +58,12 @@ export const routes: Routes = [
     component: OrderSummaryComponent,
     canActivate: [canActivateUser]
   },
-  { path: 'staff', component: StaffDashboardComponent },
+  {
+    path: 'staff',
+    component: StaffDashboardComponent,
+    canActivate: [canActivateUser, canActivateRole],
+    data: { roles: ['Admin', 'Staff'] }
+  },
 
   { path: '**', redirectTo: '' }
 ];
