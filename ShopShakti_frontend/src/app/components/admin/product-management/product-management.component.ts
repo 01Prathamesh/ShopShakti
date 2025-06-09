@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -27,7 +28,10 @@ export class ProductManagementComponent implements OnInit {
   editingProduct: Product | null = null;
   formModel: Product = { id: 0, name: '', price: 0, category: '', description: '', imageUrl: '', quantity: 0 };
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -42,10 +46,12 @@ export class ProductManagementComponent implements OnInit {
         this.filteredProducts = data;
         this.paginate();
         this.isLoading = false;
+        this.toastService.show('Products loaded successfully!', 'success');
       },
       error: () => {
         this.errorMessage = 'Failed to load products.';
         this.isLoading = false;
+        this.toastService.show('Failed to load products.', 'error', 4000);
       }
     });
   }
@@ -107,9 +113,11 @@ export class ProductManagementComponent implements OnInit {
         next: () => {
           this.loadProducts();
           this.closeForm();
+          this.toastService.show('Product updated successfully!', 'success');
         },
         error: () => {
           this.errorMessage = 'Failed to update product.';
+          this.toastService.show('Failed to update product.', 'error', 4000);
         }
       });
     } else {
@@ -117,9 +125,11 @@ export class ProductManagementComponent implements OnInit {
         next: () => {
           this.loadProducts();
           this.closeForm();
+          this.toastService.show('Product added successfully!', 'success');
         },
         error: () => {
           this.errorMessage = 'Failed to add product.';
+          this.toastService.show('Failed to add product.', 'error', 4000);
         }
       });
     }
@@ -128,9 +138,13 @@ export class ProductManagementComponent implements OnInit {
   deleteProduct(id: number): void {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProduct(id).subscribe({
-        next: () => this.loadProducts(),
+        next: () => {
+          this.loadProducts();
+          this.toastService.show('Product deleted successfully!', 'success');
+        },
         error: () => {
           this.errorMessage = 'Failed to delete product.';
+          this.toastService.show('Failed to delete product.', 'error', 4000);
         }
       });
     }

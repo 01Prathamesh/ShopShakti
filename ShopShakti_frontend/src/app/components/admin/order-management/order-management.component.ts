@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { OrderService, Order } from '../../../services/order.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -18,7 +19,10 @@ export class OrderManagementComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders();
@@ -31,10 +35,12 @@ export class OrderManagementComponent implements OnInit {
         this.orders = data;
         this.filteredOrders = data;
         this.isLoading = false;
+        this.toastService.show('Orders loaded successfully!', 'success');
       },
       error: () => {
         this.errorMessage = 'Failed to load orders.';
         this.isLoading = false;
+        this.toastService.show('Failed to load orders.', 'error', 4000);
       }
     });
   }

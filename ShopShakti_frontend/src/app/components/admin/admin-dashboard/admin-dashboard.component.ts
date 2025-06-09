@@ -6,6 +6,7 @@ import { AdminService } from '../../../services/admin.service';
 import { ProductManagementComponent } from '../product-management/product-management.component';
 import { UserManagementComponent } from '../user-management/user-management.component';
 import { OrderManagementComponent } from '../order-management/order-management.component';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -33,17 +34,22 @@ export class AdminDashboardComponent implements OnInit {
   showUsers = false;
   showOrders = false;
 
-  constructor(private adminService: AdminService) {}
+  constructor(
+    private adminService: AdminService,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.adminService.getMetrics().subscribe({
       next: (data: AdminMetricsDto) => {
         this.metrics = data;
         this.isLoading = false;
+        this.toastService.show('Admin metrics loaded successfully!', 'success');
       },
       error: () => {
         this.errorMessage = 'Failed to load metrics.';
         this.isLoading = false;
+        this.toastService.show('Failed to load admin metrics.', 'error', 4000);
       }
     });
   }
