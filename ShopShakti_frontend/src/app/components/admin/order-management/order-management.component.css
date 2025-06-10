@@ -1,26 +1,31 @@
 .order-management {
   margin: 2rem auto;
-  max-width: 1200px;
+  max-width: 1300px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #333;
-  padding: 1rem;
+  color: #2c3e50;
+  background-color: #fdfdfd;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .order-management h2 {
   font-size: 2rem;
   margin-bottom: 1.5rem;
-  color: #222;
+  color: #1a1a1a;
+  text-align: center;
 }
 
 /* Search Input */
 .search-input {
   width: 100%;
-  max-width: 400px;
-  padding: 10px 14px;
+  max-width: 500px;
+  padding: 12px 16px;
+  font-size: 1rem;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
+  margin: 0 auto 1.5rem auto;
+  display: block;
   transition: border 0.3s ease;
 }
 
@@ -29,7 +34,14 @@
   outline: none;
 }
 
-/* Error Message */
+/* Loading and Error */
+.loading {
+  text-align: center;
+  font-weight: 500;
+  color: #555;
+  margin: 1rem 0;
+}
+
 .error {
   color: #d9534f;
   background-color: #fcebea;
@@ -38,6 +50,8 @@
   border-radius: 6px;
   margin-bottom: 1rem;
   max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Table */
@@ -45,31 +59,65 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
 }
 
 thead {
-  background-color: #f7f7f7;
+  background-color: #f1f5f9;
 }
 
-th,
-td {
+th, td {
   padding: 14px 16px;
   text-align: left;
-  border: 1px solid #ddd;
-  vertical-align: middle;
+  border: 1px solid #e0e0e0;
+  vertical-align: top;
 }
 
 th {
   font-weight: 600;
-  color: #333;
+  color: #2c3e50;
 }
 
-/* Row hover */
 tbody tr:hover {
-  background-color: #f1f1f1;
+  background-color: #f9fbfc;
 }
 
-/* Responsive */
+/* Item List */
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.item-list li {
+  margin-bottom: 4px;
+}
+
+.item-price {
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Select Styling */
+select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+/* No Orders Message */
+.no-orders {
+  text-align: center;
+  font-style: italic;
+  color: #555;
+  margin-top: 2rem;
+}
+
+/* Responsive Table */
 @media (max-width: 768px) {
   .order-management {
     padding: 1rem;
@@ -81,13 +129,16 @@ tbody tr:hover {
     white-space: nowrap;
   }
 
-  th,
-  td {
+  .search-input {
+    width: 100%;
+  }
+
+  th, td {
     font-size: 0.9rem;
     padding: 10px;
   }
 
-  .search-input {
-    width: 100%;
+  select {
+    font-size: 0.85rem;
   }
 }
