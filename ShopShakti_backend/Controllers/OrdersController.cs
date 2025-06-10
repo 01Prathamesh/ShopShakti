@@ -56,20 +56,29 @@ namespace ShopShakti_backend.Controllers
             order.OrderDate = DateTime.UtcNow;
             order.Status = "Pending";
 
+            // Validate stock for each item BEFORE saving order
+            foreach (var item in order.Items)
+            {
+                var product = await _context.Products.FindAsync(item.ProductId);
+                if (product == null)
+                    return BadRequest($"Product with ID {item.ProductId} not found.");
+
+                if (item.Quantity > product.Quantity)
+                    return BadRequest($"Insufficient stock for product '{product.Name}'. Available: {product.Quantity}, requested: {item.Quantity}.");
+            }
+
             // Calculate total
             order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee + order.Tax;
 
             _context.Orders.Add(order);
 
-            // Update product quantities
+            // Update product quantities after validation
             foreach (var item in order.Items)
             {
                 var product = await _context.Products.FindAsync(item.ProductId);
                 if (product != null)
                 {
                     product.Quantity -= item.Quantity;
-                    if (product.Quantity < 0)
-                        product.Quantity = 0;  // Avoid negative stock
                 }
             }
 

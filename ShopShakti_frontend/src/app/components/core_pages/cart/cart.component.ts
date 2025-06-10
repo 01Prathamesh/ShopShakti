@@ -42,21 +42,28 @@ export class CartComponent implements OnInit {
   }
 
   updateQuantity(item: CartItem, change: number): void {
-    item.quantity += change;
-    if (item.id !== undefined) {
+    const newQuantity = item.quantity + change;
+
+    if (newQuantity < 1) {
       this.removeItem(item.id!);
-    } else {
-      this.cartService.updateCartItemQuantity(item.id!, item.quantity).subscribe({
-        next: () => {
-          this.loadCartItems();
-          this.toastService.show('Cart item updated.', 'success');
-        },
-        error: err => {
-          console.error('Error updating item:', err);
-          this.toastService.show('Failed to update cart item.', 'error');
-        }
-      });
+      return;
     }
+
+    if (item.availableStock !== undefined && newQuantity > item.availableStock) {
+      this.toastService.show(`Only ${item.availableStock} units available in stock.`, 'error');
+      return;
+    }
+
+    this.cartService.updateCartItemQuantity(item.id!, newQuantity).subscribe({
+      next: () => {
+        this.loadCartItems();
+        this.toastService.show('Cart item updated.', 'success');
+      },
+      error: err => {
+        console.error('Error updating item:', err);
+        this.toastService.show('Failed to update cart item.', 'error');
+      }
+    });
   }
 
   removeItem(id: number): void {

@@ -5,6 +5,7 @@ export interface CartItem {
   price: number;
   quantity: number;
   imageUrl?: string;
+  availableStock?: number;
 }
 
 // ✅ New interface without `id` (used for POST)
