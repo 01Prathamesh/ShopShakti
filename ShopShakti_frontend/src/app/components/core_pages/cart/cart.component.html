@@ -9,7 +9,7 @@
         <span>{{ item.quantity }}</span>
         <button (click)="updateQuantity(item, 1)">+</button>
       </div>
-      <button class="remove-btn" (click)="removeItem(item.id)">Remove</button>
+      <button class="remove-btn" (click)="item.id && removeItem(item.id)">Remove</button>
     </div>
   </div>
 

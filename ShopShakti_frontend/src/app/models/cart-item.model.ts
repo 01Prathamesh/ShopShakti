@@ -10,5 +10,8 @@ export interface CartItem {
 // ✅ New interface without `id` (used for POST)
 export interface NewCartItem {
   productId: number;
+  name: string;
+  price: number;
   quantity: number;
+  imageUrl: string;
 }

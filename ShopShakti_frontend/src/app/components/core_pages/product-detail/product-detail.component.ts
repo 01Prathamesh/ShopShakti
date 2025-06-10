@@ -82,7 +82,10 @@ export class ProductDetailComponent implements OnInit {
       }
       const item: NewCartItem = {
         productId: this.product.id,
-        quantity: this.quantity
+        name: this.product.name,
+        price: this.product.price,
+        quantity: this.quantity,
+        imageUrl: this.product.imageUrl
       };
       this.cartService.addCartItem(item).subscribe({
         next: () => this.toastService.show(`${this.product?.name} added to cart.`, 'success'),

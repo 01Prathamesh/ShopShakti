@@ -103,7 +103,10 @@ export class ProductListComponent implements OnInit {
 
     const cartItem: NewCartItem = {
       productId: product.id,
-      quantity: 1
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+      imageUrl: product.imageUrl
     };
 
     this.cartService.addCartItem(cartItem).subscribe({

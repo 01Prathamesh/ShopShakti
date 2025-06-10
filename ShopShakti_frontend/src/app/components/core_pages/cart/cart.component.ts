@@ -43,10 +43,10 @@ export class CartComponent implements OnInit {
 
   updateQuantity(item: CartItem, change: number): void {
     item.quantity += change;
-    if (item.quantity <= 0) {
-      this.removeItem(item.id);
+    if (item.id !== undefined) {
+      this.removeItem(item.id!);
     } else {
-      this.cartService.updateCartItemQuantity(item.id, item.quantity).subscribe({
+      this.cartService.updateCartItemQuantity(item.id!, item.quantity).subscribe({
         next: () => {
           this.loadCartItems();
           this.toastService.show('Cart item updated.', 'success');
