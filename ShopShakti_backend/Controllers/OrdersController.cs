@@ -60,6 +60,19 @@ namespace ShopShakti_backend.Controllers
             order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee + order.Tax;
 
             _context.Orders.Add(order);
+
+            // Update product quantities
+            foreach (var item in order.Items)
+            {
+                var product = await _context.Products.FindAsync(item.ProductId);
+                if (product != null)
+                {
+                    product.Quantity -= item.Quantity;
+                    if (product.Quantity < 0)
+                        product.Quantity = 0;  // Avoid negative stock
+                }
+            }
+
             await _context.SaveChangesAsync();
 
             // Clear cart items only if this was a cart checkout
