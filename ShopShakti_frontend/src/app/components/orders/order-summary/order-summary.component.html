@@ -42,6 +42,18 @@
     <hr />
     <p class="total"><strong>Total:</strong> ₹{{ order.totalAmount?.toFixed(2) }}</p>
   </div>
+
+  <p><strong>Shipping Status:</strong> {{ order.shippingStatus }}</p>
+  <div class="progress-bar">
+    <p *ngIf="order.shippingStatus === 'Out for Delivery'">
+      📦 Your package is out for delivery! Expect it soon.
+    </p>
+
+    <span [class.active]="order.shippingStatus === 'Initialized'">● Initialized</span>
+    <span [class.active]="order.shippingStatus === 'In Transit'">→ In Transit</span>
+    <span [class.active]="order.shippingStatus === 'Out for Delivery'">→ Out for Delivery</span>
+    <span [class.active]="order.shippingStatus === 'Delivered'">✓ Delivered</span>
+  </div>
 </div>
 
 <ng-template #loading>
