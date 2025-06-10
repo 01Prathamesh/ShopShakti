@@ -40,5 +40,9 @@ namespace ShopShakti_backend.Data
         //Db for Benefits of ShopShakti Platform
         public DbSet<Benefit> Benefits { get; set; }
 
+        //Db for Order Settings
+        public DbSet<OrderSettings> OrderSettings { get; set; }
+
+
     }
 }
