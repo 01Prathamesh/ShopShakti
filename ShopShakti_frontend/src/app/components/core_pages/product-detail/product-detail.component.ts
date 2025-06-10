@@ -81,10 +81,8 @@ export class ProductDetailComponent implements OnInit {
         return;
       }
       const item: NewCartItem = {
-        name: this.product.name,
-        price: this.product.price,
-        quantity: this.quantity,
-        imageUrl: this.product.imageUrl
+        productId: this.product.id,
+        quantity: this.quantity
       };
       this.cartService.addCartItem(item).subscribe({
         next: () => this.toastService.show(`${this.product?.name} added to cart.`, 'success'),
@@ -97,6 +95,7 @@ export class ProductDetailComponent implements OnInit {
     if (this.product) {
       const item: CartItem = {
         id: this.product.id,
+        productId: this.product.id,
         name: this.product.name,
         price: this.product.price,
         quantity: this.quantity,

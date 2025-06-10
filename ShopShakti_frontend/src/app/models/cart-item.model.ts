@@ -1,5 +1,6 @@
 export interface CartItem {
-  id: number;
+  id?: number;
+  productId: number;
   name: string;
   price: number;
   quantity: number;
@@ -8,8 +9,6 @@ export interface CartItem {
 
 // ✅ New interface without `id` (used for POST)
 export interface NewCartItem {
-  name: string;
-  price: number;
+  productId: number;
   quantity: number;
-  imageUrl?: string;
 }
