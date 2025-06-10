@@ -17,6 +17,10 @@
       </li>
     </ul>
 
+    <h4 class="subtotal">Subtotal: ₹{{ getSubtotal() }}</h4>
+    <p class="tax">Tax: ₹{{ tax }}</p>
+    <p class="shipping">Shipping Fee: ₹{{ shippingFee }}</p>
+    <hr />
     <h4 class="total">Total: ₹{{ total }}</h4>
 
     <!-- Address -->
@@ -38,6 +42,13 @@
         placeholder="Enter new delivery address"
       />
     </div>
+    <label for="paymentMethod">Select Payment Method:</label>
+    <select [(ngModel)]="paymentMethod" id="paymentMethod">
+      <option value="Cash on Delivery">Cash on Delivery</option>
+      <option value="UPI">UPI</option>
+      <option value="Credit Card">Credit Card</option>
+    </select>
+
 
     <!-- Confirm Button -->
     <button (click)="confirmOrder()" [disabled]="isLoading">

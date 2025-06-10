@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../../../models/user.model';
 import { ProfileService } from '../../../services/profile.service';
 import { ToastService } from '../../../services/toast.service';
+import { OrderSettingsService } from '../../../services/order-settings.service';
 
 @Component({
   standalone: true,
@@ -25,6 +26,10 @@ export class CheckoutComponent implements OnInit {
   user: User | null = null;
   useDifferentAddress = false;
   isBuyNow: boolean = false;
+  shippingFee: number = 0;
+  tax: number = 0;
+  paymentMethod: string = 'Cash on Delivery';
+
 
   constructor(
     private cartService: CartService,
@@ -32,17 +37,18 @@ export class CheckoutComponent implements OnInit {
     private authService: AuthService,
     private userService: ProfileService,
     private router: Router,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private settingsService: OrderSettingsService
   ) {}
 
   ngOnInit() {
     const userId = this.authService.getCurrentUserId();
-
     if (!userId) {
       this.router.navigate(['/login']);
       return;
     }
 
+    // Fetch user profile
     this.userService.getUserProfile().subscribe({
       next: (userData: User) => {
         this.user = userData;
@@ -55,19 +61,34 @@ export class CheckoutComponent implements OnInit {
       }
     });
 
+    // Check for Buy Now
     const buyNowItem = this.authService.getBuyNowItem();
     if (buyNowItem) {
       this.cartItems = [buyNowItem];
-      this.total = buyNowItem.price * buyNowItem.quantity;
+      this.settingsService.getSettings().subscribe(setting => {
+        this.shippingFee = setting.shippingFee;
+        this.tax = setting.tax;
+        this.total = buyNowItem.price * buyNowItem.quantity + this.shippingFee + this.tax;
+      });
       this.authService.clearBuyNowItem();
       this.isBuyNow = true;
       return;
     }
 
+    // Chain: get cartItems → then settings → then total
     this.cartService.getCartItems().subscribe(items => {
       this.cartItems = items;
-      this.total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      this.settingsService.getSettings().subscribe(setting => {
+        this.shippingFee = setting.shippingFee;
+        this.tax = setting.tax;
+        const subtotal = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        this.total = subtotal + this.shippingFee + this.tax;
+      });
     });
+  }
+
+  getSubtotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   }
 
   confirmOrder() {
@@ -90,11 +111,11 @@ export class CheckoutComponent implements OnInit {
     const order = {
       userId,
       items: orderItems,
-      totalAmount: this.total + 40 + 20,
-      shippingFee: 40,
-      tax: 20,
+      totalAmount: this.total,
+      shippingFee: this.shippingFee,
+      tax: this.tax,
+      paymentMethod: this.paymentMethod,
       address: deliveryAddress,
-      paymentMethod: 'Cash on Delivery',
       status: 'Pending'
     };
 
