@@ -80,6 +80,13 @@ export class ProductDetailComponent implements OnInit {
         this.toastService.show('Please log in to add items to the cart.', 'error');
         return;
       }
+      if (this.quantity > this.product.quantity) {
+        this.toastService.show(
+          `Only ${this.product.quantity} item(s) available in stock.`,
+          'error'
+        );
+        return;
+      }
       const item: NewCartItem = {
         productId: this.product.id,
         name: this.product.name,
@@ -89,7 +96,16 @@ export class ProductDetailComponent implements OnInit {
       };
       this.cartService.addCartItem(item).subscribe({
         next: () => this.toastService.show(`${this.product?.name} added to cart.`, 'success'),
-        error: () => this.toastService.show('Failed to add to cart. Try again.', 'error')
+        error: (error) => {
+          if (error?.error?.includes('Not enough product quantity in stock')) {
+            this.toastService.show(
+              `Cannot add more. Only ${this.product?.quantity} item(s) in stock.`,
+              'error'
+            );
+          } else {
+            this.toastService.show('Failed to add to cart. Try again.', 'error');
+          }
+        }
       });
     }
   }
