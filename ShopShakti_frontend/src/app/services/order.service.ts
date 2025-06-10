@@ -21,6 +21,7 @@ export interface Order {
   shippingFee: number;
   tax: number;
   paymentMethod: string;
+  shippingStatus?: string;
 }
 
 @Injectable({
@@ -49,5 +50,13 @@ export class OrderService {
 
   getOrdersByUser(): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.baseUrl}/user`);
+  }
+
+  updateOrder(id: number, updateData: Partial<Order>): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}`, updateData);
+  }
+
+  updateShippingStatus(id: number, shippingStatus: string): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/${id}/shipping-status`, { shippingStatus });
   }
 }

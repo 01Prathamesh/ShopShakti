@@ -54,6 +54,12 @@ export class OrderManagementComponent implements OnInit {
   }
 
   calculateSubtotal(order: Order): number {
-    return order.totalAmount - (order.shippingFee ?? 0) - (order.tax ?? 0);
+    return (order.totalAmount || 0) - (order.shippingFee || 0) - (order.tax || 0);
+  }
+  updateShipping(order: Order) {
+    this.orderService.updateShippingStatus(order.id!, order.shippingStatus!).subscribe({
+      next: () => this.toastService.show('Shipping status updated', 'success'),
+      error: () => this.toastService.show('Failed to update status', 'error')
+    });
   }
 }

@@ -44,6 +44,16 @@
             </li>
           </ul>
         </td>
+        <td>
+          <select [(ngModel)]="order.shippingStatus" (change)="updateShipping(order)">
+            <option>Initialized</option>
+            <option>In Transit</option>
+            <option>Out for Delivery</option>
+            <option>Delivered</option>
+            <option>Returned</option>
+            <option>Failed</option>
+          </select>
+        </td>
       </tr>
     </tbody>
   </table>
