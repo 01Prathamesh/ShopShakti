@@ -30,16 +30,29 @@ namespace ShopShakti_backend.Controllers
 
         // GET: api/cartitems
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems()
+        public async Task<ActionResult<IEnumerable<CartItemDto>>> GetCartItems()
         {
             var userId = GetUserIdFromClaims();
             if (userId == null)
                 return Unauthorized("User ID is missing or invalid");
 
-            return await _context.CartItems
+            var cartItems = await _context.CartItems
                 .Where(c => c.UserId == userId)
                 .Include(c => c.Product)
                 .ToListAsync();
+
+            var result = cartItems.Select(c => new CartItemDto
+            {
+                Id = c.Id,
+                ProductId = c.ProductId,
+                Name = c.Name,
+                Price = c.Price,
+                Quantity = c.Quantity,
+                ImageUrl = c.ImageUrl,
+                AvailableStock = c.Product?.Quantity ?? 0
+            }).ToList();
+
+            return Ok(result);
         }
 
         // GET: api/cartitems/{id}
