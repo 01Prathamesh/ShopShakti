@@ -69,21 +69,52 @@ namespace ShopShakti_backend.Controllers
 
             var product = await _context.Products.FindAsync(dto.ProductId);
             if (product == null)
-                return NotFound("Product not found.");
+                return NotFound($"Product with ID {dto.ProductId} not found.");
 
-            var cartItem = new CartItem
+            // Find existing cart item for this user and product
+            var existingCartItem = await _context.CartItems
+                .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == dto.ProductId);
+
+            int newQuantity = dto.Quantity;
+
+            if (existingCartItem != null)
             {
-                ProductId = product.Id,
-                Quantity = dto.Quantity,
-                UserId = userId.Value
-            };
+                newQuantity += existingCartItem.Quantity;
+            }
 
-            _context.CartItems.Add(cartItem);
+            // Check stock for the total requested quantity
+            if (product.Quantity < newQuantity)
+                return BadRequest("Not enough product quantity in stock.");
+
+            if (existingCartItem != null)
+            {
+                // Update existing cart item quantity
+                existingCartItem.Quantity = newQuantity;
+            }
+            else
+            {
+                // Add new cart item
+                var cartItem = new CartItem
+                {
+                    ProductId = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Quantity = dto.Quantity,
+                    ImageUrl = product.ImageUrl,
+                    UserId = userId.Value
+                };
+                _context.CartItems.Add(cartItem);
+            }
+
             await _context.SaveChangesAsync();
 
-            // Return with product included
-            await _context.Entry(cartItem).Reference(c => c.Product).LoadAsync();
-            return CreatedAtAction(nameof(GetCartItem), new { id = cartItem.Id }, cartItem);
+            // Return the updated or new cart item, include Product if needed
+            var cartItemToReturn = existingCartItem ?? await _context.CartItems
+                .FirstOrDefaultAsync(ci => ci.UserId == userId && ci.ProductId == dto.ProductId);
+
+            await _context.Entry(cartItemToReturn).Reference(c => c.Product).LoadAsync();
+
+            return CreatedAtAction(nameof(GetCartItem), new { id = cartItemToReturn.Id }, cartItemToReturn);
         }
 
         // PUT: api/cartitems/{id}
@@ -161,7 +192,10 @@ namespace ShopShakti_backend.Controllers
             _context.CartItems.RemoveRange(cartItems);
             await _context.SaveChangesAsync();
 
-            return Ok("Checkout completed.");
+            return Ok(new {
+                message = "Checkout completed.",
+                totalAmount = cartItems.Sum(ci => ci.Quantity * ci.Price)
+            });
         }
     }
 }
