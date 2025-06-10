@@ -38,6 +38,7 @@ namespace ShopShakti_backend.Controllers
 
             return await _context.CartItems
                 .Where(c => c.UserId == userId)
+                .Include(c => c.Product)
                 .ToListAsync();
         }
 
@@ -66,18 +67,22 @@ namespace ShopShakti_backend.Controllers
             if (userId == null)
                 return Unauthorized("User ID is missing");
 
+            var product = await _context.Products.FindAsync(dto.ProductId);
+            if (product == null)
+                return NotFound("Product not found.");
+
             var cartItem = new CartItem
             {
-                Name = dto.Name,
-                Price = dto.Price,
+                ProductId = product.Id,
                 Quantity = dto.Quantity,
-                ImageUrl = dto.ImageUrl,
                 UserId = userId.Value
             };
 
             _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
 
+            // Return with product included
+            await _context.Entry(cartItem).Reference(c => c.Product).LoadAsync();
             return CreatedAtAction(nameof(GetCartItem), new { id = cartItem.Id }, cartItem);
         }
 
@@ -120,6 +125,43 @@ namespace ShopShakti_backend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        // Checkout Logic
+        [HttpPost("checkout")]
+        public async Task<IActionResult> Checkout()
+        {
+            var userId = GetUserIdFromClaims();
+            if (userId == null)
+                return Unauthorized();
+
+            var cartItems = await _context.CartItems
+                .Where(ci => ci.UserId == userId)
+                .Include(ci => ci.Product)
+                .ToListAsync();
+
+            if (!cartItems.Any())
+                return BadRequest("Cart is empty.");
+
+            foreach (var item in cartItems)
+            {
+                var product = item.Product;
+
+                if (product == null)
+                    return BadRequest($"Product with ID {item.ProductId} not found.");
+
+                if (product.Quantity < item.Quantity)
+                    return BadRequest($"Not enough stock for '{product.Name}'. Available: {product.Quantity}, Requested: {item.Quantity}");
+
+                product.Quantity -= item.Quantity;
+            }
+
+            await _context.SaveChangesAsync();
+
+            _context.CartItems.RemoveRange(cartItems);
+            await _context.SaveChangesAsync();
+
+            return Ok("Checkout completed.");
         }
     }
 }
