@@ -7,31 +7,35 @@
   border-radius: 16px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
   font-family: 'Segoe UI', sans-serif;
+  color: #333;
 }
 
 h2 {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #222;
+  font-size: 2.2rem;
   text-align: center;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
   border-bottom: 2px solid #eee;
   padding-bottom: 0.5rem;
 }
 
 .user-info p {
-  font-size: 1rem;
   margin: 0.25rem 0;
-  color: #555;
+  font-size: 1rem;
+  color: #444;
 }
 
-.order-summary {
-  margin-top: 1rem;
+.order-summary h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #444;
 }
 
 .cart-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.5rem;
+  border-top: 1px solid #eee;
 }
 
 .cart-item {
@@ -40,18 +44,23 @@ h2 {
   padding: 0.75rem 1rem;
   border-bottom: 1px dashed #ddd;
   font-size: 1rem;
-  color: #333;
 }
 
-.cart-item:last-child {
-  border-bottom: none;
+.summary-details {
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.summary-details p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.3rem 0;
 }
 
 .total {
-  text-align: right;
   font-size: 1.3rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #007bff;
   margin-top: 1rem;
 }
 
@@ -60,8 +69,8 @@ h2 {
 }
 
 .address-label {
-  display: block;
   font-size: 1rem;
+  display: block;
   margin-bottom: 0.5rem;
   color: #444;
 }
@@ -80,7 +89,7 @@ h2 {
   align-items: center;
   margin: 1rem 0 0.5rem;
   font-size: 0.95rem;
-  color: #444;
+  color: #555;
   gap: 0.5rem;
 }
 
@@ -92,10 +101,25 @@ h2 {
   font-size: 1rem;
 }
 
+.payment-label {
+  display: block;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.payment-select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
 button {
   display: block;
   width: 100%;
-  padding: 0.85rem;
+  padding: 0.9rem;
   margin-top: 1.5rem;
   font-size: 1.1rem;
   background-color: #4CAF50;
@@ -118,7 +142,34 @@ button:disabled {
 
 .empty-msg {
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: #888;
   margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  :host {
+    padding: 1.5rem;
+  }
+
+  .cart-item {
+    font-size: 0.95rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .summary-details p {
+    font-size: 0.95rem;
+  }
+
+  .total {
+    font-size: 1.2rem;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
 }

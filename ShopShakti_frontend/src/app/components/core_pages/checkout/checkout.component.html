@@ -6,24 +6,27 @@
     <p><strong>Name:</strong> {{ user.name }}</p>
     <p><strong>Email:</strong> {{ user.email }}</p>
   </div>
-  
+
   <!-- Order Summary -->
   <div *ngIf="cartItems.length > 0; else emptyCart" class="order-summary">
     <h3>Order Summary</h3>
+
     <ul class="cart-list">
       <li *ngFor="let item of cartItems" class="cart-item">
-        <span>{{ item.name }} × {{ item.quantity }}</span>
-        <span>₹{{ item.price * item.quantity }}</span>
+        <span class="item-name">{{ item.name }} × {{ item.quantity }}</span>
+        <span class="item-price">₹{{ item.price * item.quantity }}</span>
       </li>
     </ul>
 
-    <h4 class="subtotal">Subtotal: ₹{{ getSubtotal() }}</h4>
-    <p class="tax">Tax: ₹{{ tax }}</p>
-    <p class="shipping">Shipping Fee: ₹{{ shippingFee }}</p>
-    <hr />
-    <h4 class="total">Total: ₹{{ total }}</h4>
+    <div class="summary-details">
+      <p><strong>Subtotal:</strong> ₹{{ getSubtotal() }}</p>
+      <p><strong>Tax:</strong> ₹{{ tax }}</p>
+      <p><strong>Shipping Fee:</strong> ₹{{ shippingFee }}</p>
+      <hr />
+      <p class="total"><strong>Total:</strong> ₹{{ total }}</p>
+    </div>
 
-    <!-- Address -->
+    <!-- Address Section -->
     <div class="address-section">
       <label class="address-label">
         <strong>Saved Address:</strong>
@@ -42,13 +45,14 @@
         placeholder="Enter new delivery address"
       />
     </div>
-    <label for="paymentMethod">Select Payment Method:</label>
-    <select [(ngModel)]="paymentMethod" id="paymentMethod">
+
+    <!-- Payment -->
+    <label for="paymentMethod" class="payment-label">Select Payment Method:</label>
+    <select [(ngModel)]="paymentMethod" id="paymentMethod" class="payment-select">
       <option value="Cash on Delivery">Cash on Delivery</option>
       <option value="UPI">UPI</option>
       <option value="Credit Card">Credit Card</option>
     </select>
-
 
     <!-- Confirm Button -->
     <button (click)="confirmOrder()" [disabled]="isLoading">

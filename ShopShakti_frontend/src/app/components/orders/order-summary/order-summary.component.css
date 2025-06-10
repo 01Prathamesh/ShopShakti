@@ -14,6 +14,8 @@
   margin-bottom: 1.5rem;
   text-align: center;
   color: #2c3e50;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 0.5rem;
 }
 
 .section {
@@ -29,8 +31,8 @@
 }
 
 .order-details p,
-.shipping-details p,
-.order-total p {
+.order-total p,
+.shipping-details p {
   margin: 0.4rem 0;
   font-size: 0.95rem;
 }
@@ -43,6 +45,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  font-size: 0.95rem;
 }
 
 .order-items th,
@@ -82,6 +85,32 @@ hr {
   color: #888;
 }
 
+.progress-bar {
+  margin-top: 1rem;
+}
+
+.progress-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.95rem;
+  margin-top: 0.5rem;
+}
+
+.step {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  color: #777;
+  transition: all 0.2s ease-in-out;
+}
+
+.step.active {
+  background-color: #4CAF50;
+  color: #fff;
+  font-weight: 600;
+}
+
 @media (max-width: 600px) {
   .order-items th,
   .order-items td {
@@ -95,5 +124,15 @@ hr {
 
   .section-title {
     font-size: 1.1rem;
+  }
+
+  .progress-steps {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .step {
+    display: inline-block;
+    width: fit-content;
   }
 }

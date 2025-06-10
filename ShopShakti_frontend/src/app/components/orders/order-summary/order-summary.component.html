@@ -1,40 +1,46 @@
 <div class="order-summary-container" *ngIf="!isLoading && order; else loading">
   <h2 class="summary-title">Order Summary</h2>
 
+  <!-- Order Details -->
   <div class="section order-details">
     <p><strong>Order Number:</strong> #{{ order.id }}</p>
-    <p><strong>Order Date:</strong> {{ order.orderDate | date: 'mediumDate' }}</p>
+    <p><strong>Date:</strong> {{ order.orderDate | date: 'mediumDate' }}</p>
     <p><strong>Status:</strong> {{ order.status || 'Processing' }}</p>
     <p><strong>Payment Method:</strong> {{ order.paymentMethod || 'Online Payment' }}</p>
   </div>
 
-  <h3 class="section-title">Shipping Information</h3>
-  <div class="section shipping-details">
+  <!-- Shipping Info -->
+  <div class="section">
+    <h3 class="section-title">Shipping Information</h3>
     <p><strong>Delivery Address:</strong> {{ order.address }}</p>
   </div>
 
-  <h3 class="section-title">Items</h3>
-  <div class="section items-table-wrapper">
-    <table class="order-items">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>Unit Price</th>
-          <th>Quantity</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of order.items">
-          <td>{{ item.name }}</td>
-          <td>₹{{ item.price.toFixed(2) }}</td>
-          <td>{{ item.quantity }}</td>
-          <td>₹{{ (item.price * item.quantity).toFixed(2) }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- Items Table -->
+  <div class="section">
+    <h3 class="section-title">Items Ordered</h3>
+    <div class="items-table-wrapper">
+      <table class="order-items">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.items">
+            <td>{{ item.name }}</td>
+            <td>₹{{ item.price.toFixed(2) }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>₹{{ (item.price * item.quantity).toFixed(2) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
+  <!-- Totals -->
   <div class="order-total section">
     <p><strong>Subtotal:</strong> ₹{{ order.subtotal?.toFixed(2) || 'N/A' }}</p>
     <p><strong>Shipping:</strong> ₹{{ order.shippingFee?.toFixed(2) || '0.00' }}</p>
@@ -43,16 +49,22 @@
     <p class="total"><strong>Total:</strong> ₹{{ order.totalAmount?.toFixed(2) }}</p>
   </div>
 
-  <p><strong>Shipping Status:</strong> {{ order.shippingStatus }}</p>
-  <div class="progress-bar">
-    <p *ngIf="order.shippingStatus === 'Out for Delivery'">
-      📦 Your package is out for delivery! Expect it soon.
-    </p>
+  <!-- Shipping Progress -->
+  <div class="section">
+    <p><strong>Shipping Status:</strong> {{ order.shippingStatus }}</p>
 
-    <span [class.active]="order.shippingStatus === 'Initialized'">● Initialized</span>
-    <span [class.active]="order.shippingStatus === 'In Transit'">→ In Transit</span>
-    <span [class.active]="order.shippingStatus === 'Out for Delivery'">→ Out for Delivery</span>
-    <span [class.active]="order.shippingStatus === 'Delivered'">✓ Delivered</span>
+    <div class="progress-bar">
+      <p *ngIf="order.shippingStatus === 'Out for Delivery'">
+        📦 Your package is out for delivery!
+      </p>
+
+      <div class="progress-steps">
+        <span class="step" [class.active]="order.shippingStatus === 'Initialized'">● Initialized</span>
+        <span class="step" [class.active]="order.shippingStatus === 'In Transit'">→ In Transit</span>
+        <span class="step" [class.active]="order.shippingStatus === 'Out for Delivery'">→ Out for Delivery</span>
+        <span class="step" [class.active]="order.shippingStatus === 'Delivered'">✓ Delivered</span>
+      </div>
+    </div>
   </div>
 </div>
 
