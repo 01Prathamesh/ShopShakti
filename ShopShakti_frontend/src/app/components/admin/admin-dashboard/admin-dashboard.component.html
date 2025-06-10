@@ -23,6 +23,15 @@
       <p>₹{{ metrics.productsValueFormatted }}</p>
     </div>
   </div>
+  <div class="settings-form">
+    <h3>Platform Order Settings</h3>
+    <label>Shipping Fee: ₹ <input type="number" [(ngModel)]="shippingFee" /></label>
+    <label>Tax: ₹ <input type="number" [(ngModel)]="tax" /></label>
+    <button (click)="updateSettings()" [disabled]="settingsUpdating">
+      {{ settingsUpdating ? 'Updating...' : 'Update Settings' }}
+    </button>
+  </div>
+
 
   <div class="section-buttons">
     <button (click)="toggle('products')">

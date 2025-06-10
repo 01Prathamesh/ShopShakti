@@ -7,11 +7,13 @@ import { ProductManagementComponent } from '../product-management/product-manage
 import { UserManagementComponent } from '../user-management/user-management.component';
 import { OrderManagementComponent } from '../order-management/order-management.component';
 import { ToastService } from '../../../services/toast.service';
+import { OrderSettingsService } from '../../../services/order-settings.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   standalone: true,
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, RouterModule, ProductManagementComponent, UserManagementComponent, OrderManagementComponent],
+  imports: [CommonModule, RouterModule, ProductManagementComponent, UserManagementComponent, OrderManagementComponent, FormsModule],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'
 })
@@ -28,6 +30,9 @@ export class AdminDashboardComponent implements OnInit {
 
   isLoading = true;
   errorMessage = '';
+  shippingFee = 40;
+  tax = 20;
+  settingsUpdating = false;
 
   // Toggle states
   showProducts = false;
@@ -36,7 +41,8 @@ export class AdminDashboardComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private settingsService: OrderSettingsService
   ) {}
 
   ngOnInit(): void {
@@ -52,11 +58,23 @@ export class AdminDashboardComponent implements OnInit {
         this.toastService.show('Failed to load admin metrics.', 'error', 4000);
       }
     });
+    this.settingsService.getSettings().subscribe(s => {
+      this.shippingFee = s.shippingFee;
+      this.tax = s.tax;
+    });
   }
 
   toggle(section: 'products' | 'users' | 'orders'): void {
     this.showProducts = section === 'products' ? !this.showProducts : false;
     this.showUsers = section === 'users' ? !this.showUsers : false;
     this.showOrders = section === 'orders' ? !this.showOrders : false;
+  }
+
+  updateSettings() {
+    this.settingsUpdating = true;
+    this.settingsService.updateSettings({ shippingFee: this.shippingFee, tax: this.tax }).subscribe(() => {
+      this.toastService.show('Settings updated', 'success');
+      this.settingsUpdating = false;
+    });
   }
 }
