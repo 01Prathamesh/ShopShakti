@@ -111,7 +111,17 @@ export class ProductListComponent implements OnInit {
 
     this.cartService.addCartItem(cartItem).subscribe({
       next: () => this.toastService.show(`${product.name} added to cart.`, 'success'),
-      error: () => this.toastService.show(`Failed to add ${product.name} to cart.`, 'error')
+      error: (error) => {
+        if (error?.error?.includes('Not enough product quantity in stock')) {
+          this.toastService.show(
+            `Cannot add more. Only ${product.quantity} item(s) in stock.`,
+            'error'
+          );
+        } 
+        else {
+          this.toastService.show('Failed to add to cart. Try again.', 'error');
+        }
+      }
     });
   }
 
