@@ -5,6 +5,7 @@ import { Product } from '../../../models/product.model';
 import { TrendingProductService } from '../../../services/trending-product.service';
 import { CartService } from '../../../services/cart.service';
 import { NewCartItem } from '../../../models/cart-item.model';
+import { ToastService } from '../../../services/toast.service';
 
 @Component({
   standalone: true,
@@ -20,6 +21,7 @@ export class TrendingProductsComponent implements OnInit {
   constructor(
     private trendingService: TrendingProductService,
     private cartService: CartService,
+    private toastService : ToastService,
     private router: Router
   ) {}
 
@@ -47,7 +49,7 @@ export class TrendingProductsComponent implements OnInit {
     const userId = user?.id;
 
     if (!userId) {
-      alert('Please log in to add items to the cart.');
+      this.toastService.show('Please log in to add items to the cart.', 'error');
       return;
     }
 
@@ -60,8 +62,8 @@ export class TrendingProductsComponent implements OnInit {
     };
 
     this.cartService.addCartItem(cartItem).subscribe({
-      next: () => alert(`${product.name} added to cart.`),
-      error: () => alert(`Failed to add ${product.name} to cart.`)
+      next: () => this.toastService.show(`${product.name} added to cart.`, 'success'),
+      error: () => this.toastService.show(`Failed to add ${product.name} to cart. Try again.`, 'error')
     });
   }
 }
