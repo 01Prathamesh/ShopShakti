@@ -1,8 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
-using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace ShopShakti_backend.Controllers
 {
@@ -144,6 +145,25 @@ namespace ShopShakti_backend.Controllers
                 .Include(o => o.Items)
                 .Where(o => o.UserId == userId)
                 .ToListAsync();
+        }
+
+        // PATCH: api/orders/{id}/shipping-status
+        [HttpPatch("{id}/shipping-status")]
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> UpdateShippingStatus(int id, [FromBody] JsonElement data)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null) return NotFound();
+
+            if (data.TryGetProperty("shippingStatus", out var shippingStatusProp))
+            {
+                var shippingStatus = shippingStatusProp.GetString();
+                order.ShippingStatus = shippingStatus;
+                await _context.SaveChangesAsync();
+                return NoContent();
+            }
+
+            return BadRequest("Missing 'shippingStatus' field.");
         }
 
     }

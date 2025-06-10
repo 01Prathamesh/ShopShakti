@@ -34,4 +34,9 @@ public class Order
     public List<OrderItem> Items { get; set; } = new();
 
     public User? User { get; set; }
+
+    public string Address { get; set; }
+
+    public string ShippingStatus { get; set; } = "Initialized";
+
 }
