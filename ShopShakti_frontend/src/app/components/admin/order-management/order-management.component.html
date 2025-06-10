@@ -37,7 +37,7 @@
         <td>{{ order.shippingFee }}</td>
         <td>{{ order.tax }}</td>
         <td>{{ order.totalAmount }}</td>
-        <td>{{ order.date | date: 'short' }}</td>
+        <td>{{ order.orderDate | date: 'dd/MMMM/yyyy, h:mm a' }}</td>
         <td>
           <ul class="item-list">
             <li *ngFor="let item of order.items">

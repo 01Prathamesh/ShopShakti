@@ -13,7 +13,7 @@ export interface OrderItem {
 
 export interface Order {
   id?: number;
-  date?: string;
+  orderDate?: string;
   userId: number;
   status: string;
   items: OrderItem[];
