@@ -72,7 +72,7 @@ export class CheckoutComponent implements OnInit {
 
   confirmOrder() {
     const orderItems = this.cartItems.map(item => ({
-      productId: item.id,
+      productId: item.productId,
       name: item.name,
       price: item.price,
       quantity: item.quantity
