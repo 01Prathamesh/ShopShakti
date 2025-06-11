@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { OrderStatus, ShippingStatus } from '../constants/order-status';
+import { PaymentMethod } from '../constants/payment-method';
+import { PaymentStatus } from '../constants/payment-status';
 
 export interface OrderItem {
   productId: number;
@@ -15,13 +18,14 @@ export interface Order {
   id?: number;
   orderDate?: string;
   userId: number;
-  status: string;
+  status: OrderStatus;
   items: OrderItem[];
   totalAmount: number;
   shippingFee: number;
   tax: number;
-  paymentMethod: string;
-  shippingStatus?: string;
+  paymentMethod: PaymentMethod;
+  shippingStatus?: ShippingStatus;
+  paymentStatus?: PaymentStatus;
 }
 
 @Injectable({
@@ -58,5 +62,9 @@ export class OrderService {
 
   updateShippingStatus(id: number, shippingStatus: string): Observable<void> {
     return this.http.patch<void>(`${this.baseUrl}/${id}/shipping-status`, { shippingStatus });
+  }
+
+  updatePaymentStatus(id: number, paymentStatus: string): Observable<void> {
+    return this.http.patch<void>(`${this.baseUrl}/${id}/payment-status`, { paymentStatus });
   }
 }

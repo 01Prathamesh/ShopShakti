@@ -8,6 +8,7 @@
     <h3>Order #{{ orders.length - i }}</h3>
     <p>Date: {{ order.orderDate | date }}</p>
     <p>Total: ₹{{ order.totalAmount.toFixed(2) }}</p>
+    <p><strong>Payment:</strong> {{ order.paymentStatus }}</p>
     <a [routerLink]="['/order-summary', order.id]">View Summary</a>
   </div>
 </div>

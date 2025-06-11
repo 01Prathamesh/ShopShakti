@@ -5,8 +5,9 @@
   <div class="section order-details">
     <p><strong>Order Number:</strong> #{{ order.id }}</p>
     <p><strong>Date:</strong> {{ order.orderDate | date: 'mediumDate' }}</p>
-    <p><strong>Status:</strong> {{ order.status || 'Processing' }}</p>
-    <p><strong>Payment Method:</strong> {{ order.paymentMethod || 'Online Payment' }}</p>
+    <p><strong>Payment Method:</strong> {{ formatPaymentMethod(order.paymentMethod) }}</p>
+    <p><strong>Shipping Status:</strong> {{ formatShippingStatus(order.shippingStatus) }}</p>
+    <p><strong>Status:</strong> {{ formatOrderStatus(order.status || 'Processing') }}</p>
   </div>
 
   <!-- Shipping Info -->
@@ -60,8 +61,8 @@
 
       <div class="progress-steps">
         <span class="step" [class.active]="order.shippingStatus === 'Initialized'">● Initialized</span>
-        <span class="step" [class.active]="order.shippingStatus === 'In Transit'">→ In Transit</span>
-        <span class="step" [class.active]="order.shippingStatus === 'Out for Delivery'">→ Out for Delivery</span>
+        <span class="step" [class.active]="order.shippingStatus === 'InTransit'">→ In Transit</span>
+        <span class="step" [class.active]="order.shippingStatus === 'OutForDelivery'">→ Out for Delivery</span>
         <span class="step" [class.active]="order.shippingStatus === 'Delivered'">✓ Delivered</span>
       </div>
     </div>

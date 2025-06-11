@@ -15,6 +15,35 @@ export class OrderSummaryComponent implements OnInit {
   order: any = null;
   isLoading = true;
 
+  formatPaymentMethod(method: string): string {
+    const map: { [key: string]: string } = {
+      COD: 'Cash on Delivery',
+      CreditCard: 'Credit Card',
+      DebitCard: 'Debit Card',
+      NetBanking: 'Net Banking',
+      UPI: 'UPI',
+      PayPal: 'PayPal',
+      Razorpay: 'Razorpay'
+    };
+    return map[method] || method;
+  }
+
+  formatShippingStatus(status: string): string {
+    const map: { [key: string]: string } = {
+      Initialized: 'Initialized',
+      InTransit: 'In Transit',
+      OutForDelivery: 'Out for Delivery',
+      Delivered: 'Delivered',
+      Returned: 'Returned',
+      Failed: 'Failed'
+    };
+    return map[status] || status;
+  }
+
+  formatOrderStatus(status: string): string {
+    return status?.replace(/([A-Z])/g, ' $1').trim();
+  }
+
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
