@@ -17,7 +17,8 @@
         <th>Order ID</th>
         <th>User ID</th>
         <th>Status</th>
-        <th>Payment</th>
+        <th>Payment Method</th>
+        <th>Payment Status</th>
         <th>Subtotal (₹)</th>
         <th>Shipping (₹)</th>
         <th>Tax (₹)</th>
@@ -33,6 +34,11 @@
         <td>{{ order.userId }}</td>
         <td>{{ order.status }}</td>
         <td>{{ order.paymentMethod }}</td>
+        <td>{{ order.paymentStatus }}
+          <select [(ngModel)]="order.paymentStatus" (change)="updatePaymentStatus(order)">
+            <option *ngFor="let p of paymentStatuses" [value]="p">{{ p }}</option>
+          </select>
+        </td>
         <td>{{ calculateSubtotal(order) | number: '1.2-2' }}</td>
         <td>{{ order.shippingFee }}</td>
         <td>{{ order.tax }}</td>
@@ -47,12 +53,9 @@
         </td>
         <td>
           <select [(ngModel)]="order.shippingStatus" (change)="updateShipping(order)">
-            <option>Initialized</option>
-            <option>In Transit</option>
-            <option>Out for Delivery</option>
-            <option>Delivered</option>
-            <option>Returned</option>
-            <option>Failed</option>
+            <option *ngFor="let s of shippingStatuses" [value]="s">
+              {{ formatStatusLabel(s) }}
+            </option>
           </select>
         </td>
       </tr>

@@ -4,6 +4,8 @@ import { OrderService, Order } from '../../../services/order.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../services/toast.service';
+import { OrderStatus, ShippingStatus } from '../../../constants/order-status';
+import { PaymentStatus } from '../../../constants/payment-status';
 
 @Component({
   standalone: true,
@@ -18,6 +20,9 @@ export class OrderManagementComponent implements OnInit {
   searchQuery = '';
   isLoading = false;
   errorMessage = '';
+  shippingStatuses = Object.values(ShippingStatus);
+  orderStatuses = Object.values(OrderStatus);
+  paymentStatuses = Object.values(PaymentStatus);
 
   constructor(
     private orderService: OrderService,
@@ -62,4 +67,16 @@ export class OrderManagementComponent implements OnInit {
       error: () => this.toastService.show('Failed to update status', 'error')
     });
   }
+
+  updatePaymentStatus(order: Order) {
+    this.orderService.updatePaymentStatus(order.id!, order.paymentStatus!).subscribe({
+      next: () => this.toastService.show('Payment status updated', 'success'),
+      error: () => this.toastService.show('Failed to update payment status', 'error')
+    });
+  }
+
+  formatStatusLabel(enumValue: string): string {
+    return enumValue.replace(/([A-Z])/g, ' $1').trim();
+  }
+
 }
