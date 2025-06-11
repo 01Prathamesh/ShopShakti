@@ -49,9 +49,10 @@
     <!-- Payment -->
     <label for="paymentMethod" class="payment-label">Select Payment Method:</label>
     <select [(ngModel)]="paymentMethod" id="paymentMethod" class="payment-select">
-      <option value="Cash on Delivery">Cash on Delivery</option>
-      <option value="UPI">UPI</option>
-      <option value="Credit Card">Credit Card</option>
+      <option *ngFor="let method of paymentMethods" [value]="method">
+        {{ paymentMethodLabels[method] || method }}
+      </option>
+      <p *ngIf="paymentMethod === 'COD'" class="note">Note: Payment will be collected on delivery.</p>
     </select>
 
     <!-- Confirm Button -->

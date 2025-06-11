@@ -10,6 +10,8 @@ import { User } from '../../../models/user.model';
 import { ProfileService } from '../../../services/profile.service';
 import { ToastService } from '../../../services/toast.service';
 import { OrderSettingsService } from '../../../services/order-settings.service';
+import { PaymentMethod } from '../../../constants/payment-method';
+import { OrderStatus } from '../../../constants/order-status';
 
 @Component({
   standalone: true,
@@ -28,7 +30,17 @@ export class CheckoutComponent implements OnInit {
   isBuyNow: boolean = false;
   shippingFee: number = 0;
   tax: number = 0;
-  paymentMethod: string = 'Cash on Delivery';
+  paymentMethods = Object.values(PaymentMethod);
+  paymentMethod: PaymentMethod = PaymentMethod.CashOnDelivery;
+  paymentMethodLabels: { [key: string]: string } = {
+    COD: 'Cash on Delivery',
+    CreditCard: 'Credit Card',
+    DebitCard: 'Debit Card',
+    NetBanking: 'Net Banking',
+    UPI: 'UPI',
+    PayPal: 'PayPal',
+    Razorpay: 'Razorpay'
+  };
 
 
   constructor(
@@ -116,7 +128,8 @@ export class CheckoutComponent implements OnInit {
       tax: this.tax,
       paymentMethod: this.paymentMethod,
       address: deliveryAddress,
-      status: 'Pending'
+      status: OrderStatus.Pending,
+
     };
 
     this.orderService.placeOrder(order, !this.isBuyNow).subscribe({
