@@ -40,6 +40,10 @@ export class OrderListComponent implements OnInit {
     return methods[method] || method;
   }
 
+  formatOrderStatus(status: string): string {
+    return status?.replace(/([A-Z])/g, ' $1').trim();
+  }
+
   constructor(private orderService: OrderService, private toast: ToastService) {}
 
   ngOnInit(): void {

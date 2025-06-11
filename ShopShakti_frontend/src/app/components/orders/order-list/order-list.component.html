@@ -10,6 +10,7 @@
     <p>Total: ₹{{ order.totalAmount.toFixed(2) }}</p>
     <p><strong>Payment Method:</strong> {{ formatPaymentMethod(order.paymentMethod) }}</p>
     <p><strong>Payment Status:</strong> {{ formatPaymentStatus(order.paymentStatus) }}</p>
+    <p><strong>Order Status:</strong> {{ formatOrderStatus(order.status || 'Processing') }}</p>
     <a [routerLink]="['/order-summary', order.id]">View Summary</a>
   </div>
 </div>
