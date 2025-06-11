@@ -15,6 +15,31 @@ export class OrderListComponent implements OnInit {
   orders: any[] = [];
   isLoading = true;
 
+  formatPaymentStatus(status: string): string {
+  const labels: { [key: string]: string } = {
+      Pending: 'Pending',
+      COD_Pending: 'Cash on Delivery (Pending)',
+      Success: 'Payment Successful',
+      Failed: 'Payment Failed',
+      Refunded: 'Refunded'
+    };
+
+    return labels[status] || status;
+  }
+
+  formatPaymentMethod(method: string): string {
+    const methods: { [key: string]: string } = {
+      COD: 'Cash on Delivery',
+      CreditCard: 'Credit Card',
+      DebitCard: 'Debit Card',
+      NetBanking: 'Net Banking',
+      UPI: 'UPI',
+      PayPal: 'PayPal',
+      Razorpay: 'Razorpay'
+    };
+    return methods[method] || method;
+  }
+
   constructor(private orderService: OrderService, private toast: ToastService) {}
 
   ngOnInit(): void {
