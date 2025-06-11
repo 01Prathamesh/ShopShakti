@@ -44,6 +44,17 @@ export class OrderSummaryComponent implements OnInit {
     return status?.replace(/([A-Z])/g, ' $1').trim();
   }
 
+  formatPaymentStatus(status: string): string {
+    const labels: { [key: string]: string } = {
+      Pending: 'Pending',
+      COD_Pending: 'Cash on Delivery (Pending)',
+      Success: 'Payment Successful',
+      Failed: 'Payment Failed',
+      Refunded: 'Refunded'
+    };
+    return labels[status] || status;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private orderService: OrderService,
