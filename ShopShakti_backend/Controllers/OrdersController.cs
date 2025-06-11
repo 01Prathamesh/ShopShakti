@@ -58,7 +58,11 @@ namespace ShopShakti_backend.Controllers
             order.OrderDate = DateTime.UtcNow;
             order.Status = OrderStatus.Pending;
 
-            // Validate stock for each item BEFORE saving order
+            // Set PaymentStatus EARLY
+            order.PaymentStatus = order.PaymentMethod == PaymentMethod.COD
+                ? PaymentStatus.COD_Pending
+                : PaymentStatus.Pending;
+
             foreach (var item in order.Items)
             {
                 var product = await _context.Products.FindAsync(item.ProductId);
@@ -76,15 +80,12 @@ namespace ShopShakti_backend.Controllers
 
                 if (!Enum.IsDefined(typeof(ShippingStatus), order.ShippingStatus))
                     return BadRequest("Invalid shipping status.");
-
             }
 
-            // Calculate total
             order.TotalAmount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee + order.Tax;
 
             _context.Orders.Add(order);
 
-            // Update product quantities after validation
             foreach (var item in order.Items)
             {
                 var product = await _context.Products.FindAsync(item.ProductId);
@@ -96,7 +97,7 @@ namespace ShopShakti_backend.Controllers
 
             await _context.SaveChangesAsync();
 
-            // Clear cart items only if this was a cart checkout
+            // Optional cart clearing
             if (Request.Headers.TryGetValue("X-Clear-Cart", out var clearCartFlag) && clearCartFlag == "true")
             {
                 var userId = order.UserId;
@@ -104,10 +105,6 @@ namespace ShopShakti_backend.Controllers
                 _context.CartItems.RemoveRange(cartItems);
                 await _context.SaveChangesAsync();
             }
-
-            order.PaymentStatus = order.PaymentMethod == PaymentMethod.COD
-                ? PaymentStatus.COD_Pending
-                : PaymentStatus.Pending;
 
             return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
         }
@@ -167,27 +164,36 @@ namespace ShopShakti_backend.Controllers
         [Authorize(Roles = "Admin,Staff")]
         public async Task<IActionResult> UpdateShippingStatus(int id, [FromBody] JsonElement data)
         {
+            Console.WriteLine("PATCH /shipping-status called");
+
+            if (!data.TryGetProperty("shippingStatus", out var shippingStatusProp))
+            {
+                Console.WriteLine("? Missing shippingStatus in payload");
+                return BadRequest("Missing 'shippingStatus' field.");
+            }
+
+            var shippingStatusStr = shippingStatusProp.GetString();
+            Console.WriteLine($"?? Received shippingStatus: {shippingStatusStr}");
+
+            if (!Enum.TryParse<ShippingStatus>(shippingStatusStr, out var parsedStatus))
+            {
+                Console.WriteLine("? Invalid shippingStatus");
+                return BadRequest("Invalid shipping status.");
+            }
+
             var order = await _context.Orders.FindAsync(id);
             if (order == null) return NotFound();
 
-            if (data.TryGetProperty("shippingStatus", out var shippingStatusProp))
-            {
-                var shippingStatus = shippingStatusProp.GetString();
-                if (Enum.TryParse<ShippingStatus>(shippingStatus, out var parsedStatus))
-                {
-                    order.ShippingStatus = parsedStatus;
-                    UpdateOrderStatusBasedOnState(order);
-                    await _context.SaveChangesAsync();
-                    return NoContent();
-                }
-                else
-                {
-                    return BadRequest("Invalid shipping status.");
-                }
-            }
+            order.ShippingStatus = parsedStatus;
+            UpdateOrderStatusBasedOnState(order);
 
-            return BadRequest("Missing 'shippingStatus' field.");
+            order.UpdatedAt = DateTime.UtcNow;
+            order.UpdatedBy = User.Identity?.Name ?? "System";
+
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
+
 
         // PATCH: /api/orders/{id}/status
         [HttpPatch("{id}/status")]
