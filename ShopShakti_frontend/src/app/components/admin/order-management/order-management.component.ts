@@ -23,6 +23,7 @@ export class OrderManagementComponent implements OnInit {
   shippingStatuses = Object.values(ShippingStatus);
   orderStatuses = Object.values(OrderStatus);
   paymentStatuses = Object.values(PaymentStatus);
+  activeStatusTab: string = this.orderStatuses[0];
 
   constructor(
     private orderService: OrderService,
@@ -75,8 +76,20 @@ export class OrderManagementComponent implements OnInit {
     });
   }
 
-  formatStatusLabel(enumValue: string): string {
-    return enumValue.replace(/([A-Z])/g, ' $1').trim();
+  formatEnumLabel(value: string): string {
+    return value.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim();
+  }
+
+  getOrdersByStatus(status: string): Order[] {
+    return this.orders.filter(o => o.status === status);
+  }
+
+  getOrdersByStatusAndShipping(status: string, shipping: string): Order[] {
+    return this.orders.filter(o => o.status === status && o.shippingStatus === shipping);
+  }
+
+  setActiveTab(status: string): void {
+    this.activeStatusTab = status;
   }
 
 }

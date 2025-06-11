@@ -1,6 +1,7 @@
 <div class="order-management">
   <h2>Order Management</h2>
 
+  <!-- Search Input -->
   <input
     [(ngModel)]="searchQuery"
     (input)="onSearch()"
@@ -8,61 +9,153 @@
     class="search-input"
   />
 
+  <!-- Loading/Error -->
   <div *ngIf="isLoading" class="loading">Loading orders...</div>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-  <table *ngIf="!isLoading && filteredOrders.length > 0">
-    <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>User ID</th>
-        <th>Status</th>
-        <th>Payment Method</th>
-        <th>Payment Status</th>
-        <th>Subtotal (₹)</th>
-        <th>Shipping (₹)</th>
-        <th>Tax (₹)</th>
-        <th>Total (₹)</th>
-        <th>Date</th>
-        <th>Items</th>
-        <th>Shipping Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of filteredOrders">
-        <td>{{ order.id }}</td>
-        <td>{{ order.userId }}</td>
-        <td>{{ order.status }}</td>
-        <td>{{ order.paymentMethod }}</td>
-        <td>{{ order.paymentStatus }}
-          <select [(ngModel)]="order.paymentStatus" (change)="updatePaymentStatus(order)">
-            <option *ngFor="let p of paymentStatuses" [value]="p">{{ p }}</option>
-          </select>
-        </td>
-        <td>{{ calculateSubtotal(order) | number: '1.2-2' }}</td>
-        <td>{{ order.shippingFee }}</td>
-        <td>{{ order.tax }}</td>
-        <td>{{ order.totalAmount }}</td>
-        <td>{{ order.orderDate | date: 'dd/MMMM/yyyy, h:mm a' }}</td>
-        <td>
-          <ul class="item-list">
-            <li *ngFor="let item of order.items">
-              {{ item.name }} × {{ item.quantity }} <span class="item-price">(₹{{ item.price }})</span>
-            </li>
-          </ul>
-        </td>
-        <td>
-          <select [(ngModel)]="order.shippingStatus" (change)="updateShipping(order)">
-            <option *ngFor="let s of shippingStatuses" [value]="s">
-              {{ formatStatusLabel(s) }}
-            </option>
-          </select>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div *ngIf="!isLoading && filteredOrders.length === 0" class="no-orders">
-    No orders found.
+  <!-- Tabs -->
+  <div class="tab-header">
+    <button *ngFor="let status of orderStatuses"
+            [class.active]="status === activeStatusTab"
+            (click)="setActiveTab(status)">
+      {{ formatEnumLabel(status) }}
+    </button>
   </div>
+
+  <!-- Tab Content -->
+  <div *ngFor="let orderStatus of orderStatuses">
+    <ng-container *ngIf="orderStatus === activeStatusTab">
+      <h3 class="order-status-heading">{{ formatEnumLabel(orderStatus) }} Orders</h3>
+
+      <!-- Orders Found -->
+      <ng-container *ngIf="getOrdersByStatus(orderStatus).length > 0">
+
+        <!-- Grouped by ShippingStatus for Pending/Confirmed -->
+        <ng-container *ngIf="['Pending', 'Confirmed'].includes(orderStatus)">
+          <div *ngFor="let shipStatus of shippingStatuses">
+            <h4 class="shipping-status-heading">{{ formatEnumLabel(shipStatus) }}</h4>
+
+            <ng-container *ngIf="getOrdersByStatusAndShipping(orderStatus, shipStatus).length > 0; else noShippingGroup">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>User ID</th>
+                    <th>Status</th>
+                    <th>Payment Method</th>
+                    <th>Payment Status</th>
+                    <th>Subtotal (₹)</th>
+                    <th>Shipping (₹)</th>
+                    <th>Tax (₹)</th>
+                    <th>Total (₹)</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Shipping Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let order of getOrdersByStatusAndShipping(orderStatus, shipStatus)">
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.userId }}</td>
+                    <td>{{ formatEnumLabel(order.status || '') }}</td>
+                    <td>{{ formatEnumLabel(order.paymentMethod || '') }}</td>
+                    <td>
+                      {{ formatEnumLabel(order.paymentStatus || '') }}
+                      <select [(ngModel)]="order.paymentStatus" (change)="updatePaymentStatus(order)">
+                        <option *ngFor="let p of paymentStatuses" [value]="p">{{ formatEnumLabel(p) }}</option>
+                      </select>
+                    </td>
+                    <td>{{ calculateSubtotal(order) | number: '1.2-2' }}</td>
+                    <td>{{ order.shippingFee }}</td>
+                    <td>{{ order.tax }}</td>
+                    <td>{{ order.totalAmount }}</td>
+                    <td>{{ order.orderDate | date: 'dd/MMMM/yyyy, h:mm a' }}</td>
+                    <td>
+                      <ul class="item-list">
+                        <li *ngFor="let item of order.items">
+                          {{ item.name }} × {{ item.quantity }} <span class="item-price">(₹{{ item.price }})</span>
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <select [(ngModel)]="order.shippingStatus" (change)="updateShipping(order)">
+                        <option *ngFor="let s of shippingStatuses" [value]="s">{{ formatEnumLabel(s) }}</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-container>
+
+            <ng-template #noShippingGroup>
+              <p class="empty-subgroup">No {{ formatEnumLabel(shipStatus) }} orders in this category.</p>
+            </ng-template>
+          </div>
+        </ng-container>
+
+        <!-- Flat List for Completed, Cancelled, Refunded -->
+        <ng-container *ngIf="!['Pending', 'Confirmed'].includes(orderStatus)">
+          <table>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>User ID</th>
+                <th>Status</th>
+                <th>Payment Method</th>
+                <th>Payment Status</th>
+                <th>Subtotal (₹)</th>
+                <th>Shipping (₹)</th>
+                <th>Tax (₹)</th>
+                <th>Total (₹)</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Shipping Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let order of getOrdersByStatus(orderStatus)">
+                <td>{{ order.id }}</td>
+                <td>{{ order.userId }}</td>
+                <td>{{ formatEnumLabel(order.status || '') }}</td>
+                <td>{{ formatEnumLabel(order.paymentMethod || '') }}</td>
+                <td>
+                  {{ formatEnumLabel(order.paymentStatus || '') }}
+                  <select [(ngModel)]="order.paymentStatus" (change)="updatePaymentStatus(order)">
+                    <option *ngFor="let p of paymentStatuses" [value]="p">{{ formatEnumLabel(p) }}</option>
+                  </select>
+                </td>
+                <td>{{ calculateSubtotal(order) | number: '1.2-2' }}</td>
+                <td>{{ order.shippingFee }}</td>
+                <td>{{ order.tax }}</td>
+                <td>{{ order.totalAmount }}</td>
+                <td>{{ order.orderDate | date: 'dd/MMMM/yyyy, h:mm a' }}</td>
+                <td>
+                  <ul class="item-list">
+                    <li *ngFor="let item of order.items">
+                      {{ item.name }} × {{ item.quantity }} <span class="item-price">(₹{{ item.price }})</span>
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <select [(ngModel)]="order.shippingStatus" (change)="updateShipping(order)">
+                    <option *ngFor="let s of shippingStatuses" [value]="s">{{ formatEnumLabel(s) }}</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+      </ng-container>
+
+      <!-- No orders in this tab -->
+      <div *ngIf="getOrdersByStatus(orderStatus).length === 0">
+        <p class="empty-msg">No {{ formatEnumLabel(orderStatus) }} orders.</p>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<!-- No Orders Match Search -->
+<div *ngIf="!isLoading && filteredOrders.length === 0" class="no-orders">
+  No orders found.
 </div>

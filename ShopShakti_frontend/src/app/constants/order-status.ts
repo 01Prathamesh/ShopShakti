@@ -9,7 +9,7 @@ export enum OrderStatus {
 export enum ShippingStatus {
   Initialized = 'Initialized',
   InTransit = 'InTransit',
-  OutForDelivery = 'OutforDelivery',
+  OutForDelivery = 'OutForDelivery',
   Delivered = 'Delivered',
   Returned = 'Returned',
   Failed = 'Failed'
