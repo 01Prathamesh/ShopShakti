@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
+using ShopShakti_backend.Models.Enums;
 using System.Text.Json;
 
 namespace ShopShakti_backend.Controllers
@@ -55,7 +56,7 @@ namespace ShopShakti_backend.Controllers
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
             order.OrderDate = DateTime.UtcNow;
-            order.Status = "Pending";
+            order.Status = OrderStatus.Pending;
 
             // Validate stock for each item BEFORE saving order
             foreach (var item in order.Items)
@@ -66,6 +67,16 @@ namespace ShopShakti_backend.Controllers
 
                 if (item.Quantity > product.Quantity)
                     return BadRequest($"Insufficient stock for product '{product.Name}'. Available: {product.Quantity}, requested: {item.Quantity}.");
+
+                if (!Enum.IsDefined(typeof(PaymentMethod), order.PaymentMethod))
+                    return BadRequest("Invalid payment method.");
+
+                if (!Enum.IsDefined(typeof(OrderStatus), order.Status))
+                    return BadRequest("Invalid order status.");
+
+                if (!Enum.IsDefined(typeof(ShippingStatus), order.ShippingStatus))
+                    return BadRequest("Invalid shipping status.");
+
             }
 
             // Calculate total
@@ -93,6 +104,10 @@ namespace ShopShakti_backend.Controllers
                 _context.CartItems.RemoveRange(cartItems);
                 await _context.SaveChangesAsync();
             }
+
+            order.PaymentStatus = order.PaymentMethod == PaymentMethod.COD
+                ? PaymentStatus.COD_Pending
+                : PaymentStatus.Pending;
 
             return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
         }
@@ -158,12 +173,80 @@ namespace ShopShakti_backend.Controllers
             if (data.TryGetProperty("shippingStatus", out var shippingStatusProp))
             {
                 var shippingStatus = shippingStatusProp.GetString();
-                order.ShippingStatus = shippingStatus;
-                await _context.SaveChangesAsync();
-                return NoContent();
+                if (Enum.TryParse<ShippingStatus>(shippingStatus, out var parsedStatus))
+                {
+                    order.ShippingStatus = parsedStatus;
+                    UpdateOrderStatusBasedOnState(order);
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+                else
+                {
+                    return BadRequest("Invalid shipping status.");
+                }
             }
 
             return BadRequest("Missing 'shippingStatus' field.");
+        }
+
+        // PATCH: /api/orders/{id}/status
+        [HttpPatch("{id}/status")]
+        [Authorize(Roles = "Admin,Staff")]
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] JsonElement data)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null) return NotFound();
+
+            if (!data.TryGetProperty("status", out var statusProp)) return BadRequest("Missing status");
+            var statusStr = statusProp.GetString();
+            if (!Enum.TryParse<OrderStatus>(statusStr, out var status)) return BadRequest("Invalid status");
+
+            order.Status = status;
+            order.UpdatedAt = DateTime.UtcNow;
+            order.UpdatedBy = User.Identity?.Name ?? "System";
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+        [HttpPatch("{id}/payment-status")]
+        [Authorize]
+        public async Task<IActionResult> UpdatePaymentStatus(int id, [FromBody] JsonElement data)
+        {
+            var order = await _context.Orders.FindAsync(id);
+            if (order == null) return NotFound();
+
+            if (!data.TryGetProperty("paymentStatus", out var statusProp))
+                return BadRequest("Missing paymentStatus");
+
+            var statusStr = statusProp.GetString();
+            if (!Enum.TryParse<PaymentStatus>(statusStr, out var paymentStatus))
+                return BadRequest("Invalid payment status");
+
+            order.PaymentStatus = paymentStatus;
+            UpdateOrderStatusBasedOnState(order);
+            order.UpdatedAt = DateTime.UtcNow;
+            order.UpdatedBy = User.Identity?.Name ?? "System";
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+
+
+        private void UpdateOrderStatusBasedOnState(Order order)
+        {
+            if (order.Status == OrderStatus.Cancelled || order.Status == OrderStatus.Refunded)
+                return; // don't override manual actions
+
+            if (order.PaymentStatus == PaymentStatus.Success)
+                order.Status = OrderStatus.Confirmed;
+
+            if (order.PaymentStatus == PaymentStatus.COD_Pending && order.ShippingStatus == ShippingStatus.OutForDelivery)
+                order.Status = OrderStatus.Confirmed;
+
+            if (order.ShippingStatus == ShippingStatus.Delivered &&
+                (order.PaymentStatus == PaymentStatus.Success || order.PaymentStatus == PaymentStatus.COD_Pending))
+                order.Status = OrderStatus.Completed;
         }
 
     }
