@@ -1,13 +1,15 @@
 <div class="success-container">
-  <div class="icon-wrapper">
+  <div class="icon-wrapper animated-check">
     <span class="checkmark">✓</span>
   </div>
 
-  <h2>Thank you! Your order was successful.</h2>
-  <p class="subtext">A confirmation has been sent to your email. You can track your order from your account.</p>
+  <h2>Order Confirmed!</h2>
+  <p class="subtext">Thank you for your purchase, your order was successful.</p>
+  <p class="order-message">You can download your invoice or track your order below.</p>
 
   <div class="button-group">
-    <a routerLink="/" class="btn primary">Continue Shopping</a>
-    <a routerLink="/order-list" class="btn secondary">View My Orders</a>
+    <a routerLink="/" class="btn primary">🛍️ Continue Shopping</a>
+    <a routerLink="/order-list" class="btn secondary">📦 View My Orders</a>
+    <button class="btn secondary" (click)="downloadInvoice()">🧾 Download Invoice</button>
   </div>
 </div>

@@ -3,23 +3,25 @@
   justify-content: center;
   align-items: center;
   min-height: 70vh;
-  background-color: #f4f6f8;
+  background: linear-gradient(to right, #f5f7fa, #c3cfe2);
   padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .success-container {
   text-align: center;
-  background-color: #fff;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
-  max-width: 500px;
+  background: #ffffff;
+  padding: 3rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.07);
+  max-width: 520px;
   width: 100%;
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .icon-wrapper {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   margin: 0 auto 1.5rem;
   background-color: #d4edda;
   border-radius: 50%;
@@ -30,20 +32,28 @@
 
 .checkmark {
   color: #28a745;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
+  animation: popIn 0.4s ease-out forwards;
 }
 
 h2 {
   color: #28a745;
-  margin-bottom: 0.5rem;
-  font-size: 1.75rem;
+  margin-bottom: 0.4rem;
+  font-size: 2rem;
 }
 
 .subtext {
   color: #6c757d;
-  margin-bottom: 2rem;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.order-message {
+  color: #495057;
   font-size: 0.95rem;
+  margin-bottom: 2rem;
+  line-height: 1.5;
 }
 
 .button-group {
@@ -55,10 +65,13 @@ h2 {
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 1rem;
+  font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
 }
 
 .btn.primary {
@@ -83,5 +96,33 @@ h2 {
   .button-group {
     flex-direction: row;
     justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    min-width: 180px;
+  }
+}
+
+/* Animations */
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
