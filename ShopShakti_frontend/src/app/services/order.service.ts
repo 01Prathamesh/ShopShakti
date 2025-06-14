@@ -67,4 +67,10 @@ export class OrderService {
   updatePaymentStatus(id: number, paymentStatus: string): Observable<void> {
     return this.http.patch<void>(`${this.baseUrl}/${id}/payment-status`, { paymentStatus });
   }
+
+  downloadInvoice(orderId: number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/${orderId}/invoice`, {
+      responseType: 'blob'
+    });
+  }
 }
