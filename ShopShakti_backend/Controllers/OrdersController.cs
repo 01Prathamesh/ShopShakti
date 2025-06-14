@@ -5,6 +5,9 @@ using ShopShakti_backend.Data;
 using ShopShakti_backend.Models;
 using ShopShakti_backend.Models.Enums;
 using System.Text.Json;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace ShopShakti_backend.Controllers
 {
@@ -255,5 +258,137 @@ namespace ShopShakti_backend.Controllers
                 order.Status = OrderStatus.Completed;
         }
 
+        [HttpGet("{id}/invoice")]
+        public async Task<IActionResult> GetInvoice(int id)
+        {
+            var order = await _context.Orders
+                .Include(o => o.User)
+                .Include(o => o.Items)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+                return NotFound("Order not found");
+
+            var stream = new MemoryStream();
+
+            Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(30);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(12).FontFamily("NotoSans")); // Keep NotoSans if you want a clean font
+
+                    // Watermark
+                    page.Background().Element(e =>
+                        e.AlignCenter().AlignMiddle().Image("Resources/images/shop_logo.png", ImageScaling.FitArea)
+                    );
+
+                    page.Header().Element(ComposeHeader);
+                    page.Content().Element(c => ComposeContent(c, order));
+                    page.Footer().AlignCenter().Text("Thank you for shopping with us at ShopShakti!")
+                        .FontSize(10).Italic().FontColor(Colors.Grey.Darken1);
+                });
+            }).GeneratePdf(stream);
+
+            stream.Position = 0;
+            var username = string.IsNullOrWhiteSpace(order.User?.Name) ? "User" : order.User.Name.Replace(" ", "_");
+            return File(stream, "application/pdf", $"{username}_invoice_order_{order.Id}.pdf");
+
+            // Local functions
+            void ComposeHeader(IContainer container)
+            {
+                container.Row(row =>
+                {
+                    row.RelativeItem().Column(col =>
+                    {
+                        col.Item().Text("ShopShakti").FontSize(26).Bold().FontColor(Colors.Blue.Medium);
+                        col.Item().Text("123 Business St, Jalgaon, INDIA");
+                        col.Item().Text("Email: support@shopshakti.com");
+                        col.Item().Text("Phone: +91 1234567890");
+                    });
+
+                    row.ConstantItem(100).Height(60)
+                        .Image("Resources/images/shop_logo_name.png", ImageScaling.FitWidth);
+                });
+            }
+
+            void ComposeContent(IContainer container, Order order)
+            {
+                container.PaddingVertical(15).Column(column =>
+                {
+                    var subtotal = order.Items.Sum(i => i.Price * i.Quantity);
+
+                    // Order Info
+                    column.Item().Row(row =>
+                    {
+                        row.RelativeItem().Text($"Invoice #: INV-{order.Id:D6}").Bold();
+                        row.ConstantItem(200).Text($"Date: {order.OrderDate:yyyy-MM-dd}");
+                    });
+
+                    column.Item().Row(row =>
+                    {
+                        row.RelativeItem().Text($"Customer: {order.User?.Name} ({order.User?.Email})");
+                        row.ConstantItem(200).Text($"Payment Method: {order.PaymentMethod}");
+                    });
+
+                    column.Item().Element(e => e.PaddingBottom(10)).Text($"Delivery Address: {order.User?.Address}");
+                    column.Item().LineHorizontal(1);
+
+                    // Items Table
+                    column.Item().Table(table =>
+                    {
+                        table.ColumnsDefinition(cols =>
+                        {
+                            cols.RelativeColumn(3);
+                            cols.ConstantColumn(50);
+                            cols.ConstantColumn(80);
+                            cols.ConstantColumn(90);
+                        });
+
+                        table.Header(header =>
+                        {
+                            header.Cell().Element(CellStyle).Text("Item").Bold();
+                            header.Cell().Element(CellStyle).AlignCenter().Text("Qty").Bold();
+                            header.Cell().Element(CellStyle).AlignRight().Text("Price").Bold();
+                            header.Cell().Element(CellStyle).AlignRight().Text("Total").Bold();
+                        });
+
+                        bool even = false;
+                        foreach (var item in order.Items)
+                        {
+                            var background = even ? Colors.Grey.Lighten5 : Colors.White;
+                            even = !even;
+
+                            table.Cell().Element(CellStyle).Background(background).Text(item.Name);
+                            table.Cell().Element(CellStyle).Background(background).AlignCenter().Text(item.Quantity.ToString());
+                            table.Cell().Element(CellStyle).Background(background).AlignRight().Text($"Rs. {item.Price:F2}");
+                            table.Cell().Element(CellStyle).Background(background).AlignRight().Text($"Rs. {item.Price * item.Quantity:F2}");
+                        }
+
+                        static IContainer CellStyle(IContainer container) =>
+                            container.PaddingVertical(5).PaddingHorizontal(3).BorderBottom(1).BorderColor(Colors.Grey.Lighten2);
+                    });
+
+                    column.Item().PaddingVertical(8).LineHorizontal(1);
+
+                    // Totals
+                    column.Item().AlignRight().Column(totals =>
+                    {
+                        totals.Item().Text($"Subtotal: Rs. {subtotal:F2}");
+                        totals.Item().Text($"Tax: Rs. {order.Tax:F2}");
+                        totals.Item().Text($"Shipping: Rs. {order.ShippingFee:F2}");
+                        totals.Item().PaddingVertical(3).LineHorizontal(1);
+                        totals.Item().Text($"Total: Rs. {order.TotalAmount:F2}").Bold().FontSize(14);
+                    });
+
+                    // Note
+                    column.Item().PaddingTop(20)
+                        .Text("Note: This is a system-generated invoice and does not require a signature.")
+                        .FontSize(9).FontColor(Colors.Grey.Darken2);
+                });
+            }
+        }
     }
 }

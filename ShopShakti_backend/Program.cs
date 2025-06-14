@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using ShopShakti_backend.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using QuestPDF.Drawing;
+using QuestPDF.Infrastructure;
 using ShopShakti_backend.Data;
+using ShopShakti_backend.Services;
+using System.Text;
 using System.Text.Json.Serialization;
+using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +62,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(key)
     };
 });
+QuestPDF.Settings.License = LicenseType.Community;
 
 var app = builder.Build();
 
