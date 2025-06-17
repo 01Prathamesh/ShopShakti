@@ -75,7 +75,8 @@
   display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 73;
+  transform: translateX(-73%);
   background: #fff;
   padding: 20px;
   border-radius: 8px;

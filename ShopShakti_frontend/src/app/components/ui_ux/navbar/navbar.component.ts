@@ -6,6 +6,7 @@ import { CartButtonComponent } from '../cart-button/cart-button.component';
 import { AdminButtonComponent } from '../admin-button/admin-button.component';
 import { ToastService } from '../../../services/toast.service';
 import { StaffButtonComponent } from '../staff-button/staff-button.component';
+import { Category } from '../../../models/category.model';
 
 @Component({
   standalone: true,
@@ -21,11 +22,48 @@ export class NavbarComponent implements OnInit {
   userName: string = '';
   user: any = null;
 
+  categories: Category[] = [];
+
   constructor(private router: Router, private cartService: CartService,  private toastService: ToastService) {
     // Update login status when navigating
     this.router.events.subscribe(() => {
       this.checkLoginStatus();
     });
+    this.categories = [
+      {
+        name: 'Electronics',
+        subcategories: ['Mobiles', 'Laptops', 'Tablets', 'Cameras', 'Headphones', 'Smartwatches', 'Accessories']
+      },
+      {
+        name: 'Fashion',
+        subcategories: ['Men', 'Women', 'Kids', 'Footwear', 'Jewelry', 'Watches', 'Bags', 'Sunglasses']
+      },
+      {
+        name: 'Home & Furniture',
+        subcategories: ['Living Room', 'Bedroom', 'Kitchen', 'Dining', 'Storage', 'Decor', 'Furniture Accessories']
+      },
+      {
+        name: 'Beauty & Health',
+        subcategories: ['Makeup', 'Skin Care', 'Hair Care', 'Fragrances', 'Personal Care', 'Vitamins & Supplements', 'Health Equipment']
+      },
+      {
+        name: 'Sports & Outdoors',
+        subcategories: ['Camping & Hiking', 'Cycling', 'Fitness', 'Yoga', 'Running', 'Clothing', 'Sports Accessories']
+      },
+      {
+        name: 'Toys & Games',
+        subcategories: ['Action Figures', 'Board Games', 'Puzzles', 'Dolls', 'Outdoor Toys', 'Educational Toys', 'Baby Toys']
+      },
+      {
+        name: 'Books & Stationery',
+        subcategories: ['Fiction', 'Non-fiction', 'Textbooks', 'Journals', 'Office Supplies', 'Arts & Crafts', 'School Supplies']
+      },
+      {
+        name: 'Food & Beverages',
+        subcategories: ['Snacks', 'Drinks', 'Groceries', 'Organic Foods', 'Packaged Foods', 'Health Foods', 'Confectionery']
+      }
+    ];
+
   }
 
   ngOnInit(): void {

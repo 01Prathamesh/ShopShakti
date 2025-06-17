@@ -21,17 +21,10 @@
       <li class="dropdown">
         <a class="dropdown-toggle">Shop by Category ▾</a>
         <div class="mega-menu">
-          <div class="mega-column">
-            <h4>Electronics</h4>
-            <a>Mobiles</a>
-            <a>Laptops</a>
-            <a>Tablets</a>
-          </div>
-          <div class="mega-column">
-            <h4>Fashion</h4>
-            <a>Men</a>
-            <a>Women</a>
-            <a>Kids</a>
+          <!-- Dynamically display categories -->
+          <div class="mega-column" *ngFor="let category of categories">
+            <h4>{{ category.name }}</h4>
+            <a *ngFor="let subcategory of category.subcategories">{{ subcategory }}</a>
           </div>
         </div>
       </li>
