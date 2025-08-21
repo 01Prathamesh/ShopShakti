@@ -1,6 +1,14 @@
 # 🛍️ ShopShakti (Full-Stack E-Commerce Platform)
 
-## 📌 Status:- *Work In Progress*
+
+![GitHub issues](https://img.shields.io/github/issues/01Prathamesh/ShopShakti) &nbsp;&nbsp;&nbsp;
+![GitHub license](https://img.shields.io/github/license/01Prathamesh/ShopShakti) &nbsp;&nbsp;&nbsp;
+![GitHub stars](https://img.shields.io/github/stars/01Prathamesh/ShopShakti) &nbsp;&nbsp;&nbsp;
+![GitHub forks](https://img.shields.io/github/forks/01Prathamesh/ShopShakti) &nbsp;&nbsp;&nbsp;
+![GitHub last commit](https://img.shields.io/github/last-commit/01Prathamesh/ShopShakti)
+
+
+## 📌 Status: Active Development — Stable Core Features
 
 Welcome to the **ShopShakti** project — a modern, full-stack, responsive e-commerce web application built using **Angular (frontend)** and **ASP.NET Core Web API (backend)**. It features a clean, scalable architecture and is designed for performance, maintainability, and an excellent user experience.
 
@@ -51,14 +59,14 @@ ShopShakti_frontend/
 │ │ │ │ └── order-success/
 │ │ │ ├── staff/
 │ │ │ │ ├── staff-dashboard/                         
-│ │ │ │ ├── manage-tranding-products/               
+│ │ │ │ ├── manage-trending-products/               
 │ │ │ │ ├── manage-benefits/                        
 │ │ │ │ ├── manage-top-deals/                       
 │ │ │ │ ├── manage-customer-reviews/                
 │ │ │ │ ├── manage-featured-categories/             
 │ │ │ │ └── manage-newsletter-subscription/
 │ │ │ ├── home/
-│ │ │ │ ├── tranding-products/
+│ │ │ │ ├── trending-products/
 │ │ │ │ ├── featured-categories/
 │ │ │ │ ├── top-deals/
 │ │ │ │ ├── benefits/
@@ -87,8 +95,8 @@ ShopShakti_frontend/
 
 ## 🛠️ Tech Stack (Frontend)
 
-- **Angular 17+** with standalone component architecture
-- **TypeScript**, **RxJS**, **SCSS**
+- **Angular 19** with standalone component architecture
+- **TypeScript**
 - **Angular Router** for route management and guards
 - **Material Icons**, **FontAwesome** for UI elements
 
@@ -299,7 +307,7 @@ See the [LICENSE](./LICENSE) file for full details.
 
 
 ## 👨‍💻 Developer Note
-This project is developed with passion, precision, and professionalism as part of a frontend-only e-commerce solution. The structure, UI/UX, and scalability have been a top priority throughout the development process.
+This project has been thoughtfully crafted as a full-stack e-commerce solution with a strong emphasis on clean architecture, intuitive UI/UX, and scalable design. Every component—from frontend interactions to backend logic—has been built with attention to performance, maintainability, and modern best practices.
 
 ## 🧑‍🎓 Developed & Maintained by:
 
